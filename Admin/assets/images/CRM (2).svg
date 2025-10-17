@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29">
+  <g id="CRM" transform="translate(-32 -150)">
+    <g id="remix-icons_line_finance_shopping-bag-3-line" data-name="remix-icons/line/finance/shopping-bag-3-line" transform="translate(32 150)">
+      <rect id="remix-icons_line_finance_shopping-bag-3-line_Frame_Background_" data-name="remix-icons/line/finance/shopping-bag-3-line [Frame Background]" width="29" height="29" fill="none"/>
+    </g>
+    <g id="dollar-circle-svgrepo-com" transform="translate(35 153)">
+      <g id="Group_60147" data-name="Group 60147" opacity="0.8">
+        <path id="Path_89133" data-name="Path 89133" d="M8.672,14.33a2.272,2.272,0,0,0,2.22,2.33H13.4a1.988,1.988,0,0,0,1.94-2.03,1.75,1.75,0,0,0-1.32-1.93l-4.03-1.4a1.75,1.75,0,0,1-1.32-1.93,1.988,1.988,0,0,1,1.94-2.03h2.51a2.272,2.272,0,0,1,2.22,2.33" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <path id="Path_89134" data-name="Path 89134" d="M12,6V18" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </g>
+      <path id="Path_89135" data-name="Path 89135" d="M12,22A10,10,0,1,0,2,12,10,10,0,0,0,12,22Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

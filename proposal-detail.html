@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Event Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    <link rel="stylesheet" href="./assets/style.css"> 
+    
+      <style>
+        /* Template specific styles */
+        .template-tabs {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .template-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .template-tabs .nav-link:hover {
+            color: #B85C4F;
+            background: #f1f3f4;
+        }
+        
+        .template-tabs .nav-link.active {
+            color: #B85C4F;
+            background: white;
+            border-bottom: 3px solid #B85C4F;
+            position: relative;
+        }
+        
+        .template-tabs .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: white;
+        }
+        
+        .template-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .template-header h2 {
+            color: #374151;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .template-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-dropdown {
+            position: relative;
+        }
+        
+        .filter-dropdown select {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            min-width: 140px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.875rem;
+            width: 250px;
+        }
+        
+        .search-box .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+        
+        .create-template-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .create-template-btn:hover {
+            background: #a54d41;
+            transform: translateY(-1px);
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .template-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .template-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .template-card:hover .card-actions {
+            opacity: 1; 
+        }
+        
+        .card-image {
+            height: 70px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+        
+        .card-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .card-action-btn.delete:hover {
+            color: #ef4444;
+        }
+        
+        .card-content {
+            padding: 1rem;
+        }
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem 1.5rem 1rem;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #B85C4F;
+            box-shadow: 0 0 0 3px rgba(184, 92, 79, 0.1);
+        }
+        
+        .dropdown-menu {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            color: #374151;
+            font-size: 0.875rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: #f9fafb;
+        }
+        
+        .dropdown-item.active {
+            background: #B85C4F;
+            color: white;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .btn-primary {
+            background: #B85C4F;
+            border-color: #B85C4F;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background: #a54d41;
+            border-color: #a54d41;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            border-color: #6b7280;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        /* Design Studio Template Cards */
+        .design-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .design-template-card:hover {
+            border-color: #B85C4F;
+            background: #fef7f4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+        
+        .design-card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .design-card-content {
+            padding: 1rem;
+        }
+        
+        .design-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .design-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .design-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .design-card-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        
+        .design-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+        
+        .design-card-actions {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .design-template-card:hover .design-card-actions {
+            opacity: 1;
+        }
+        
+        .design-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .design-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .design-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        .design-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        
+        .design-card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .design-card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+        
+        /* Modal Add Button Styling */
+        .modal-add-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .modal-add-btn:hover {
+            background: #a04c3f;
+            transform: translateY(-1px);
+        }
+        
+        /* Budget Grid */
+        .budget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+        
+        /* Budget Template Cards */
+        .budget-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .budget-template-card:hover {
+            border-color: #B85C4F;
+            background: #fef7f4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+        
+        .budget-card-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .budget-card-content {
+            padding: 1rem;
+        }
+        
+        .budget-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .budget-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .budget-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .budget-card-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        
+        .budget-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+        
+        .budget-card-actions {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .budget-template-card:hover .budget-card-actions {
+            opacity: 1;
+        }
+        
+        .budget-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .budget-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .budget-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        .budget-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        
+        .budget-card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .budget-card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+        
+        /* Questionnaire Grid */
+        .questionnaire-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+        
+        /* Questionnaire Template Cards */
+        .questionnaire-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .questionnaire-template-card:hover {
+            border-color: #B85C4F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+        
+        .questionnaire-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .questionnaire-card-content {
+            padding: 1.25rem;
+        }
+        
+        .questionnaire-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .questionnaire-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .questionnaire-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .questionnaire-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .questionnaire-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        
+        .questionnaire-card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .questionnaire-template-card:hover .questionnaire-card-actions {
+            opacity: 1;
+        }
+        
+        .questionnaire-action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        
+        .questionnaire-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .questionnaire-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        /* Notes Grid Styles */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .notes-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .notes-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .notes-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .notes-card-content {
+            padding: 1rem;
+        }
+        
+        .notes-card-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .notes-badge {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .notes-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notes-card-meta {
+            font-size: 0.875rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .notes-card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .notes-card:hover .notes-card-actions {
+            opacity: 1;
+        }
+        
+        .notes-action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        
+        .notes-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .notes-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        /* Notes Detail Styles */
+        .notes-detail-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .notes-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .notes-detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .notes-detail-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .archived-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .archived-btn:hover {
+            background: #e5e7eb;
+        }
+        
+        .add-notes-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .add-notes-btn:hover {
+            background: #a54d41;
+        }
+        
+        .note-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .note-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .note-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .note-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .note-author-info h6 {
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .note-author-info .note-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .note-action-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .note-action-btn:hover {
+            color: #B85C4F;
+            background: #f3f4f6;
+        }
+        
+        .note-action-btn.delete:hover {
+            color: #ef4444;
+        }
+        
+        .note-action-btn.archive:hover {
+            color: #3b82f6;
+        }
+        
+        .note-content {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 0.875rem;
+        }
+        
+        .note-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .note-status.archived {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .note-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        /* File Upload Styles */
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #B85C4F;
+        }
+        
+        .file-upload-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+        
+        .uploaded-files {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .file-item i {
+            font-size: 1.5rem;
+        }
+        
+        /* Responsive Notes Styles */
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .notes-card-badges {
+                flex-wrap: wrap;
+            }
+            
+            .notes-detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .notes-detail-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .note-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .note-actions {
+                align-self: flex-end;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .template-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .template-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-tabs .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .modal-dialog {
+                margin: 1rem;
+            }
+        }
+    
+        .proposal-detail-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .proposal-detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .proposal-detail-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #B85C4F;
+            box-shadow: 0 0 0 0.2rem rgba(184, 92, 79, 0.25);
+        }
+        
+        .form-control[readonly] {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .date-picker {
+            position: relative;
+        }
+        
+        .date-picker input {
+            padding-right: 3rem;
+        }
+        
+        .date-picker .calendar-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+        }
+        
+        .download-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #dc2626;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            margin-right: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: #B85C4F;
+        }
+        
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-section .form-label {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .calendar-popup {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 300px;
+            display: none;
+        }
+        
+        .calendar-popup.show {
+            display: block;
+        }
+        
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .calendar-nav {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .calendar-nav:hover {
+            background: #e5e7eb;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .calendar-day {
+            background: white;
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .calendar-day:hover {
+            background: #f3f4f6;
+        }
+        
+        .calendar-day.selected {
+            background: #B85C4F;
+            color: white;
+        }
+        
+        .calendar-day.today {
+            background: #fef3c7;
+            font-weight: 600;
+        }
+        
+        .calendar-day.other-month {
+            color: #9ca3af;
+        }
+        
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1px;
+        }
+        
+        .calendar-weekday {
+            background: #f8f9fa;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+  <body class="bg-light-custom">
+    
+   <div class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <div class="sidebar-header">
+                <div class="logo"><img src="./assets/images/sa.bbi (2).svg" /></div>
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+            </div>
+            <div class="nav-item">
+                <a href="index.html" class="nav-link" onclick="navigateTo('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="event.html" class="nav-link " onclick="navigateTo('events')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="contact.html" class="nav-link" onclick="navigateTo('contacts')">
+                    <i class="fas fa-users"></i>
+                    <span>Contacts</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="template.html" class="nav-link" onclick="navigateTo('templates')">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Templates</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="setting.html" class="nav-link" onclick="navigateTo('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h6>Template</h6>
+            </div>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="profile-image">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+<div class="content">
+        <!-- Template Tabs -->
+        <div class="template-tabs">
+            <ul class="nav nav-tabs" id="templateTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="checklist-tab" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">
+                        Checklist
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="design-studio-tab" data-bs-toggle="tab" data-bs-target="#design-studio" type="button" role="tab">
+                        Design Studio
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="budget-tab" data-bs-toggle="tab" data-bs-target="#budget" type="button" role="tab">
+                        Budget
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="questionnaire-tab" data-bs-toggle="tab" data-bs-target="#questionnaire" type="button" role="tab">
+                        Questionnaire
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab">
+                        Notes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="proposals-tab" data-bs-toggle="tab" data-bs-target="#proposals" type="button" role="tab">
+                        Proposals
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contracts-tab" data-bs-toggle="tab" data-bs-target="#contracts" type="button" role="tab">
+                        Contracts
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="quotes-tab" data-bs-toggle="tab" data-bs-target="#quotes" type="button" role="tab">
+                        Quotes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices" type="button" role="tab">
+                        Invoices
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments" type="button" role="tab">
+                        Payments
+                    </button>
+                </li>
+            </ul>
+        </div>
+            <!-- Main Content -->
+            <div class="proposal-detail-header">
+                    <div class="d-flex align-items-center">
+                        <button class="back-btn" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h1 class="proposal-detail-title">Proposal 1</h1>
+                    </div>
+                    <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </button>
+                </div>
+
+                <div class="proposal-detail-form">
+                    <form id="proposalForm">
+                        <div class="form-group">
+                            <label for="clientName" class="form-label">Client Name</label>
+                            <input type="text" class="form-control" id="clientName" placeholder="Enter Client Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="executiveSummary" class="form-label">Executive Summary</label>
+                            <textarea class="form-control" id="executiveSummary" rows="4" placeholder="Enter executive summary"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectScope" class="form-label">Project Scope</label>
+                            <textarea class="form-control" id="projectScope" rows="4" placeholder="Enter project scope"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timeline" class="form-label">Timeline</label>
+                            <div class="date-picker">
+                                <input type="text" class="form-control" id="timeline" placeholder="Select timeline" readonly>
+                                <i class="fas fa-calendar-alt calendar-icon" onclick="toggleCalendar()"></i>
+                                <div class="calendar-popup" id="calendarPopup">
+                                    <div class="calendar-header">
+                                        <button type="button" class="calendar-nav" onclick="previousMonth()">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <span id="currentMonth">May 2025</span>
+                                        <button type="button" class="calendar-nav" onclick="nextMonth()">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="calendar-weekdays">
+                                        <div class="calendar-weekday">Su</div>
+                                        <div class="calendar-weekday">Mo</div>
+                                        <div class="calendar-weekday">Tu</div>
+                                        <div class="calendar-weekday">We</div>
+                                        <div class="calendar-weekday">Th</div>
+                                        <div class="calendar-weekday">Fr</div>
+                                        <div class="calendar-weekday">Sa</div>
+                                    </div>
+                                    <div class="calendar-grid" id="calendarGrid">
+                                        <!-- Calendar days will be generated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pricing-section">
+                            <label class="form-label">Pricing</label>
+                            <textarea class="form-control" id="pricing" rows="3" placeholder="Enter pricing details"></textarea>
+                        </div>
+                    </form>
+                </div>
+           
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+         function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('mainContent');
+
+                sidebarCollapsed = !sidebarCollapsed;
+
+                if (sidebarCollapsed) {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('sidebar-collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('sidebar-collapsed');
+                }
+            }
+
+    </script>
+   <script>
+        let currentDate = new Date();
+        let selectedDate = null;
+
+        function toggleCalendar() {
+            const popup = document.getElementById('calendarPopup');
+            popup.classList.toggle('show');
+            if (popup.classList.contains('show')) {
+                renderCalendar();
+            }
+        }
+
+        function renderCalendar() {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            for (let i = 0; i < 42; i++) {
+                const cellDate = new Date(startDate);
+                cellDate.setDate(startDate.getDate() + i);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = cellDate.getDate();
+                
+                if (cellDate.getMonth() !== currentDate.getMonth()) {
+                    dayElement.classList.add('other-month');
+                }
+                
+                if (cellDate.toDateString() === new Date().toDateString()) {
+                    dayElement.classList.add('today');
+                }
+                
+                if (selectedDate && cellDate.toDateString() === selectedDate.toDateString()) {
+                    dayElement.classList.add('selected');
+                }
+                
+                dayElement.addEventListener('click', () => selectDate(cellDate));
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            document.getElementById('timeline').value = date.toLocaleDateString();
+            document.getElementById('calendarPopup').classList.remove('show');
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Close calendar when clicking outside
+        document.addEventListener('click', (e) => {
+            const popup = document.getElementById('calendarPopup');
+            const dateInput = document.getElementById('timeline');
+            const calendarIcon = document.querySelector('.calendar-icon');
+            
+            if (!popup.contains(e.target) && e.target !== dateInput && e.target !== calendarIcon) {
+                popup.classList.remove('show');
+            }
+        });
+
+        // Initialize form with sample data
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('clientName').value = 'John Smith';
+            document.getElementById('executiveSummary').value = 'This proposal outlines our comprehensive event planning services for your upcoming wedding celebration. We will provide full-service coordination to ensure your special day is memorable and stress-free.';
+            document.getElementById('projectScope').value = 'Complete wedding planning including venue coordination, vendor management, timeline creation, and day-of coordination. Services include initial consultation, budget planning, vendor recommendations, and execution of the event.';
+            document.getElementById('pricing').value = 'Basic Package: $2,500\nPremium Package: $4,000\nLuxury Package: $6,500\n\nAll packages include initial consultation and day-of coordination.';
+        });
+    </script>
+</body>
+</html>

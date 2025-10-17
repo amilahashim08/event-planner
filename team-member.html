@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>sa.bbi - Team Members</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS & Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+           body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+         .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+          @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+          .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: var(--bs-nav-tabs-link-active-color);
+            background-color: transparent !important;
+            border-color: var(--bs-nav-tabs-link-active-border-color);
+        }
+
+        .nav-item {
+            margin: 10px -12px;
+        }
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Tabs */
+        .tabs-bar {
+            background: #F1EDE1;
+            padding: 0 32px;
+            border-bottom: 1px solid #F1EDE1;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 48px;
+            justify-content: flex-start;
+            margin-bottom: 0;
+        }
+
+        .tab-item {
+            color: #888;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0 0 16px 0;
+            background: none;
+            border: none;
+            outline: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #9B4431;
+            border-radius: 2px;
+        }
+
+        .tab-item i {
+            font-size: 18px;
+        }
+
+        /* Table */
+        .team-table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            margin-top: 32px;
+            padding: 32px;
+        }
+
+        table thead tr {
+            background: #F8F6F2;
+        }
+
+        table th,
+        table td {
+            vertical-align: middle !important;
+            font-size: 15px;
+        }
+
+        table th {
+            font-weight: 600;
+            color: #888;
+        }
+
+        table tr {
+            height: 56px;
+        }
+
+        .avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 8px;
+            color: #fff;
+        }
+
+        .action-btns .btn-link {
+            margin-right: 8px;
+        }
+
+        .fa-eye {
+            color: #9B4431;
+        }
+
+        .fa-edit {
+            color: #4CAF50;
+        }
+
+        .fa-trash {
+            color: #E57373;
+        }
+
+        .fa-eye:hover,
+        .fa-edit:hover,
+        .fa-trash:hover {
+            opacity: 0.7;
+        }
+
+        /* Modals */
+        .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-footer {
+            border-top: none;
+            justify-content: center;
+        }
+
+        .success-icon i {
+            font-size: 48px;
+            color: #4CAF50;
+        }
+
+        .warning-icon i {
+            font-size: 48px;
+            color: #9B4431;
+        }
+
+        .project-item {
+            background: #F8EDEB;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .project-name {
+            font-weight: 600;
+        }
+
+        .project-subtitle {
+            color: #9B4431;
+            font-size: 13px;
+        }
+
+        .access-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .access-badges {
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        .badge-viewer,
+        .badge-editor {
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 13px;
+            background: #9B4431;
+            color: #fff;
+            margin-right: 8px;
+        }
+
+        .badge-editor {
+            background: #4CAF50;
+        }
+
+        .delete-confirm-btn,
+        .btn-primary {
+            background: #9B4431 !important;
+            border: none !important;
+        }
+
+        .btn-secondary {
+            background: #fff !important;
+            color: #9B4431 !important;
+            border: 1px solid #9B4431 !important;
+        }
+
+        .form-check-label span {
+            color: #1A73E8;
+            font-weight: 500;
+        }
+
+        .input-group .form-control {
+            border-radius: 8px !important;
+        }
+
+        .input-group .btn {
+            border-radius: 8px !important;
+        }
+
+        @media (max-width: 900px) {
+            .team-table-container {
+                padding: 8px;
+                margin-top: 16px;
+            }
+
+            .header-tabs {
+                padding: 16px 0 0 0;
+            }
+
+            .header-right {
+                right: 8px;
+                top: 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-tabs .tab-list {
+                gap: 16px;
+            }
+
+            .sidebar {
+                width: 180px;
+                padding-top: 16px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .bg-soft {
+            background: #F8EDEB;
+        }
+
+        .project-list,
+        .access-list {
+            background: #F8EDEB;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .project-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-right: 16px;
+            object-fit: cover;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: #3B3F53;
+        }
+
+        .project-subtitle {
+            color: #9B4431;
+            font-size: 14px;
+        }
+
+        .access-table {
+            width: 100%;
+        }
+
+        .access-table th,
+        .access-table td {
+            padding: 8px 12px;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        .access-table th {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .access-table td {
+            color: #3B3F53;
+        }
+
+        .form-check-input:checked {
+            background-color: #9B4431;
+            border-color: #9B4431;
+        }
+
+        .access-bg {
+            background: #F8EDEB;
+        }
+
+        .access-table td {
+            padding: 12px 18px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .event-label {
+            font-weight: 600;
+            color: #6B4F3A;
+            width: 180px;
+        }
+
+        .access-role {
+            margin-left: 8px;
+            font-weight: 500;
+            color: #9B4431;
+        }
+
+        .access-check {
+            accent-color: #9B4431;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid #9B4431;
+            background: #9B4431;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link"><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link active"><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+      <div class="header">
+            <h6 class="">Update Password</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+           <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button>
+                     </div>
+        </div>
+        <!-- Tabs Bar -->
+        <div class="container-fluid">
+            <div class="tabs-bar">
+                <div class="tabs-list">
+                    <button class="tab-item" onclick="window.location.href='setting.html'">
+                        <i class="fa fa-user-circle"></i> Account Configuration
+                    </button>
+                    <button class="tab-item" onclick="window.location.href='update-password.html'">
+                        <i class="fa fa-lock"></i> Update Password
+                    </button>
+                    <button class="tab-item active" onclick="window.location.href='team-member.html'">
+                        <i class="fa fa-users"></i> Team Members
+                    </button>
+                    <button class="tab-item" onclick="window.location.href='Subscriptions.html'">
+                        <i class="fa fa-credit-card"></i> Subscriptions
+                    </button>
+                </div>
+            </div>
+            <div class="team-table-container">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0" style="font-weight:600;">Team Members</h5>
+                    <button class="btn btn-primary rounded-3 px-4" onclick="showAddTeamMemberModal()">Add Team
+                        Member</button>
+                </div>
+                <table class="table align-middle" id="teamMembersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Add Team Member Modal -->
+    <div class="modal fade" id="addTeamMemberModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center" style="font-weight:600;">Add Team Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <form id="addTeamMemberForm">
+                        <div class="step" id="step1">
+                            <h6 class="mb-3" style="font-weight:500;">Member Details :</h6>
+                            <div class="mb-3">
+                                <input type="text" class="form-control rounded-3" id="memberName"
+                                    placeholder="Enter Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control rounded-3" id="memberPosition"
+                                    placeholder="Position" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control rounded-3" id="memberEmail" placeholder="Email"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <input type="password" class="form-control rounded-3" id="memberPassword"
+                                        placeholder="Password" required>
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        onclick="togglePassword('memberPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="saveToDraft">
+                                <label class="form-check-label" for="saveToDraft">
+                                    <span>Save to Draft</span>
+                                </label>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-primary rounded-3 px-4"
+                                    onclick="showStep2()">Next</button>
+                            </div>
+                        </div>
+                        <div class="step" id="step2" style="display: none;">
+                            <h6 class="mb-3" style="font-weight:500;">Select the events you want to grant access to for
+                                this member.</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Events</th>
+                                            <th>Viewer</th>
+                                            <th>Editor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Wedding</td>
+                                            <td><input type="checkbox" name="wedding_viewer" checked></td>
+                                            <td><input type="checkbox" name="wedding_editor" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Birthday Party</td>
+                                            <td><input type="checkbox" name="birthday_viewer" checked></td>
+                                            <td><input type="checkbox" name="birthday_editor" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Corporate Event</td>
+                                            <td><input type="checkbox" name="corporate_viewer" checked></td>
+                                            <td><input type="checkbox" name="corporate_editor" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Baby Shower</td>
+                                            <td><input type="checkbox" name="babyshower_viewer" checked></td>
+                                            <td><input type="checkbox" name="babyshower_editor" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Anniversary</td>
+                                            <td><input type="checkbox" name="anniversary_viewer"></td>
+                                            <td><input type="checkbox" name="anniversary_editor"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Graduation Party</td>
+                                            <td><input type="checkbox" name="graduation_viewer"></td>
+                                            <td><input type="checkbox" name="graduation_editor"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Other Event</td>
+                                            <td><input type="checkbox" name="other_viewer"></td>
+                                            <td><input type="checkbox" name="other_editor"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="saveToDraft2">
+                                <label class="form-check-label" for="saveToDraft2">
+                                    <span>Save to Draft</span>
+                                </label>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-secondary rounded-3 px-4"
+                                    onclick="showStep1()">Back</button>
+                                <button type="submit" class="btn btn-primary rounded-3 px-4">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Team Member Modal -->
+    <!-- Modal HTML -->
+    <div class="modal fade" id="teamMemberViewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4">
+                <div class="modal-header border-0 pb-0">
+                    <div class="w-100 text-center">
+                        <h5 class="modal-title" id="memberViewTitle" style="font-weight:600; color:#3B3F53;">Tyler
+                            Collins</h5>
+                        <p id="memberViewEmail" class="mb-1" style="color:#888;">tylercollins@gmail.com</p>
+                        <p id="memberViewPosition" class="mb-3" style="color:#888;">Videographer</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="projects-section mb-4 text-start">
+                        <h6 class="mb-2" style="font-weight:500;">Added in the following projects :</h6>
+                        <div class="project-list bg-soft rounded-3 p-3"></div>
+                    </div>
+                    <div class="access-section text-start">
+                        <h6 class="mb-2" style="font-weight:500;">Access allowed for events :</h6>
+                        <div class="access-list access-bg rounded-3 p-3">
+                            <table class="access-table w-100">
+                                <tbody>
+                                    <tr>
+                                        <td class="event-label">Wedding</td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                >
+                                            <span class="access-role">Viewer</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                >
+                                            <span class="access-role">Editor</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="event-label">Birthday Party</td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                >
+                                            <span class="access-role">Viewer</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                >
+                                            <span class="access-role">Editor</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="event-label">Corporate Event</td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                >
+                                            <span class="access-role">Viewer</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                disabled>
+                                            <span class="access-role">Editor</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="event-label">Baby Shower</td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                disabled>
+                                            <span class="access-role">Viewer</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input access-check" checked
+                                                disabled>
+                                            <span class="access-role">Editor</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 text-center">
+                <div class="modal-body">
+                    <div class="warning-icon mb-3">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <p class="mb-4" style="font-size:20px;font-weight:500;">
+                        Are you sure you want to delete <span id="deleteTargetName" style="color:#9B4431;">"Alan
+                            Powell"</span> ?
+                    </p>
+                    <div class="modal-actions d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-primary rounded-3 px-4 delete-confirm-btn">Yes, Delete
+                            It</button>
+                        <button type="button" class="btn btn-secondary rounded-3 px-4"
+                            data-bs-dismiss="modal">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 text-center">
+                <div class="modal-body">
+                    <div class="success-icon mb-3">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h5 id="successTitle" class="mb-4" style="font-weight:500;">Account details has been updated
+                        Successfully !</h5>
+                    <button type="button" class="btn btn-primary rounded-3 px-4"
+                        data-bs-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar toggle for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+        window.addEventListener('resize', function () {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 900) sidebar.classList.remove('show');
+        });
+
+        // Team Members Data
+        let teamMembers = [
+            {
+                id: 1234,
+                name: "Tyler Collins",
+                position: "Florist",
+                email: "tyler@gmail.com",
+                initials: "TC",
+                color: "#AEE9D1",
+                projects: [
+                    { name: "Birthday Party", subtitle: "Damon's 30th Birthday", img: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=40&h=40&fit=crop" },
+                    { name: "Wedding", subtitle: "John & Brooklyn Wedding", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=40&h=40&fit=crop" }
+                ],
+                access: {
+                    "Wedding": ["Viewer", "Editor"],
+                    "Birthday Party": ["Viewer", "Editor"],
+                    "Corporate Event": ["Viewer", "Editor"],
+                    "Baby Shower": ["Viewer", "Editor"]
+                }
+            },
+            {
+                id: 1234,
+                name: "Alan Powell",
+                position: "Photographer",
+                email: "alan@gmail.com",
+                initials: "AP",
+                color: "#C7C7F3",
+                projects: [],
+                access: {
+                    "Wedding": ["Viewer"],
+                    "Birthday Party": ["Viewer"],
+                    "Corporate Event": ["Viewer"],
+                    "Baby Shower": ["Viewer"]
+                }
+            },
+            {
+                id: 1234,
+                name: "Justin Wood",
+                position: "Videographer",
+                email: "justin@gmail.com",
+                initials: "JW",
+                color: "#AEE9F3",
+                projects: [],
+                access: {}
+            },
+            {
+                id: 1234,
+                name: "Jacob Evans",
+                position: "Florist",
+                email: "jacob@gmail.com",
+                initials: "JE",
+                color: "#F3C7E9",
+                projects: [],
+                access: {}
+            },
+            {
+                id: 1234,
+                name: "Tom Meyer",
+                position: "Photographer",
+                email: "tom@gmail.com",
+                initials: "TM",
+                color: "#F3E9C7",
+                projects: [],
+                access: {}
+            },
+            {
+                id: 1234,
+                name: "Nicolas Palmer",
+                position: "Florist",
+                email: "nicolas@gmail.com",
+                initials: "NP",
+                color: "#F3C7C7",
+                projects: [],
+                access: {}
+            },
+            {
+                id: 1234,
+                name: "Jonathan Jones",
+                position: "Photographer",
+                email: "jonathan@gmail.com",
+                initials: "JJ",
+                color: "#F3E9A7",
+                projects: [],
+                access: {}
+            },
+            {
+                id: 1234,
+                name: "Joe Meyer",
+                position: "Florist",
+                email: "joe@gmail.com",
+                initials: "JM",
+                color: "#F3C7F3",
+                projects: [],
+                access: {}
+            }
+        ];
+
+        // Render Team Members Table
+        function renderTeamTable() {
+            const tbody = document.querySelector('#teamMembersTable tbody');
+            tbody.innerHTML = "";
+            teamMembers.forEach((member, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${member.id}</td>
+                        <td>
+                            <span style="display:inline-flex;align-items:center;">
+                                <span class="avatar-circle" style="background:${member.color};">${member.initials}</span>
+                                <span style="font-weight:600;color:#444;">${member.name}</span>
+                            </span>
+                        </td>
+                        <td>${member.position}</td>
+                        <td>${member.email}</td>
+                        <td class="action-btns">
+                            <button class="btn btn-link p-0" title="View" onclick="viewTeamMember(${idx})">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-link p-0" title="Delete" onclick="confirmDeleteTeamMember(${idx})">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="btn btn-link p-0" title="Edit" onclick="editTeamMember(${idx})">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        renderTeamTable();
+
+        // Modal Step Logic for Add Team Member
+        function showAddTeamMemberModal() {
+            document.getElementById('addTeamMemberForm').reset();
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+            var modal = new bootstrap.Modal(document.getElementById('addTeamMemberModal'));
+            modal.show();
+        }
+        function showStep2() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        }
+        function showStep1() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+        }
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Add Team Member Form Submission
+        document.getElementById('addTeamMemberForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Get values
+            const name = document.getElementById('memberName').value.trim();
+            const position = document.getElementById('memberPosition').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            // Generate initials and color
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            const colors = ["#AEE9D1", "#C7C7F3", "#AEE9F3", "#F3C7E9", "#F3E9C7", "#F3C7C7", "#F3E9A7", "#F3C7F3"];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            // Get access
+            const access = {};
+            const events = ["Wedding", "Birthday Party", "Corporate Event", "Baby Shower", "Anniversary", "Graduation Party", "Other Event"];
+            events.forEach(ev => {
+                let viewer = document.querySelector(`[name='${ev.toLowerCase().replace(/ /g, '_')}_viewer']`);
+                let editor = document.querySelector(`[name='${ev.toLowerCase().replace(/ /g, '_')}_editor']`);
+                let roles = [];
+                if (viewer && viewer.checked) roles.push("Viewer");
+                if (editor && editor.checked) roles.push("Editor");
+                if (roles.length) access[ev] = roles;
+            });
+            // Add member
+            teamMembers.push({
+                id: 1234,
+                name,
+                position,
+                email,
+                initials,
+                color,
+                projects: [],
+                access
+            });
+            renderTeamTable();
+            bootstrap.Modal.getInstance(document.getElementById('addTeamMemberModal')).hide();
+            showSuccessModal(`${name} details has been added Successfully !`);
+        });
+        // Render projects
+        let projectsHtml = '';
+        member.projects.forEach(proj => {
+            projectsHtml += `
+        <div class="project-item">
+            <img src="${proj.img}" alt="${proj.name}" class="project-icon">
+            <div>
+                <div class="project-name">${proj.name}</div>
+                <div class="project-subtitle">${proj.subtitle}</div>
+            </div>
+        </div>
+    `;
+        });
+        document.querySelector('#teamMemberViewModal .project-list').innerHTML = projectsHtml;
+
+        // Render access
+        let accessHtml = `
+    <table class="access-table">
+        <tbody>
+`;
+        Object.keys(member.access).forEach(event => {
+            accessHtml += `<tr>
+        <td style="width:140px;"><span style="font-weight:600;">${event}</span></td>
+        <td>
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <span style="margin-left:6px;">Viewer</span>
+        </td>
+        <td>
+            ${member.access[event].includes('Editor') ? `<input type="checkbox" class="form-check-input" checked disabled>` : `<input type="checkbox" class="form-check-input" disabled>`}
+            <span style="margin-left:6px;">Editor</span>
+        </td>
+    </tr>`;
+        });
+        accessHtml += `
+        </tbody>
+    </table>
+`;
+        document.querySelector('#teamMemberViewModal .access-list').innerHTML = accessHtml;
+        // View Team Member Modal
+        function viewTeamMember(idx) {
+            const member = teamMembers[idx];
+            document.getElementById('memberViewTitle').textContent = member.name;
+            document.getElementById('memberViewEmail').textContent = member.email;
+            document.getElementById('memberViewPosition').textContent = member.position;
+            // Projects
+            let projectsHtml = '';
+            member.projects.forEach(proj => {
+                projectsHtml += `
+                    <div class="project-item">
+                        <img src="${proj.img}" alt="${proj.name}" class="project-icon">
+                        <div>
+                            <div class="project-name">${proj.name}</div>
+                            <div class="project-subtitle">${proj.subtitle}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.querySelector('#teamMemberViewModal .project-list').innerHTML = projectsHtml;
+            // Access
+            let accessHtml = '';
+            Object.keys(member.access).forEach(event => {
+                accessHtml += `
+                    <div class="access-item">
+                        <span style="width:120px;">${event}</span>
+                        <div class="access-badges">
+                            ${member.access[event].map(role => `<span class="badge badge-viewer">${role}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            document.querySelector('#teamMemberViewModal .access-list').innerHTML = accessHtml;
+            var modal = new bootstrap.Modal(document.getElementById('teamMemberViewModal'));
+            modal.show();
+        }
+
+        // Delete Team Member
+        let deleteIdx = null;
+        function confirmDeleteTeamMember(idx) {
+            deleteIdx = idx;
+            document.getElementById('deleteTargetName').textContent = `"${teamMembers[idx].name}"`;
+            var modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+        document.querySelector('.delete-confirm-btn').onclick = function () {
+            if (deleteIdx !== null) {
+                let name = teamMembers[deleteIdx].name;
+                teamMembers.splice(deleteIdx, 1);
+                renderTeamTable();
+                bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+                showSuccessModal(`${name} details has been deleted Successfully !`);
+                deleteIdx = null;
+            }
+        };
+
+        // Edit Team Member (just show success for demo)
+        function editTeamMember(idx) {
+            let name = teamMembers[idx].name;
+            showSuccessModal(`${name} details has been updated Successfully !`);
+        }
+
+        // Success Modal
+        function showSuccessModal(msg) {
+            document.getElementById('successTitle').textContent = msg;
+            var modal = new bootstrap.Modal(document.getElementById('successModal'));
+            modal.show();
+        }
+
+        // Notification icon (dummy)
+        function toggleNotifications() {
+            alert("Notifications clicked!");
+        }
+    </script>
+</body>
+
+</html>

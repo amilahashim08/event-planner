@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Board - sa.bbi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+         .budget-detail-header {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 0;
+        }
+        
+        .budget-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .budget-subtitle {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .budget-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .budget-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .budget-btn-download {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .budget-btn-download:hover {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .budget-btn-excel {
+            background: #10b981;
+            color: white;
+        }
+        
+        .budget-btn-excel:hover {
+            background: #059669;
+            color: white;
+        }
+        
+        .budget-btn-add {
+            background: #B85C4F;
+            color: white;
+        }
+        
+        .budget-btn-add:hover {
+            background: #a04c3f;
+            color: white;
+        }
+        
+        .budget-section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title {
+            font-weight: 500;
+            color: #1f2937;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .section-amount {
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .section-toggle {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .section-toggle:hover {
+            color: #B85C4F;
+            background: rgba(184, 92, 79, 0.1);
+        }
+        
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        .budget-table th {
+            background: #f8f9fa;
+            padding: 0.625rem 0.75rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .budget-table td {
+            padding: 0.625rem 0.75rem;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+        
+        .budget-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .item-lock {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lock-checkbox {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .lock-checkbox:checked {
+            background: #B85C4F;
+            border-color: #B85C4F;
+        }
+        
+        .lock-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 1px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .item-image {
+            color: #3b82f6;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
+        
+        .item-image:hover {
+            color: #1d4ed8;
+        }
+        
+        .budget-amount {
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        .amount-positive {
+            color: #10b981;
+        }
+        
+        .amount-negative {
+            color: #ef4444;
+        }
+        
+        .vendor-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+        
+        .vendor-name {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 0.8rem;
+        }
+        
+        .vendor-contact {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+        
+        .payment-select, .payer-select, .status-select {
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            background: white;
+            min-width: 90px;
+            font-size: 0.8rem;
+        }
+        
+        .status-unpaid {
+            color: #ef4444;
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .status-paid {
+            color: #10b981;
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        
+        .total-row {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .total-row td {
+            border-top: 1px solid #dee2e6;
+            border-bottom: none;
+            font-size: 0.85rem;
+        }
+        
+       
+        
+        /* Table Responsive Wrapper */
+        .table-responsive-wrapper {
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .table-responsive-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-responsive-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-responsive-wrapper::-webkit-scrollbar-thumb {
+            background: #B85C4F;
+            border-radius: 4px;
+        }
+        
+        .table-responsive-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #a04a3d;
+        }
+        
+        /* Mobile-first responsive table */
+        .budget-table {
+            min-width: 800px;
+            margin-bottom: 0;
+        }
+        
+        .budget-table th,
+        .budget-table td {
+            white-space: nowrap;
+            min-width: 120px;
+            padding: 0.75rem 0.5rem;
+        }
+        
+        .budget-table th:first-child,
+        .budget-table td:first-child {
+            min-width: 140px;
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 2;
+           
+        }
+        
+        .budget-table th:first-child {
+            background: #f8f9fa;
+        }
+        
+        /* Responsive input controls */
+        .payment-select, .payer-select, .status-select {
+            min-width: 100px;
+            width: 100%;
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                margin-left: var(--sidebar-collapsed-width);
+            }
+            
+            .sidebar {
+                width: var(--sidebar-collapsed-width);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 1050;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .budget-detail-header {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+            
+            .budget-actions {
+                justify-content: flex-start;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .budget-btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .budget-table {
+                min-width: 600px;
+                font-size: 0.8rem;
+            }
+            
+            .budget-table th,
+            .budget-table td {
+                padding: 0.5rem 0.375rem;
+                min-width: 100px;
+            }
+            
+            .budget-table th:first-child,
+            .budget-table td:first-child {
+                min-width: 120px;
+            }
+            
+            .vendor-info {
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+            
+            .payment-select, .payer-select, .status-select {
+                min-width: 90px;
+                font-size: 0.75rem;
+                padding: 0.25rem;
+            }
+            
+            .section-header {
+                padding: 0.75rem 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .budget-title {
+                font-size: 1.5rem;
+            }
+            
+            .budget-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 0.75rem;
+            }
+            
+            .budget-table {
+                min-width: 500px;
+                font-size: 0.75rem;
+            }
+            
+            .budget-table th,
+            .budget-table td {
+                padding: 0.375rem 0.25rem;
+                min-width: 80px;
+            }
+            
+            .budget-table th:first-child,
+            .budget-table td:first-child {
+                min-width: 100px;
+            }
+            
+            .payment-select, .payer-select, .status-select {
+                min-width: 70px;
+                font-size: 0.7rem;
+            }
+            
+            .vendor-info {
+                font-size: 0.7rem;
+            }
+            
+            .budget-btn {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .budget-detail-header {
+                padding: 0.75rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 0.5rem;
+            }
+            
+            .budget-table {
+                min-width: 450px;
+                font-size: 0.7rem;
+            }
+            
+            .budget-table th,
+            .budget-table td {
+                padding: 0.25rem 0.2rem;
+                min-width: 70px;
+            }
+            
+            .budget-table th:first-child,
+            .budget-table td:first-child {
+                min-width: 90px;
+            }
+            
+            .payment-select, .payer-select, .status-select {
+                min-width: 60px;
+                font-size: 0.65rem;
+                padding: 0.2rem;
+            }
+        }
+ .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .btn-outline-primary {
+            color: #9B4431;
+            border-color: #9B4431;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .language-selector {
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .mood-board-page {
+            background: #F5F2E8;
+            min-height: 100vh;
+        }
+        
+        .mood-board-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+        }
+        
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb-link {
+            color: #6b7280;
+            text-decoration: none;
+        }
+        
+        .breadcrumb-link:hover {
+            color: #B85C4F;
+        }
+        
+       
+        
+        .mood-board-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mood-board-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .add-images-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .add-images-btn:hover {
+            background: #a04c3f;
+            transform: translateY(-1px);
+        }
+        
+        .mood-board-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .mood-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .mood-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .mood-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .mood-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mood-item:hover .mood-overlay {
+            opacity: 1;
+        }
+        
+        .mood-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mood-item:hover .mood-actions {
+            opacity: 1;
+        }
+        
+        .mood-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .mood-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            transform: scale(1.1);
+        }
+        
+        .mood-action-btn.delete:hover {
+            color: #ef4444;
+        }
+        
+        .mood-content {
+            padding: 1rem;
+        }
+        
+        .mood-category {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mood-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+        
+        .mood-category-text {
+            font-size: 0.875rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+        
+        .mood-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.4;
+            margin: 0;
+        }
+        
+        .mood-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #f3f4f6;
+        }
+        
+        .mood-footer-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        
+        .mood-footer-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            padding: 0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .mood-footer-btn:hover {
+            color: #B85C4F;
+        }
+        
+        .mood-footer-btn.delete:hover {
+            color: #ef4444;
+        }
+        
+        .mood-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .mood-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .mood-stat i {
+            font-size: 0.75rem;
+        }
+        
+        @media (max-width: 768px) {
+            .mood-board-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mood-board-title {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+        .template-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding-inline: 1.3rem;
+            border: none;
+            border-radius: 0;
+            /* background: transparent; */
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+
+        .template-tabs .nav-link.active {
+            color: #B85C4F;
+
+            border-bottom: 3px solid #B85C4F;
+            position: relative;
+        }
+
+       
+
+        .template-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .template-header h2 {
+            color: #374151;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .template-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+         @media (max-width: 768px) {
+            .template-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .template-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .template-tabs .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .modal-dialog {
+                margin: 1rem;
+            }
+        }
+        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+   
+    background-color: transparent;
+ 
+}
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link "><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link active"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Event Detail</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+             <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button> </div>
+        </div>
+        <!-- Content Area -->
+        <div class="content">
+           <div class="template-tabs">
+                <ul class="nav nav-tabs" id="templateTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link " id="checklist-tab" data-bs-toggle="tab"
+                            data-bs-target="#checklist" type="button" role="tab">
+                            Checklist
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link " id="design-studio-tab" data-bs-toggle="tab"
+                            data-bs-target="#design-studio" type="button" role="tab">
+                            Design Studio
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="budget-tab" data-bs-toggle="tab" data-bs-target="#budget"
+                            type="button" role="tab">
+                            Budget
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="questionnaire-tab" data-bs-toggle="tab"
+                            data-bs-target="#questionnaire" type="button" role="tab">
+                            Questionnaire
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes"
+                            type="button" role="tab">
+                            Notes
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="proposals-tab" data-bs-toggle="tab" data-bs-target="#proposals"
+                            type="button" role="tab">
+                            Proposals
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contracts-tab" data-bs-toggle="tab" data-bs-target="#contracts"
+                            type="button" role="tab">
+                            Contracts
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="quotes-tab" data-bs-toggle="tab" data-bs-target="#quotes"
+                            type="button" role="tab">
+                            Quotes
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices"
+                            type="button" role="tab">
+                            Invoices
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments"
+                            type="button" role="tab">
+                            Payments
+                        </button>
+                    </li>
+                </ul>
+            </div>
+    <!-- Main Content -->
+    <div class="card p-3">
+  <div class="">
+                <div class="d-flex justify-content-between align-items-start my-0 flex-wrap">
+                    <div>
+                        <h5 >Budget</h5>
+                        <p class="budget-subtitle">Budget planning for wedding • $30,000</p>
+                    </div>
+                    <div class="budget-actions">
+                        <a href="#" class="budget-btn budget-btn-download btn-outline-danger bg-none" onclick="downloadBudget()">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </a>
+                        <a href="#" class="budget-btn btn-outline-success budget-btn-excel" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel"></i>
+                            Export In Excel
+                        </a>
+                        <button class="budget-btn budget-btn-add " data-bs-toggle="modal" data-bs-target="#addSectionModal">
+                            Add Section
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-wrapper ">
+                <!-- Venue Section -->
+                <div class="budget-section p-2">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>Venue - $11,000</span>
+                        </h3>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="section-toggle" onclick="toggleSection('venue')">
+                                <i class="fas fa-exclamation-circle text-danger"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-content" id="venue-content">
+                        <div class="table-responsive-wrapper">
+                            <table class="table budget-table">
+                            <thead>
+                                <tr>
+                                    <th>Lock</th>
+                                    <th>Payment Proof</th>
+                                    <th>Category</th>
+                                    <th>Budget</th>
+                                    <th>Entered</th>
+                                    <th>Difference</th>
+                                    <th>Vendor Management</th>
+                                    <th>Payment Type</th>
+                                    <th>Payer</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox" checked>
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Add Image</a></td>
+                                    <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Picture.png</a></td>
+                                     <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Add Image</a></td>
+                                      <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Picture.png</a></td>
+                                      <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td colspan="3"><strong>Total:</strong></td>
+                                    <td><strong>$1000</strong></td>
+                                    <td><strong>$11,000</strong></td>
+                                    <td><strong>$0</strong></td>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Venue Section 2 -->
+                <div class="budget-section p-2">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>Venue - $10,000</span>
+                        </h3>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="section-toggle" onclick="toggleSection('venue2')">
+                                <i class="fas fa-exclamation-circle text-danger"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section-content" id="venue2-content">
+                        <div class="table-responsive-wrapper">
+                            <table class="table budget-table">
+                            <thead>
+                                <tr>
+                                    <th>Lock</th>
+                                    <th>Payment Proof</th>
+                                    <th>Category</th>
+                                    <th>Budget</th>
+                                    <th>Entered</th>
+                                    <th>Difference</th>
+                                    <th>Vendor Management</th>
+                                    <th>Payment Type</th>
+                                    <th>Payer</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                          <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox" checked>
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Add Image</a></td>
+                                    <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Picture.png</a></td>
+                                     <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Add Image</a></td>
+                                      <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="item-lock">
+                                            <input type="checkbox" class="lock-checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="#" class="item-image">Picture.png</a></td>
+                                      <td><input type="text" class="form-control" placeholder="Florist"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$5000"
+                                             /></td>
+                                    <td class="budget-amount"> <input type="text" class="form-control" placeholder="$6000"
+                                             /></td>
+                                    <td class="budget-amount amount-negative"> <input type="text" class="form-control" placeholder=" $1000 "
+                                             /></td>
+                                    <td>
+                                           <input type="text" class="form-control" placeholder="Tyler Murphy "
+                                             />
+                                    </td>
+                                    <td>
+                                        <select class="payment-select">
+                                            <option selected>Cash</option>
+                                            <option>Card</option>
+                                            <option>Check</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="payer-select">
+                                            <option selected>Jonathan Freeman</option>
+                                            <option>Sarah Johnson</option>
+                                            <option>Mike Davis</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="status-select status-unpaid">
+                                            <option selected>Unpaid</option>
+                                            <option>Paid</option>
+                                            <option>Partial</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td colspan="3"><strong>Total:</strong></td>
+                                    <td><strong>$1000</strong></td>
+                                    <td><strong>$11,000</strong></td>
+                                    <td><strong>$0</strong></td>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+          <div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content m-0 p-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSectionModalLabel">Add Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSectionForm">
+                        <div class="mb-3">
+                            <label for="sectionTitle" class="form-label text-start">Title *</label>
+                            <input type="text" class="form-control" id="sectionTitle" placeholder="Enter Title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="totalBudget" class="form-label text-start">Total Budget</label>
+                            <input type="number" class="form-control" id="totalBudget" placeholder="Total Budget">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addSection()" style="background-color: #B85C4F; border-color: #B85C4F;">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Note Modal -->
+    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content m-0 p-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNoteModalLabel">Add Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addNoteForm">
+                        <div class="form-group">
+                            <label for="noteText" class="form-label text-start">Note</label>
+                            <textarea class="form-control" id="noteText" rows="4" placeholder="Enter Text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                      <button class="add-images-btn" id="saveNoteBtn">Add </button>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./mood-board.js"></script>
+</body>
+</html>

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sa.bbi - Event Management Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+ .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: var(--bs-nav-tabs-link-active-color);
+            background-color: transparent !important;
+            border-color: var(--bs-nav-tabs-link-active-border-color);
+        }
+
+        .nav-item {
+            margin: 10px -12px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link "><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link active"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link "><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Contact</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+             <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button>  </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="section-card">
+                <div class="contacts-header d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="section-title mb-0">Contacts</h5>
+                    <div class="contacts-actions d-flex align-items-center">
+                        <div class="filter-dropdown me-3">
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">Filter by Category</option>
+                                <option value="Florist">Florist</option>
+                                <option value="Photographer">Photographer</option>
+                                <option value="Videographer">Videographer</option>
+                            </select>
+                        </div>
+                        <div class="search-box me-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search..." id="contactSearch">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary-custom" onclick="window.location.href = 'add-contact.html'">Add
+                            Contact</button>
+                    </div>
+                </div>
+
+                <div class="contacts-table-container">
+                    <div class="table-responsive">
+                        <table class="table table-hover contacts-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Category</th>
+                                    <th>Company Name</th>
+                                    <th>Contact Name</th>
+                                    <th>Phone #</th>
+                                    <th>Email</th>
+                                    <th>Website</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Florist</td>
+                                    <td>Rose Blooms Co.</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #4CAF50;">T</span>
+                                            </div>
+                                            <span>Tyler Collins</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>tyler@gmail.com</td>
+                                    <td>rose.blooms.co.com</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Photographer</td>
+                                    <td>Frame Perfect</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #2196F3;">A</span>
+                                            </div>
+                                            <span>Alan Powell</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>alan@gmail.com</td>
+                                    <td>frame.perfect.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Videographer</td>
+                                    <td>Rose Blooms Co.</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #00BCD4;">J</span>
+                                            </div>
+                                            <span>Justin Wood</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>justin@gmail.com</td>
+                                    <td>rose.blooms.co.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Florist</td>
+                                    <td>Frame Perfect</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #E91E63;">J</span>
+                                            </div>
+                                            <span>Jacob Evans</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>jacob@gmail.com</td>
+                                    <td>frame.perfect.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Photographer</td>
+                                    <td>Rose Blooms Co.</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #FF9800;">T</span>
+                                            </div>
+                                            <span>Tom Meyer</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>tom@gmail.com</td>
+                                    <td>rose.blooms.co.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Florist</td>
+                                    <td>Frame Perfect</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #9C27B0;">N</span>
+                                            </div>
+                                            <span>Nicolas Palmer</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>nicolas@gmail.com</td>
+                                    <td>frame.perfect.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Photographer</td>
+                                    <td>Rose Blooms Co.</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #FF5722;">J</span>
+                                            </div>
+                                            <span>Jonathan Jones</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>jonathan@gmail.com</td>
+                                    <td>rose.blooms.co.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Florist</td>
+                                    <td>Frame Perfect</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #E91E63;">J</span>
+                                            </div>
+                                            <span>Joe Meyer</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>joe@gmail.com</td>
+                                    <td>frame.perfect.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Videographer</td>
+                                    <td>Rose Blooms Co.</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #00BCD4;">J</span>
+                                            </div>
+                                            <span>Justin Wood</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>justin@gmail.com</td>
+                                    <td>rose.blooms.co.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">1234</td>
+                                    <td>Florist</td>
+                                    <td>Frame Perfect</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="contact-avatar me-2">
+                                                <span class="avatar-circle" style="background-color: #E91E63;">J</span>
+                                            </div>
+                                            <span>Jacob Evans</span>
+                                        </div>
+                                    </td>
+                                    <td>1234567890</td>
+                                    <td>jacob@gmail.com</td>
+                                    <td>frame.perfect.com</td>
+                                   <td>
+                                        <div class="action-buttons">
+                                            <i class="fas fa-eye text-primary" onclick="window.location.href = 'view-contact.html'"></i>
+                                            <i class="fas fa-trash text-danger mx-2"></i>
+                                            <i class="fas fa-edit text-success"></i>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="pagination-info">
+                        <span class="text-muted">1-5 of 13</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <nav aria-label="Contacts pagination">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery (required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+    <script>
+        class ContactsManagerDT {
+            constructor() {
+                this.contacts = [
+                    {
+                        id: 1234,
+                        category: "Photographer",
+                        company: "Frame Perfect",
+                        name: "Nicolas Palmer",
+                        firstName: "Nicolas",
+                        lastName: "Palmer",
+                        phone: "1234567890",
+                        email: "nicolas@gmail.com",
+                        website: "frame.perfect.com",
+                        location: "Massa Cabrería, Spain Catalonia",
+                        avatar: { bg: "#EF4444", initial: "NP", color: "red" }
+                    },
+                    {
+                        id: 1235,
+                        category: "Photographer",
+                        company: "Rose Blooms Co.",
+                        name: "Jonathan Jones",
+                        firstName: "Jonathan",
+                        lastName: "Jones",
+                        phone: "1234567891",
+                        email: "jonathan@gmail.com",
+                        website: "rose.blooms.co.com",
+                        location: "Massa Cabrería, Spain Catalonia",
+                        avatar: { bg: "#F59E0B", initial: "JJ", color: "yellow" }
+                    },
+                    {
+                        id: 1236,
+                        category: "Florist",
+                        company: "Frame Perfect",
+                        name: "Joe Meyer",
+                        firstName: "Joe",
+                        lastName: "Meyer",
+                        phone: "1234567892",
+                        email: "joe@gmail.com",
+                        website: "frame.perfect.com",
+                        location: "Massa Cabrería, Spain Catalonia",
+                        avatar: { bg: "#EC4899", initial: "JM", color: "pink" }
+                    },
+                    {
+                        id: 1237,
+                        category: "Videographer",
+                        company: "Rose Blooms Co.",
+                        name: "Justin Wood",
+                        firstName: "Justin",
+                        lastName: "Wood",
+                        phone: "1234567893",
+                        email: "justin@gmail.com",
+                        website: "rose.blooms.co.com",
+                        location: "Massa Cabrería, Spain Catalonia",
+                        avatar: { bg: "#06B6D4", initial: "JW", color: "blue" }
+                    },
+                    {
+                        id: 1238,
+                        category: "Florist",
+                        company: "Frame Perfect",
+                        name: "Jacob Evans",
+                        firstName: "Jacob",
+                        lastName: "Evans",
+                        phone: "1234567894",
+                        email: "jacob@gmail.com",
+                        website: "frame.perfect.com",
+                        location: "Massa Cabrería, Spain Catalonia",
+                        avatar: { bg: "#EC4899", initial: "JE", color: "pink" }
+                    },
+                    {
+                        id: 1239,
+                        category: "Caterer",
+                        company: "Delicious Delights",
+                        name: "Sarah Williams",
+                        firstName: "Sarah",
+                        lastName: "Williams",
+                        phone: "1234567895",
+                        email: "sarah@delicious.com",
+                        website: "delicious-delights.com",
+                        location: "Barcelona, Spain Catalonia",
+                        avatar: { bg: "#10B981", initial: "SW", color: "green" }
+                    },
+                    {
+                        id: 1240,
+                        category: "DJ",
+                        company: "Sound Waves",
+                        name: "Mike Johnson",
+                        firstName: "Mike",
+                        lastName: "Johnson",
+                        phone: "1234567896",
+                        email: "mike@soundwaves.com",
+                        website: "sound-waves.com",
+                        location: "Madrid, Spain",
+                        avatar: { bg: "#8B5CF6", initial: "MJ", color: "purple" }
+                    }
+                ];
+
+                this.dataTable = null;
+                this.init();
+            }
+
+            init() {
+                // Wait for DOM and jQuery to be ready
+                $(document).ready(() => {
+                    this.setupSidebarToggle();
+                    this.setupEventListeners();
+                    this.initializeDataTable();
+                });
+            }
+
+            initializeDataTable() {
+                // Prepare data for DataTables
+                const tableData = this.contacts.map((contact, index) => [
+                    contact.id,
+                    contact.category,
+                    contact.company,
+                    this.formatContactName(contact),
+                    contact.phone,
+                    contact.email,
+                    contact.website,
+                    this.formatActionButtons(index)
+                ]);
+
+                // Initialize DataTable with responsive features
+                this.dataTable = $('#contactsTable').DataTable({
+                    data: tableData,
+                    responsive: {
+                        details: {
+                            type: 'column',
+                            target: 'tr'
+                        }
+                    },
+                    columnDefs: [
+                        {
+                            targets: 0,
+                            className: 'dt-control',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            targets: -1,
+                            orderable: false,
+                            searchable: false
+                        }
+                    ],
+                    pageLength: 10,
+                    lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Search contacts...",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ contacts",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: '<i class="fas fa-chevron-right"></i>',
+                            previous: '<i class="fas fa-chevron-left"></i>'
+                        }
+                    },
+                    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                        '<"row"<"col-sm-12"tr>>' +
+                        '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                    drawCallback: () => {
+                        this.initializeTooltips();
+                    }
+                });
+
+                // Custom search integration
+                this.setupCustomSearch();
+
+                // Hide default search and pagination since we have custom ones
+                this.customizeDataTableElements();
+            }
+
+            formatContactName(contact) {
+                return `
+            <div class="d-flex align-items-center">
+                <div class="contact-avatar ${contact.avatar.color}">
+                    ${contact.avatar.initial}
+                </div>
+                <span class="contact-name-cell">
+                    ${contact.name}
+                </span>
+            </div>
+        `;
+            }
+
+            formatActionButtons(index) {
+                return `
+            <div class="action-buttons">
+                <button class="action-btn view" data-bs-toggle="tooltip" title="View" onclick="contactsManagerDT.viewContact(${index})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="action-btn delete" data-bs-toggle="tooltip" title="Delete" onclick="contactsManagerDT.deleteContact(${index})">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="action-btn edit" data-bs-toggle="tooltip" title="Edit" onclick="contactsManagerDT.editContact(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        `;
+            }
+
+            setupCustomSearch() {
+                // Integrate custom search with DataTables
+                $('#searchInput').on('keyup', (e) => {
+                    this.dataTable.search(e.target.value).draw();
+                });
+
+                // Integrate category filter
+                $('#categoryFilter').on('change', (e) => {
+                    const category = e.target.value;
+                    if (category) {
+                        this.dataTable.column(1).search(category).draw();
+                    } else {
+                        this.dataTable.column(1).search('').draw();
+                    }
+                });
+            }
+
+            customizeDataTableElements() {
+                // Hide DataTables default search and info
+                $('.dataTables_filter').hide();
+                $('.dataTables_length').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
+
+                // Style DataTables elements
+                $('.dataTables_wrapper').addClass('responsive-wrapper');
+            }
+
+            setupEventListeners() {
+
+                $('#prevPage').on('click', () => {
+                    this.dataTable.page('previous').draw('page');
+                });
+
+                $('#nextPage').on('click', () => {
+                    this.dataTable.page('next').draw('page');
+                });
+            }
+
+            setupSidebarToggle() {
+                const sidebar = $('#sidebar');
+                const toggle = $('#sidebarToggle');
+
+                if (toggle.length && sidebar.length) {
+                    toggle.on('click', () => {
+                        if ($(window).width() <= 768) {
+                            sidebar.toggleClass('open');
+                        } else {
+                            sidebar.toggleClass('collapsed');
+                        }
+                    });
+                }
+
+                // Close sidebar when clicking outside on mobile
+                $(document).on('click', (e) => {
+                    if ($(window).width() <= 768 &&
+                        sidebar.hasClass('open') &&
+                        !sidebar.is(e.target) &&
+                        sidebar.has(e.target).length === 0 &&
+                        !toggle.is(e.target) &&
+                        toggle.has(e.target).length === 0) {
+                        sidebar.removeClass('open');
+                    }
+                });
+            }
+
+            initializeTooltips() {
+                // Initialize Bootstrap tooltips
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }
+
+            viewContact(index) {
+                const contact = this.contacts[index];
+                if (contact) {
+                    window.location.href = `contact-detail.html?id=${index}`;
+                }
+            }
+
+            deleteContact(index) {
+                const contact = this.contacts[index];
+                if (contact && confirm(`Are you sure you want to delete ${contact.name}?`)) {
+                    // Remove from data array
+                    this.contacts.splice(index, 1);
+
+                    // Update DataTable
+                    this.dataTable.clear();
+                    const newData = this.contacts.map((contact, newIndex) => [
+                        contact.id,
+                        contact.category,
+                        contact.company,
+                        this.formatContactName(contact),
+                        contact.phone,
+                        contact.email,
+                        contact.website,
+                        this.formatActionButtons(newIndex)
+                    ]);
+                    this.dataTable.rows.add(newData).draw();
+
+                    this.showMessage('Contact deleted successfully', 'success');
+                }
+            }
+
+            editContact(index) {
+                const contact = this.contacts[index];
+                if (contact) {
+                    this.showMessage('Edit functionality would open edit form', 'info');
+                }
+            }
+
+            showMessage(message, type = 'info') {
+                // Create message element using jQuery
+                const alertClass = type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info';
+                const messageEl = $(`
+            <div class="alert alert-${alertClass} alert-dismissible fade show" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `);
+
+                $('body').append(messageEl);
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    messageEl.remove();
+                }, 5000);
+            }
+
+            setActiveNavItem(item) {
+                // Remove active class from all nav items
+                $('.nav-item').removeClass('active');
+
+                // Add active class to clicked item
+                if (item) {
+                    $(item).addClass('active');
+                }
+            }
+        }
+
+        // Initialize the contacts manager with DataTables
+        let contactsManagerDT;
+        $(document).ready(() => {
+            contactsManagerDT = new ContactsManagerDT();
+        });
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('sidebar-collapsed');
+        }
+
+        // Navigation functionality
+        function navigateTo(module) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to clicked nav link
+            event.target.closest('.nav-link').classList.add('active');
+
+            // Update header title
+            const headerTitle = document.querySelector('.header-left h4');
+            headerTitle.textContent = module.charAt(0).toUpperCase() + module.slice(1);
+
+            // Here you would typically load different content based on the module
+            console.log(`Navigating to ${module}`);
+        }
+
+        // Search functionality
+        function searchEvents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const eventCards = document.querySelectorAll('.event-card');
+
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent.toLowerCase();
+                const type = card.querySelector('.event-type span').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || type.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Event card selection
+        function selectEvent(eventId) {
+            console.log(`Selected event: ${eventId}`);
+            // Here you would typically show event details or navigate to event page
+        }
+
+        // Edit event functionality
+        function editEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card selection
+            console.log(`Editing event: ${eventId}`);
+            alert(`Edit event ${eventId} - This would open an edit modal`);
+        }
+
+        // Delete event functionality
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card selection
+            console.log(`Deleting event: ${eventId}`);
+
+            if (confirm(`Are you sure you want to delete this event?`)) {
+                // Here you would typically make an API call to delete the event
+                const eventCard = event.target.closest('.event-card');
+                eventCard.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    eventCard.remove();
+                }, 300);
+            }
+        }
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+
+            // Close calendar if open
+            if (modalId === 'eventFormModal') {
+                document.getElementById('customCalendar').classList.remove('show');
+            }
+        }
+
+        // Event functionality
+        function selectEvent(eventId) {
+            console.log('Selected event:', eventId);
+            // Add your event selection logic here
+        }
+
+        function editEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Editing event:', eventId);
+
+            // Show success modal for update
+            document.getElementById('successMessage').textContent = 'Event details has been updated Successfully !';
+            showModal('successModal');
+        }
+
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Deleting event:', eventId);
+
+            // Get event name from card
+            const eventCard = event.target.closest('.event-card');
+            const eventTitle = eventCard.querySelector('.event-title').textContent;
+
+            // Set delete modal content
+            currentDeleteEventId = eventId;
+            currentDeleteEventName = eventTitle;
+            document.getElementById('deleteMessage').textContent = `the project "${eventTitle}" ?`;
+
+            showModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            closeModal('deleteModal');
+
+            // Remove the event card from DOM
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent;
+                if (title === currentDeleteEventName) {
+                    card.remove();
+                }
+            });
+
+            // Show success modal
+            document.getElementById('successMessage').textContent = `${currentDeleteEventName} has been deleted Successfully !`;
+            showModal('successModal');
+        }
+
+        function addEvent() {
+            console.log('Adding new event');
+
+            // Random chance to show event limit modal (simulate limit reached)
+            if (Math.random() < 0.3) {
+                showModal('eventLimitModal');
+            } else {
+                showModal('eventTypeModal');
+            }
+        }
+
+        function changePlan() {
+            closeModal('eventLimitModal');
+            console.log('Redirecting to change plan...');
+        }
+
+
+        // Date filter functionality
+        document.getElementById('dateFilter').addEventListener('change', function () {
+            const selectedDate = this.value;
+            console.log(`Filtering by date: ${selectedDate}`);
+            // Here you would typically filter events by the selected date
+        });
+
+        // Auto-collapse sidebar on small screens
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Initialize responsive behavior
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on page load
+
+        // Add fade out animation for delete
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

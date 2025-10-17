@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="./assets/style.css">
+
+
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: var(--bs-nav-tabs-link-active-color);
+            background-color: transparent !important;
+            border-color: var(--bs-nav-tabs-link-active-border-color);
+        }
+
+        .nav-item {
+            margin: 10px -12px;
+        }
+
+        .template-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding-inline: 1.3rem;
+            border: none;
+            border-radius: 0;
+            /* background: transparent; */
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+
+        .template-tabs .nav-link.active {
+            color: #B85C4F;
+
+            border-bottom: 3px solid #B85C4F;
+            position: relative;
+        }
+
+       
+
+        .template-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .template-header h2 {
+            color: #374151;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .template-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+ .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .filter-dropdown select {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            min-width: 140px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.875rem;
+            width: 250px;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .create-template-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .create-template-btn:hover {
+            background: #a54d41;
+            transform: translateY(-1px);
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .template-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .template-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            border: 2px solid #9B4431;
+            background-color: #fff5f3;
+        }
+
+        .template-card:hover .card-actions {
+            opacity: 1;
+        }
+
+        .card-image {
+            height: 250px !important;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-action-btn {
+            color: #7DB477;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+
+        .card-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            transform: scale(1.1);
+        }
+
+        .card-action-btn.delete:hover {
+            color: #ef4444;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.5rem 1.5rem 0rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #B85C4F;
+            box-shadow: 0 0 0 3px rgba(184, 92, 79, 0.1);
+        }
+
+        .dropdown-menu {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            color: #374151;
+            font-size: 0.875rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: #f9fafb;
+        }
+
+        .dropdown-item.active {
+            background: #B85C4F;
+            color: white;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background: #B85C4F;
+            border-color: #B85C4F;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #a54d41;
+            border-color: #a54d41;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            border-color: #6b7280;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        /* Design Studio Template Cards */
+        .design-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .design-template-card:hover {
+            border-color: #B85C4F;
+            background: #fef7f4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+
+        .design-card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .design-card-content {
+            padding: 1rem;
+        }
+
+        .design-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .design-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .design-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+
+        .design-card-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .design-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+
+        .design-card-actions {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .design-template-card:hover .design-card-actions {
+            opacity: 1;
+        }
+
+        .design-action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .design-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+
+        .design-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .design-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .design-card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .design-card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+
+        /* Modal Add Button Styling */
+        .modal-add-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .modal-add-btn:hover {
+            background: #a04c3f;
+            transform: translateY(-1px);
+        }
+
+        /* Budget Grid */
+        .budget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        /* Budget Template Cards */
+        .budget-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .budget-template-card:hover {
+            border-color: #B85C4F;
+            background: #fef7f4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+
+        .budget-card-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .budget-card-content {
+            padding: 1rem;
+        }
+
+        .budget-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .budget-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+
+        .budget-card-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .budget-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+
+        .budget-card-actions {
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .budget-template-card:hover .budget-card-actions {
+            opacity: 1;
+        }
+
+        .budget-action-btn {
+            background-color: white;
+            border: none;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #DF464B;
+
+        }
+
+        .budget-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+
+        .budget-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .budget-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .budget-card-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .budget-card-icon {
+            color: #B85C4F;
+            font-size: 0.875rem;
+        }
+
+        /* Questionnaire Grid */
+        .questionnaire-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        /* Questionnaire Template Cards */
+        .questionnaire-template-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .questionnaire-template-card:hover {
+            border-color: #B85C4F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 92, 79, 0.15);
+        }
+
+        .questionnaire-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .questionnaire-card-content {
+            padding: 1.25rem;
+        }
+
+        .questionnaire-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .questionnaire-project-type {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .questionnaire-event-type {
+            font-size: 0.75rem;
+            color: #B85C4F;
+            font-weight: 500;
+        }
+
+        .questionnaire-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .questionnaire-card-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .questionnaire-card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .questionnaire-template-card:hover .questionnaire-card-actions {
+            opacity: 1;
+        }
+
+        .questionnaire-action-btn {
+            background-color: white;
+            border: none;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7DB477;
+
+        }
+
+
+        /* Notes Grid Styles */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .notes-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notes-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .notes-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .notes-card-content {
+            padding: 1rem;
+        }
+
+        .notes-card-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .notes-badge {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .notes-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .notes-card-meta {
+            font-size: 0.875rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notes-card-actions {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notes-card:hover .notes-card-actions {
+            opacity: 1;
+        }
+
+        .notes-action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .notes-action-btn:hover {
+            background: white;
+            color: #B85C4F;
+            border-color: #B85C4F;
+            transform: scale(1.1);
+        }
+
+        .notes-action-btn.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        /* Notes Detail Styles */
+        .notes-detail-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .notes-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .notes-detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .notes-detail-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .archived-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .archived-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .add-notes-btn {
+            background: #B85C4F;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .add-notes-btn:hover {
+            background: #a54d41;
+        }
+
+        .note-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .note-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .note-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .note-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .note-author-info h6 {
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .note-author-info .note-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .note-action-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .note-action-btn:hover {
+            color: #B85C4F;
+            background: #f3f4f6;
+        }
+
+        .note-action-btn.delete:hover {
+            color: #ef4444;
+        }
+
+        .note-action-btn.archive:hover {
+            color: #3b82f6;
+        }
+
+        .note-content {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 0.875rem;
+        }
+
+        .note-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .note-status.archived {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .note-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* File Upload Styles */
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: #B85C4F;
+        }
+
+        .file-upload-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .uploaded-files {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .file-item i {
+            font-size: 1.5rem;
+        }
+
+        /* Responsive Notes Styles */
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .notes-card-badges {
+                flex-wrap: wrap;
+            }
+
+            .notes-detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .notes-detail-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .note-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .note-actions {
+                align-self: flex-end;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .template-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .template-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .template-tabs .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .modal-dialog {
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link "><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link active"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+      <div class="header">
+            <h6 class="">Template</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+                <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Template Tabs -->
+            <div class="template-tabs">
+                <ul class="nav nav-tabs" id="templateTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="checklist-tab" data-bs-toggle="tab"
+                            data-bs-target="#checklist" type="button" role="tab">
+                            Checklist
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="design-studio-tab" data-bs-toggle="tab"
+                            data-bs-target="#design-studio" type="button" role="tab">
+                            Design Studio
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="budget-tab" data-bs-toggle="tab" data-bs-target="#budget"
+                            type="button" role="tab">
+                            Budget
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="questionnaire-tab" data-bs-toggle="tab"
+                            data-bs-target="#questionnaire" type="button" role="tab">
+                            Questionnaire
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes"
+                            type="button" role="tab">
+                            Notes
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="proposals-tab" data-bs-toggle="tab" data-bs-target="#proposals"
+                            type="button" role="tab">
+                            Proposals
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contracts-tab" data-bs-toggle="tab" data-bs-target="#contracts"
+                            type="button" role="tab">
+                            Contracts
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="quotes-tab" data-bs-toggle="tab" data-bs-target="#quotes"
+                            type="button" role="tab">
+                            Quotes
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices"
+                            type="button" role="tab">
+                            Invoices
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments"
+                            type="button" role="tab">
+                            Payments
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="templateTabsContent">
+                <!-- Checklist Tab -->
+                <div class="tab-pane fade show card p-4 active  " id="checklist" role="tabpanel">
+                    <div class="template-header d-flex align-items-center justify-content-between mb-4">
+                        <h5>Checklist Templates</h5>
+                        <div class="template-controls">
+                            <div class="filter-dropdown">
+                                <select id="eventFilter">
+                                    <option value=" ">Filter by Event</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="templateSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="template-grid" id="templateGrid">
+                        <!-- Template cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Design Studio Tab -->
+                <div class="tab-pane fade card p-3" id="design-studio" role="tabpanel">
+                    <div class="template-header">
+                        <h5>Design Studio Templates</h5>
+                        <div class="template-controls">
+                            <div class="filter-dropdown">
+                                <select id="designEventFilter">
+                                    <option value="">Filter by Event</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="designTemplateSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createDesignTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="template-grid " id="designTemplateGrid">
+                        <!-- Design template cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Budget Tab -->
+                <div class="tab-pane fade card p-3" id="budget" role="tabpanel">
+                    <div class="template-header">
+                        <h5>Budget</h5>
+                        <div class="template-controls">
+                            <div class="filter-dropdown">
+                                <select id="budgetEventFilter">
+                                    <option value="">Filter by Event</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="budgetTemplateSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createBudgetTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="budget-grid" id="budgetTemplateGrid">
+                        <!-- Budget template cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Questionnaire Tab -->
+                <div class="tab-pane fade card p-3" id="questionnaire" role="tabpanel">
+                    <div class="template-header">
+                        <h5>Questionnaire Templates</h5>
+                        <div class="template-controls">
+                            <div class="filter-dropdown">
+                                <select id="questionnaireEventFilter">
+                                    <option value="">Filter by Event</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="questionnaireTemplateSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createQuestionnaireTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="questionnaire-grid" id="questionnaireTemplateGrid">
+                        <!-- Questionnaire template cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div class="tab-pane fade card p-3" id="notes" role="tabpanel">
+                    <div class="template-header">
+                        <h2>Notes</h2>
+                        <div class="template-controls">
+                            <div class="filter-dropdown">
+                                <select id="notesEventFilter">
+                                    <option value="">Filter by Event</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="notesSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createNotesTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="notes-grid" id="notesGrid">
+                        <!-- Notes cards populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Proposals Tab -->
+                <div class="tab-pane fade card p-3" id="proposals" role="tabpanel">
+                    <div class="template-header">
+                        <h5>Proposals Templates</h5>
+                        <div class="template-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Search..." id="proposalsSearch">
+                            </div>
+                            <button class="create-template-btn" data-bs-toggle="modal"
+                                data-bs-target="#createProposalsTemplateModal">
+                                Create New Template
+                            </button>
+                        </div>
+                    </div>
+                    <div class="template-grid" id="proposalsGrid">
+                        <!-- Proposals cards populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Contracts Tab -->
+                <div class="tab-pane fade card p-3" id="contracts" role="tabpanel">
+                    <!-- Contracts List View -->
+                    <div id="contractsListView">
+                        <div class="template-header">
+                            <h5>Contract Templates</h5>
+                            <div class="template-controls">
+                                <div class="search-box">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" placeholder="Search..." id="contractsSearch">
+                                </div>
+                                <button class="create-template-btn" data-bs-toggle="modal"
+                                    data-bs-target="#createContractsTemplateModal">
+                                    Create New Template
+                                </button>
+                            </div>
+                        </div>
+                        <div class="template-grid" id="contractsGrid">
+                            <!-- Contracts cards populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Contract Detail View -->
+                    <div id="contractDetailView" style="display: none;">
+                       
+                            <div class="contract-detail-header">
+                                <div class="back-button" onclick="templateManager.showContractsList()">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span id="contractDetailTitle">Contract 1</span>
+                                </div>
+                                <button class="btn btn-outline-primary download-btn"
+                                    onclick="templateManager.downloadContract()">
+                                    <i class="fas fa-download"></i>
+                                    Download
+                                </button>
+                            </div>
+
+                                <div class="form-section">
+                                    <label class="form-label text-start">Party A Name</label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" placeholder="Enter Party A Name"
+                                                id="partyAName">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Party B Name"
+                                                id="partyBName">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Effective Date"
+                                                    id="effectiveDate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <label class="form-label text-start">Executive Summary</label>
+                                    <textarea class="form-control" rows="4" placeholder="Executive Summary"
+                                        id="executiveSummary"></textarea>
+                                </div>
+
+                                <div class="form-section">
+                                    <label class="form-label text-start">Timeline</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Timeline" id="timeline">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <label class="form-label text-start">Terms and Conditions</label>
+                                    <textarea class="form-control" rows="6" placeholder="Terms and Conditions"
+                                        id="termsConditions"></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button class="btn btn-light upload-btn"
+                                        onclick="templateManager.uploadContractFile()">
+                                        <i class="fas fa-upload"></i>
+                                        Upload
+                                    </button>
+                                    <button class="btn btn-primary done-btn" onclick="templateManager.saveContract()">
+                                        Done
+                                    </button>
+                                </div>
+              
+                    </div>
+                </div>
+
+                <!-- Quotes Tab -->
+                <div class="tab-pane fade card p-3" id="quotes" role="tabpanel">
+                    <!-- Quotes List View -->
+                    <div id="quotesListView">
+                        <div class="template-header">
+                            <h5>Quotes Templates</h5>
+                            <div class="template-controls">
+                                <div class="search-box">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" placeholder="Search..." id="quotesSearch">
+                                </div>
+                                <button class="create-template-btn" data-bs-toggle="modal"
+                                    data-bs-target="#createQuotesTemplateModal">
+                                    Create New Template
+                                </button>
+                            </div>
+                        </div>
+                        <div class="template-grid" id="quotesGrid">
+                            <!-- Quotes cards populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Quote Detail View -->
+                    <div id="quoteDetailView" style="display: none;">
+
+                        <div class="contract-detail-header">
+                            <div class="back-button" onclick="templateManager.showQuotesList()">
+                                <i class="fas fa-arrow-left"></i>
+                                <span id="quoteDetailTitle">Quote 1</span>
+                            </div>
+                            <button class="btn btn-outline-primary download-btn"
+                                onclick="templateManager.downloadQuote()">
+                                <i class="fas fa-download"></i>
+                                Download
+                            </button>
+                        </div>
+
+
+                        <!-- Client Information Row -->
+                        <div class="form-section">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Client Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter Client Name"
+                                        id="clientName">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Quote Date</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Quote Date" id="quoteDate">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quoted Items Section -->
+
+                        <div class="section-header">
+                            <label class="form-label text-start">Quoted Items</label>
+                            <button type="button" class="btn btn-sm btn-outline-primary add-row-btn"
+                                onclick="templateManager.addQuoteItem()">
+                                Add Row
+                            </button>
+                        </div>
+
+                        <div class="quote-items-table">
+                            <div class="table-responsive">
+                                <table class="table table-borderless" id="quoteItemsTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 25%;">Item</th>
+                                            <th style="width: 50%;">Description</th>
+                                            <th style="width: 20%;">Price</th>
+                                            <th style="width: 5%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="quoteItemsBody">
+                                        <tr class="quote-item-row">
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" class="form-control quote-price" value="5000"
+                                                        onchange="templateManager.calculateQuoteTotal()">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    onclick="templateManager.removeQuoteItem(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="quote-item-row">
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" class="form-control quote-price" value="5000"
+                                                        onchange="templateManager.calculateQuoteTotal()">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    onclick="templateManager.removeQuoteItem(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="quote-item-row">
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                    value="Lorem Ipsum"></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" class="form-control quote-price" value="5000"
+                                                        onchange="templateManager.calculateQuoteTotal()">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    onclick="templateManager.removeQuoteItem(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Total Row -->
+                            <div class="quote-total-row">
+                                <div class="row">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4">
+                                        <div class="total-display">
+                                            <span class="total-label">Total:</span>
+                                            <span class="total-amount" id="quoteTotal">$ 15,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Additional Comments Section -->
+                        <div class="form-section">
+                            <label class="form-label text-start">Additional Comments</label>
+                            <textarea class="form-control" rows="4" placeholder="Additional Comments"
+                                id="additionalComments"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary done-btn" onclick="templateManager.saveQuote()">
+                                Done
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Invoices Tab -->
+                <div class="tab-pane fade card p-3" id="invoices" role="tabpanel">
+                    <!-- Invoices List View -->
+                    <div id="invoicesListView">
+                        <div class="template-header">
+                            <h5>Invoices Templates</h5>
+                            <div class="template-controls">
+                                <div class="search-box">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" placeholder="Search..." id="invoicesSearch">
+                                </div>
+                                <button class="create-template-btn" data-bs-toggle="modal"
+                                    data-bs-target="#createInvoicesTemplateModal">
+                                    Create New Template
+                                </button>
+                            </div>
+                        </div>
+                        <div class="template-grid" id="invoicesGrid">
+                            <!-- Invoices cards populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Invoice Detail View -->
+                    <div id="invoiceDetailView" style="display: none;">
+                      
+                            <div class="contract-detail-header">
+                                <div class="back-button" onclick="templateManager.showInvoicesList()">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span id="invoiceDetailTitle">Invoice 1</span>
+                                </div>
+                                <button class="btn btn-outline-primary download-btn"
+                                    onclick="templateManager.downloadInvoice()">
+                                    <i class="fas fa-download"></i>
+                                    Download
+                                </button>
+                            </div>
+
+
+                            <!-- Invoice Header Information -->
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label text-start">Client Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter Client Name"
+                                        id="invoiceClientName">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-start">Billing Date</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Billing Date"
+                                            id="billingDate">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-start">Due Date</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Due Date" id="dueDate">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Invoice Items Section -->
+
+                            <div class="invoice-items-table">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless" id="invoiceItemsTable">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 25%;">Item</th>
+                                                <th style="width: 50%;">Description</th>
+                                                <th style="width: 20%;">Price</th>
+                                                <th style="width: 5%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="invoiceItemsBody">
+                                            <tr class="invoice-item-row">
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control invoice-price"
+                                                            value="5000"
+                                                            onchange="templateManager.calculateInvoiceTotal()">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        onclick="templateManager.removeInvoiceItem(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="invoice-item-row">
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control invoice-price"
+                                                            value="5000"
+                                                            onchange="templateManager.calculateInvoiceTotal()">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        onclick="templateManager.removeInvoiceItem(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="invoice-item-row">
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td><input type="text" class="form-control" placeholder="Lorem Ipsum"
+                                                        value="Lorem Ipsum"></td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control invoice-price"
+                                                            value="5000"
+                                                            onchange="templateManager.calculateInvoiceTotal()">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        onclick="templateManager.removeInvoiceItem(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Total Row -->
+                                <div class="invoice-total-row">
+                                    <div class="row">
+                                        <div class="col-md-8"></div>
+                                        <div class="col-md-4">
+                                            <div class="total-display">
+                                                <span class="total-label">Total:</span>
+                                                <span class="total-amount" id="invoiceTotal">$ 15,000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Additional Comments Section -->
+                            <div class="form-section">
+                                <label class="form-label text-start">Additional Comments</label>
+                                <textarea class="form-control" rows="4" placeholder="Additional Comments"
+                                    id="invoiceComments"></textarea>
+                            </div>
+
+                            <div class="form-actions d-flex justify-content-end">
+                                <button class="btn btn-primary done-btn" onclick="templateManager.saveInvoice()">
+                                    Done
+                                </button>
+                            </div>
+
+                      
+                    </div>
+                </div>
+
+                <!-- Payments Tab -->
+                <div class="tab-pane fade card p-3" id="payments" role="tabpanel">
+                    <!-- Payments List View -->
+                    <div id="paymentsListView">
+                        <div class="template-header">
+                            <h5>Payments Templates</h5>
+                            <div class="template-controls">
+                                <div class="search-box">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" placeholder="Search..." id="paymentsSearch">
+                                </div>
+                                <button class="create-template-btn" data-bs-toggle="modal"
+                                    data-bs-target="#createPaymentsTemplateModal">
+                                    Create New Template
+                                </button>
+                            </div>
+                        </div>
+                        <div class="template-grid" id="paymentsGrid">
+                            <!-- Payments cards populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Payment Detail View -->
+                    <div id="paymentDetailView" style="display: none;">
+
+                        <div class="contract-detail-header">
+                            <div class="back-button" onclick="templateManager.showPaymentsList()">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Receipt No - 12345</span>
+                            </div>
+                            <button class="btn btn-outline-primary download-btn"
+                                onclick="templateManager.downloadPayment()">
+                                <i class="fas fa-download"></i>
+                                Download
+                            </button>
+                        </div>
+
+
+                        <!-- Client Name (Full Width) -->
+                        <div class="form-section">
+                            <label class="form-label text-start">Client Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Client's Name"
+                                id="paymentClientName">
+                        </div>
+
+                        <!-- Payment Information Row -->
+                        <div class="form-section">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Payment Date</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Payment Date"
+                                            id="paymentDate">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Payment Method</label>
+                                    <select class="form-control" id="paymentMethod">
+                                        <option value="">Select Method</option>
+                                        <option value="bank_transfer">Bank Transfer</option>
+                                        <option value="cash">Cash</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Amount Paid</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" placeholder="Amount"
+                                            id="paymentAmount">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-start">Invoice Reference</label>
+                                    <input type="text" class="form-control" placeholder="Invoice Reference"
+                                        id="invoiceReference">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes Section -->
+                        <div class="form-section">
+                            <label class="form-label text-start">Notes</label>
+                            <textarea class="form-control" rows="6" placeholder="Notes" id="paymentNotes"></textarea>
+                        </div>
+
+                        <div class="form-actions d-flex justify-content-end">
+                            <button class="btn btn-primary done-btn" onclick="templateManager.savePayment()">
+                                Done
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Template Modal -->
+        <div class="modal fade" id="createTemplateModal" tabindex="-1" aria-labelledby="createTemplateModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createTemplateForm">
+                            <div class="form-group">
+                                <label for="eventType" class="form-label text-start">Event Type</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="eventType"
+                                        data-bs-toggle="dropdown" placeholder="Select" readonly>
+                                    <ul class="dropdown-menu w-100" id="eventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="templateTitle" class="form-label text-start">Template Title</label>
+                                <input type="text" class="form-control" id="templateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="createTemplateBtn">Create Template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Design Template Modal -->
+        <div class="modal fade" id="createDesignTemplateModal" tabindex="-1"
+            aria-labelledby="createDesignTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createDesignTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createDesignTemplateForm">
+                            <div class="form-group">
+                                <label for="designEventType" class="form-label text-start">Event Type</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="designEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select" readonly>
+                                    <ul class="dropdown-menu w-100" id="designEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="designTemplateTitle" class="form-label text-start">Template Title</label>
+                                <input type="text" class="form-control" id="designTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createDesignTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Budget Template Modal -->
+        <div class="modal fade" id="createBudgetTemplateModal" tabindex="-1"
+            aria-labelledby="createBudgetTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createBudgetTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createBudgetTemplateForm">
+                            <div class="form-group">
+                                <label for="budgetEventType" class="form-label text-start">Event</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="budgetEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="budgetEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="budgetTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="budgetTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createBudgetTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Details Modal -->
+        <div class="modal fade" id="budgetDetailsModal" tabindex="-1" aria-labelledby="budgetDetailsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content m-2 p-2">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="budgetDetailsModalLabel">Budget Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="budgetDetailsForm">
+                            <div class="form-group">
+                                <label for="budgetTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="budgetTitle" placeholder="Enter Title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="saveBudgetDetailsBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Questionnaire Template Modal -->
+        <div class="modal fade" id="createQuestionnaireTemplateModal" tabindex="-1"
+            aria-labelledby="createQuestionnaireTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createQuestionnaireTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createQuestionnaireTemplateForm">
+                            <div class="form-group">
+                                <label for="questionnaireEventType" class="form-label text-start">Event Type</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="questionnaireEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select" readonly>
+                                    <ul class="dropdown-menu w-100" id="questionnaireEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="questionnaireTemplateTitle" class="form-label text-start">Template
+                                    Title</label>
+                                <input type="text" class="form-control" id="questionnaireTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createQuestionnaireTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Notes Template Modal -->
+        <div class="modal fade" id="createNotesTemplateModal" tabindex="-1"
+            aria-labelledby="createNotesTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createNotesTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createNotesTemplateForm">
+                            <div class="form-group">
+                                <label for="notesEventType" class="form-label text-start">Event</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="notesEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="notesEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="notesTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="notesTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createNotesTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Details Modal (for notes card hover) -->
+        <div class="modal fade" id="notesBudgetDetailsModal" tabindex="-1"
+            aria-labelledby="notesBudgetDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notesBudgetDetailsModalLabel">Budget Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="notesBudgetDetailsForm">
+                            <div class="form-group">
+                                <label for="notesBudgetTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="notesBudgetTitle" placeholder="Enter Title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="notesBudgetDetailsBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Note Modal -->
+        <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addNoteModalLabel">Add Note</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addNoteForm">
+                            <div class="form-group">
+                                <label for="noteText" class="form-label text-start">Note</label>
+                                <textarea class="form-control" id="noteText" rows="6"
+                                    placeholder="Enter Text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="addNoteBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Note Success Modal -->
+        <div class="modal fade" id="noteSuccessModal" tabindex="-1" aria-labelledby="noteSuccessModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-4">
+                        <div class=" mb-3">
+                            <i class="fas fa-check-circle" style="font-size: 3rem; color: #22c55e;"></i>
+                        </div>
+                        <h5 class="mb-3">Note details has been<br>added Successfully !</h5>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="modal-add-btn" data-bs-dismiss="modal">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-4">
+                        <div class=" mb-3">
+                            <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: #ef4444;"></i>
+                        </div>
+                        <h5 class="mb-3">Are you sure you want to<br>delete the note ?</h5>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary me-2"
+                            data-bs-dismiss="modal">Back</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteNoteBtn">Yes, Delete It</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Success Modal -->
+        <div class="modal fade" id="updateSuccessModal" tabindex="-1" aria-labelledby="updateSuccessModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-4">
+                        <div class="success-icon mb-3">
+                            <i class="fas fa-check-circle" style="font-size: 3rem; color: #22c55e;"></i>
+                        </div>
+                        <h5 class="mb-3">Note details has been<br>updated Successfully !</h5>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="modal-add-btn" data-bs-dismiss="modal">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attachments Modal -->
+        <div class="modal fade" id="attachmentsModal" tabindex="-1" aria-labelledby="attachmentsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="attachmentsModalLabel">Attachments</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="attachmentsForm">
+                            <div class="form-group mb-3">
+                                <label for="attachmentTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="attachmentTitle" placeholder="Enter Title">
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="file-upload-area">
+                                    <input type="file" id="fileInput" multiple style="display: none;">
+                                    <div class="file-upload-placeholder">
+                                        <span>No File Chosen</span>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="document.getElementById('fileInput').click()">Choose</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uploaded-files" id="uploadedFiles">
+                                <div class="file-item">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                    <span>Document.pdf</span>
+                                </div>
+                                <div class="file-item">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                    <span>Document.pdf</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="addAttachmentBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Proposals Template Modal -->
+        <div class="modal fade" id="createProposalsTemplateModal" tabindex="-1"
+            aria-labelledby="createProposalsTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createProposalsTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createProposalsTemplateForm">
+                            <div class="form-group">
+                                <label for="proposalsEventType" class="form-label text-start">Event</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="proposalsEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="proposalsEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="proposalsTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="proposalsTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createProposalsTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Contracts Template Modal -->
+        <div class="modal fade" id="createContractsTemplateModal" tabindex="-1"
+            aria-labelledby="createContractsTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createContractsTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createContractsTemplateForm">
+                            <div class="form-group">
+                                <label for="contractsEventType" class="form-label text-start">Event</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="contractsEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="contractsEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractsTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="contractsTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createContractsTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Quotes Template Modal -->
+        <div class="modal fade" id="createQuotesTemplateModal" tabindex="-1"
+            aria-labelledby="createQuotesTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header m-0 p-0">
+                        <h5 class="modal-title" id="createQuotesTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body m-0 p-0">
+                        <form id="createQuotesTemplateForm">
+                            <div class="form-group">
+                                <label for="quotesEventType" class="form-label text-start">Event</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="quotesEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="quotesEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Wedding</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Birthday Party</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="corporate">Corporate Event</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="baby-shower">Baby Shower</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="anniversary">Anniversary</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="graduation">Graduation
+                                                Party</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="other">Other</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="quotesTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="quotesTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createQuotesTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Invoices Template Modal -->
+        <div class="modal fade" id="createInvoicesTemplateModal" tabindex="-1"
+            aria-labelledby="createInvoicesTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createInvoicesTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createInvoicesTemplateForm">
+                            <div class="form-group">
+                                <label for="invoicesTemplateTitle" class="form-label text-start">Invoice Title</label>
+                                <input type="text" class="form-control" id="invoicesTemplateTitle"
+                                    placeholder="Enter Invoice Title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createInvoicesTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Payments Template Modal -->
+        <div class="modal fade" id="createPaymentsTemplateModal" tabindex="-1"
+            aria-labelledby="createPaymentsTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header m-0 p-0">
+                        <h5 class="modal-title" id="createPaymentsTemplateModalLabel">Add New Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body m-0 p-0">
+                        <form id="createPaymentsTemplateForm">
+                            <div class="form-group">
+                                <label for="paymentsEventType" class="form-label text-start">Payments</label>
+                                <div class="dropdown">
+                                    <input type="text" class="form-control dropdown-toggle" id="paymentsEventType"
+                                        data-bs-toggle="dropdown" placeholder="Select Event" readonly>
+                                    <ul class="dropdown-menu w-100" id="paymentsEventTypeDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value="wedding">Bank
+                                                Transfer</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-value="birthday">Cash</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentsTemplateTitle" class="form-label text-start">Title</label>
+                                <input type="text" class="form-control" id="paymentsTemplateTitle"
+                                    placeholder="Enter template title">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-add-btn" id="createPaymentsTemplateBtn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./templates.js"></script>
+       <script>
+         function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('mainContent');
+
+                sidebarCollapsed = !sidebarCollapsed;
+
+                if (sidebarCollapsed) {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('sidebar-collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('sidebar-collapsed');
+                }
+            }
+
+    </script>
+</body>
+
+</html>

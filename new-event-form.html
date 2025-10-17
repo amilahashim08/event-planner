@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sa.bbi - Event Management Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><img src="./assets/images/sa.bbi (2).svg" /></div>
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="navigateTo('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link active" onclick="navigateTo('events')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="navigateTo('contacts')">
+                    <i class="fas fa-users"></i>
+                    <span>Contacts</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="navigateTo('templates')">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Templates</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="navigateTo('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h6>Events</h6>
+            </div>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="profile-image">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+
+
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <button onclick="window.location.href = 'event.html'"
+                    style="background: none; border: none; font-size: 18px; margin-right: 15px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h5 style="margin: 0;">Add New Wedding Event</h5>
+            </div>
+            <div class="controls-section">
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label class="form-label">Project Details</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <!-- <label class="form-label">Project Type</label> -->
+                            <select class="form-select" id="projectType">
+                                <option value="">Project Type</option>
+                                <option value="wedding">Wedding</option>
+                                <option value="birthday">Birthday Party</option>
+                                <option value="corporate">Corporate Event</option>
+                                <option value="baby-shower">Baby Shower</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="graduation">Graduation Party</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <!-- <label class="form-label">Project Name</label> -->
+                            <input type="text" class="form-input" id="projectName" placeholder="Project Name">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <div class="upload-area d-flex" onclick="document.getElementById('coverImage').click()">
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up ms-2"></i>
+                                </div>
+                                <div class="my-2 mx-2">Project Cover Image</div>
+                            </div>
+                            <input type="file" id="coverImage" style="display: none;" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="col-md-9 form-group">
+
+                        <textarea class="form-textarea" id="description" placeholder="Description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Couple Details</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <select class="form-select" id="projectType">
+                                <option value="">Groom</option>
+                                <option value="wedding">Wedding</option>
+                                <option value="birthday">Birthday Party</option>
+                                <option value="corporate">Corporate Event</option>
+                                <option value="baby-shower">Baby Shower</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="graduation">Graduation Party</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <input type="text" class="form-input" id="groomFirstName" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <input type="text" class="form-input" id="groomLastName" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <input type="email" class="form-input" id="groomEmail" placeholder="Email">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <div class="upload-area d-flex" onclick="document.getElementById('groomImage').click()">
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up ms-2"></i>
+                                </div>
+                                <div class="my-2 mx-2">Upload Image</div>
+
+                            </div>
+                            <input type="file" id="groomImage" style="display: none;" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <select class="form-select" id="projectType">
+                                <option value="">Bride</option>
+                                <option value="wedding">Wedding</option>
+                                <option value="birthday">Birthday Party</option>
+                                <option value="corporate">Corporate Event</option>
+                                <option value="baby-shower">Baby Shower</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="graduation">Graduation Party</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <input type="text" class="form-input" id="groomFirstName" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <input type="text" class="form-input" id="groomLastName" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <input type="email" class="form-input" id="groomEmail" placeholder="Email">
+                        </div>
+                        <div class="col-md-3 form-group">
+
+                            <div class="upload-area d-flex" onclick="document.getElementById('brideImage').click()">
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up ms-2"></i>
+                                </div>
+                                <div class="m-2">Upload Image</div>
+                            </div>
+                            <input type="file" id="brideImage" style="display: none;" accept="image/*">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="form-label">Event Details</label>
+                    </div>
+
+                    <div class="row">
+                        <div class=" col-md-3 form-group">
+                            <div class="calendar-container">
+                                <input type="text" class="form-input" id="eventDate" placeholder="Event Date" readonly
+                                    onclick="toggleCalendar()">
+                                <div class="custom-calendar" id="customCalendar">
+                                    <div class="calendar-header">
+                                        <button type="button" class="calendar-nav" onclick="previousMonth()">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <span id="calendarMonth">May 2025</span>
+                                        <button type="button" class="calendar-nav" onclick="nextMonth()">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="calendar-grid">
+                                        <div class="calendar-weekdays">
+                                            <div class="calendar-weekday">Su</div>
+                                            <div class="calendar-weekday">Mo</div>
+                                            <div class="calendar-weekday">Tu</div>
+                                            <div class="calendar-weekday">We</div>
+                                            <div class="calendar-weekday">Th</div>
+                                            <div class="calendar-weekday">Fr</div>
+                                            <div class="calendar-weekday">Sa</div>
+                                        </div>
+                                        <div class="calendar-days" id="calendarDays">
+                                            <!-- Calendar days will be generated by JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group ">
+
+                            <div class="time-picker">
+                                <input type="number" class="time-input" placeholder="Event Time" id="timeHour" min="1"
+                                    max="12" value="10" onchange="validateTime()">
+                                <span class="time-separator">:</span>
+                                <input type="number" class="time-input" id="timeMinute" min="0" max="59" value="00"
+                                    onchange="validateTime()">
+                                <div class="am-pm-toggle">
+                                    <button type="button" class="am-pm-option active"
+                                        onclick="toggleAmPm('AM')">AM</button>
+                                    <button type="button" class="am-pm-option" onclick="toggleAmPm('PM')">PM</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <input type="text" class="form-input" id="venue" placeholder="Venue">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <input type="text" class="form-input" id="location" placeholder="Location">
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <input type="number" class="form-input" id="guestCount" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <input type="number" class="form-input" id="budget" placeholder="Budget $">
+                        </div>
+                    </div>
+ <button type="button" class="text-end"
+                            style="color: #007bff; background: none; border: none; cursor: pointer ;">Add More</button>
+                    <div class="col-md-12 form-group">
+                       
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-textarea" id="notes" placeholder="Notes" style="height: 60px;"></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: end; align-items: center; margin-top: 30px;">
+
+                        <div style="display: flex; gap: 15px;">
+                            <button type="button" class="modal-btn btn-secondary"
+                                onclick="closeModal('eventFormModal')">Back</button>
+                            <button type="button" class="modal-btn btn-primary" onclick="saveEvent()">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Events Grid -->
+
+        </div>
+    </div>
+
+
+   
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Global variables
+        let sidebarCollapsed = false;
+        let selectedEventType = '';
+        let currentDate = new Date();
+        let selectedDate = null;
+        let currentDeleteEventId = null;
+        let currentDeleteEventName = '';
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            sidebarCollapsed = !sidebarCollapsed;
+
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Navigation functionality
+        function navigateTo(page) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to clicked nav link
+            event.target.closest('.nav-link').classList.add('active');
+
+            // Update header title
+            document.querySelector('.header-left h4').textContent = page.charAt(0).toUpperCase() + page.slice(1);
+
+            console.log('Navigating to:', page);
+        }
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+
+            // Close calendar if open
+            if (modalId === 'eventFormModal') {
+                document.getElementById('customCalendar').classList.remove('show');
+            }
+        }
+
+        // Event functionality
+        function selectEvent(eventId) {
+            console.log('Selected event:', eventId);
+            // Add your event selection logic here
+        }
+
+        function editEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Editing event:', eventId);
+
+            // Show success modal for update
+            document.getElementById('successMessage').textContent = 'Event details has been updated Successfully !';
+            showModal('successModal');
+        }
+
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Deleting event:', eventId);
+
+            // Get event name from card
+            const eventCard = event.target.closest('.event-card');
+            const eventTitle = eventCard.querySelector('.event-title').textContent;
+
+            // Set delete modal content
+            currentDeleteEventId = eventId;
+            currentDeleteEventName = eventTitle;
+            document.getElementById('deleteMessage').textContent = `the project "${eventTitle}" ?`;
+
+            showModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            closeModal('deleteModal');
+
+            // Remove the event card from DOM
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent;
+                if (title === currentDeleteEventName) {
+                    card.remove();
+                }
+            });
+
+            // Show success modal
+            document.getElementById('successMessage').textContent = `${currentDeleteEventName} has been deleted Successfully !`;
+            showModal('successModal');
+        }
+
+        function addEvent() {
+            console.log('Adding new event');
+
+            // Random chance to show event limit modal (simulate limit reached)
+            if (Math.random() < 0.3) {
+                showModal('eventLimitModal');
+            } else {
+                showModal('eventTypeModal');
+            }
+        }
+
+        function changePlan() {
+            closeModal('eventLimitModal');
+            console.log('Redirecting to change plan...');
+        }
+
+        // Event Type Selection
+        function selectEventType(eventType) {
+            selectedEventType = eventType;
+
+            // Remove selected class from all options
+            document.querySelectorAll('.event-type-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            event.target.closest('.event-type-option').classList.add('selected');
+
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function proceedToEventForm() {
+            if (!selectedEventType) return;
+
+            closeModal('eventTypeModal');
+
+            // Update form title
+            const eventTypeName = selectedEventType.charAt(0).toUpperCase() + selectedEventType.slice(1).replace('-', ' ');
+            document.getElementById('eventFormTitle').textContent = `Add New ${eventTypeName} Event`;
+
+            // Set project type in form
+            document.getElementById('projectType').value = selectedEventType;
+
+            showModal('eventFormModal');
+
+            // Initialize calendar
+            initCalendar();
+        }
+
+        function goBackToEventTypes() {
+            closeModal('eventFormModal');
+            showModal('eventTypeModal');
+        }
+
+        // Calendar functionality
+        function initCalendar() {
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const calendarDays = document.getElementById('calendarDays');
+            const calendarMonth = document.getElementById('calendarMonth');
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // Set month title
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            calendarMonth.textContent = `${monthNames[month]} ${year}`;
+
+            // Clear previous days
+            calendarDays.innerHTML = '';
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            // Add previous month's trailing days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const dayElement = createDayElement(day, 'other-month');
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = createDayElement(day, 'current-month');
+
+                // Mark today
+                const today = new Date();
+                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                    dayElement.classList.add('today');
+                }
+
+                // Mark selected date
+                if (selectedDate && selectedDate.getFullYear() === year &&
+                    selectedDate.getMonth() === month && selectedDate.getDate() === day) {
+                    dayElement.classList.add('selected');
+                }
+
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add next month's leading days
+            const totalCells = calendarDays.children.length;
+            const remainingCells = 42 - totalCells; // 6 rows × 7 days
+            for (let day = 1; day <= remainingCells && totalCells < 42; day++) {
+                const dayElement = createDayElement(day, 'other-month');
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function createDayElement(day, monthType) {
+            const dayElement = document.createElement('div');
+            dayElement.className = `calendar-day ${monthType}`;
+            dayElement.textContent = day;
+
+            if (monthType === 'current-month') {
+                dayElement.onclick = () => selectDate(day);
+            }
+
+            return dayElement;
+        }
+
+        function selectDate(day) {
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+
+            // Format date for display
+            const formattedDate = selectedDate.toLocaleDateString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric'
+            });
+
+            document.getElementById('eventDate').value = formattedDate;
+            document.getElementById('customCalendar').classList.remove('show');
+
+            renderCalendar(); // Re-render to show selection
+        }
+
+        function toggleCalendar() {
+            const calendar = document.getElementById('customCalendar');
+            calendar.classList.toggle('show');
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Time picker functionality
+        function validateTime() {
+            const hour = document.getElementById('timeHour');
+            const minute = document.getElementById('timeMinute');
+
+            // Validate hour
+            if (hour.value < 1) hour.value = 1;
+            if (hour.value > 12) hour.value = 12;
+
+            // Validate minute
+            if (minute.value < 0) minute.value = 0;
+            if (minute.value > 59) minute.value = 59;
+
+            // Add leading zero to minute if needed
+            if (minute.value.length === 1) {
+                minute.value = '0' + minute.value;
+            }
+        }
+
+        function toggleAmPm(period) {
+            document.querySelectorAll('.am-pm-option').forEach(option => {
+                option.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+        }
+
+        // Save event functionality
+        function saveEvent() {
+            // Get form data
+            const formData = {
+                projectType: document.getElementById('projectType').value,
+                projectName: document.getElementById('projectName').value,
+                description: document.getElementById('description').value,
+                groomFirstName: document.getElementById('groomFirstName').value,
+                groomLastName: document.getElementById('groomLastName').value,
+                groomEmail: document.getElementById('groomEmail').value,
+                brideFirstName: document.getElementById('brideFirstName').value,
+                brideLastName: document.getElementById('brideLastName').value,
+                brideEmail: document.getElementById('brideEmail').value,
+                eventDate: document.getElementById('eventDate').value,
+                timeHour: document.getElementById('timeHour').value,
+                timeMinute: document.getElementById('timeMinute').value,
+                venue: document.getElementById('venue').value,
+                location: document.getElementById('location').value,
+                guestCount: document.getElementById('guestCount').value,
+                budget: document.getElementById('budget').value,
+                notes: document.getElementById('notes').value
+            };
+
+            console.log('Saving event:', formData);
+
+            closeModal('eventFormModal');
+
+            // Show success modal
+            document.getElementById('successMessage').textContent = 'Event has been created successfully!';
+            showModal('successModal');
+
+            // Reset form
+            document.getElementById('eventForm').reset();
+            selectedEventType = '';
+            selectedDate = null;
+        }
+
+        function searchEvents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const eventCards = document.querySelectorAll('.event-card');
+
+            eventCards.forEach(card => {
+                const eventTitle = card.querySelector('.event-title').textContent.toLowerCase();
+                const eventType = card.querySelector('.event-type span').textContent.toLowerCase();
+
+                if (eventTitle.includes(searchTerm) || eventType.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('show');
+            }
+        });
+
+        // Close calendar when clicking outside
+        document.addEventListener('click', function (event) {
+            const calendar = document.getElementById('customCalendar');
+            const dateInput = document.getElementById('eventDate');
+
+            if (calendar && dateInput && !calendar.contains(event.target) && event.target !== dateInput) {
+                calendar.classList.remove('show');
+            }
+        });
+
+        // Mobile responsive sidebar
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+                sidebarCollapsed = true;
+            } else if (!sidebarCollapsed) {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Initialize responsive behavior
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on page load
+
+        // Add fade out animation for delete
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

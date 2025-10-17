@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sa.bbi - Subscription Plans</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/subscription-styles.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: var(--bs-nav-tabs-link-active-color);
+            background-color: transparent !important;
+            border-color: var(--bs-nav-tabs-link-active-border-color);
+        }
+
+        .nav-item {
+            margin: 10px -12px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .subscription-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .subscription-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        /* Subscription Cards */
+        .subscription-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px var(--shadow-card);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        .subscription-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px var(--shadow-card);
+        }
+
+        .subscription-card.featured {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .subscription-card.featured:hover {
+            transform: scale(1.08) translateY(-5px);
+        }
+
+        /* Card Header */
+        .card-header {
+            position: relative;
+            z-index: 3;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+
+        .plan-name {
+            background: var(--primary-color);
+            color: white;
+            margin: 0;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* Card Image */
+        .card-image {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .plan-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Card Body */
+        .card-body {
+            padding: 30px 25px 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Price Circle */
+        .price-circle {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: var(--bg-cream);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 4;
+        }
+
+        .price-circle.featured-price {
+            background: #FFF8E1;
+            border: 3px solid var(--primary-color);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .period {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Features */
+        .features {
+            margin-top: 50px;
+            margin-bottom: 25px;
+        }
+
+        .features-title {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .features-text {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        /* Buttons */
+        .btn-plan {
+            border-radius: 25px;
+            padding: 12px 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .basic-btn,
+        .elite-btn {
+            background: transparent;
+            color: var(--primary-color);
+        }
+
+        .basic-btn:hover,
+        .elite-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .pro-btn {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pro-btn:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
+        }
+
+        /* Dots */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text-light);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .subscription-card.featured {
+                transform: none;
+                margin-bottom: 0;
+            }
+
+            .subscription-card.featured:hover {
+                transform: translateY(-5px);
+            }
+
+            .subscription-title {
+                font-size: 1.8rem;
+            }
+
+            .brand-name {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .main-content {
+                padding: 30px 0 40px;
+            }
+
+            .header-section {
+                padding: 20px 0 15px;
+            }
+
+            .brand-name {
+                font-size: 2rem;
+            }
+
+            .subscription-title {
+                font-size: 1.6rem;
+            }
+
+            .subscription-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .card-body {
+                padding: 25px 20px 20px;
+            }
+
+            .price-circle {
+                width: 90px;
+                height: 90px;
+                top: -45px;
+            }
+
+            .price {
+                font-size: 1.3rem;
+            }
+
+            .period {
+                font-size: 0.65rem;
+            }
+
+            .features {
+                margin-top: 45px;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .subscription-card {
+                margin-bottom: 0;
+            }
+
+            .card-body {
+                padding: 20px 15px 15px;
+            }
+
+            .btn-plan {
+                padding: 10px 30px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Animation Effects */
+        .subscription-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .subscription-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .subscription-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .subscription-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Focus States */
+        .btn-plan:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(184, 92, 79, 0.25);
+        }
+
+        /* Loading State */
+        .btn-plan.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-plan.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Payment Modal Styles */
+        .payment-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-modal .modal-header {
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px 15px;
+        }
+
+        .payment-modal .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+            width: 100%;
+        }
+
+        .payment-modal .btn-close {
+            margin: 0;
+            padding: 0;
+            font-size: 1.2rem;
+        }
+
+        .payment-modal .modal-body {
+            padding: 20px 25px 25px;
+        }
+
+        .payment-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Payment Method Radio Buttons */
+        .payment-methods {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .payment-methods .form-check {
+            margin-right: 0;
+        }
+
+        .payment-methods .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            border: 2px solid var(--text-light);
+        }
+
+        .payment-methods .form-check-input:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .payment-methods .form-check-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .payment-methods .form-check-label[for="cardMethod"] {
+            color: #007bff;
+        }
+
+        .payment-methods .form-check-label[for="paypalMethod"] {
+            color: #0070ba;
+        }
+
+        /* Payment Form Styles */
+        .payment-form .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            height: 48px;
+            transition: all 0.3s ease;
+        }
+
+        .payment-form .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.15rem rgba(184, 92, 79, 0.15);
+            outline: none;
+        }
+
+        .payment-form .form-control::placeholder {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .payment-form .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-left: none;
+            color: var(--text-muted);
+            padding: 12px 15px;
+        }
+
+        .payment-form .input-group .form-control {
+            border-right: none;
+        }
+
+        .payment-form .input-group:focus-within .input-group-text {
+            border-color: var(--primary-color);
+        }
+
+        .payment-form .input-group:focus-within .form-control {
+            border-right: none;
+        }
+
+        /* Payment Button */
+        .btn-payment {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 30px;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-payment:hover {
+            background-color: var(--primary-hover);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn-payment:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(184, 92, 79, 0.25);
+        }
+
+        /* Card Number Formatting */
+        #cardNumber {
+            letter-spacing: 1px;
+        }
+
+        /* Date Inputs */
+        #expiryMonth,
+        #expiryYear {
+            text-align: center;
+        }
+
+        /* Calendar Dropdown Styles */
+        .calendar-trigger {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .calendar-trigger:hover {
+            background-color: #e9ecef;
+        }
+
+        .calendar-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            margin-top: 5px;
+            padding: 15px;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .calendar-nav {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-nav:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .calendar-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .month-item {
+            padding: 8px 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .month-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .month-item.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .month-item.current {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Position relative for calendar container */
+        .col-6:has(.calendar-dropdown) {
+            position: relative;
+        }
+
+        /* Success Modal Styles */
+        .success-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .success-modal .modal-body {
+            padding: 30px 20px;
+        }
+
+        .success-icon {
+            color: #28a745;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .btn-success-continue {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 40px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success-continue:hover {
+            background-color: var(--primary-hover);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* PayPal Specific Styles */
+        #paypalForm .form-control {
+            margin-bottom: 15px;
+        }
+
+        /* Modal Animation */
+        .modal.fade .modal-dialog {
+            transition: transform 0.3s ease-out;
+            transform: translate(0, -50px);
+        }
+
+        .modal.show .modal-dialog {
+            transform: none;
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 575.98px) {
+            .payment-modal .modal-dialog {
+                margin: 20px 10px;
+            }
+
+            .payment-modal .modal-header,
+            .payment-modal .modal-body {
+                padding: 15px 20px;
+            }
+
+            .payment-methods {
+                gap: 20px;
+            }
+
+            .payment-form .form-control {
+                font-size: 0.85rem;
+                height: 44px;
+                padding: 10px 12px;
+            }
+
+            .payment-form .input-group-text {
+                padding: 10px 12px;
+            }
+        }
+
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            padding: 44px 32px 8px 32px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .language-selector {
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .tabs-bar {
+            background: #F1EDE1;
+            padding: 0 32px;
+            border-bottom: 1px solid #F1EDE1;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 48px;
+            justify-content: flex-start;
+            margin-bottom: 0;
+        }
+
+        .tab-item {
+            color: #888;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0 0 16px 0;
+            background: none;
+            border: none;
+            outline: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #9B4431;
+            border-radius: 2px;
+        }
+
+        .tab-item i {
+            font-size: 18px;
+        }
+
+        .card-section {
+            background: #fff;
+            border-radius: 10px;
+            margin: 32px auto 0 auto;
+            padding: 48px 0 48px 0;
+            max-width: 1600px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .subscription-section {
+            background: #F3EDDF;
+            border-radius: 14px;
+            margin: 45px auto 0 auto;
+            padding: 48px 0 48px 0;
+            box-shadow: 0 8px 25px var(--shadow-card);
+            /* max-width: 1300px; */
+            min-height: 600px;
+            position: relative;
+        }
+
+        .subscription-title {
+            font-size: 22px;
+            font-style: italic;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .subscription-desc {
+            font-size: 17px;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 32px;
+        }
+
+        .manage-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            background: #222;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            padding: 8px 24px;
+            font-weight: 500;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .plan-cards-row {
+            display: flex;
+            justify-content: space-between;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .plan-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0px 4px 28px #262B4329;
+            width: 330px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card .plan-header {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+            padding: 16px 0 8px 0;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .plan-card .plan-img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+        }
+
+        .plan-card .plan-price-circle {
+            background: #F3EDDF;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px auto 0 auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 34px;
+            font-weight: 600;
+            color: #9B4431;
+            position: relative;
+            z-index: 2;
+        }
+
+        .plan-card .plan-price-circle span {
+            font-size: 16px;
+            color: #888;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .plan-card .plan-body {
+            padding: 32px 16px 24px 16px;
+            flex: 1;
+        }
+
+        .plan-card .plan-desc {
+            font-weight: 600;
+            font-size: 17px;
+            color: #444;
+            margin-bottom: 18px;
+        }
+
+        .plan-card .plan-events {
+            font-size: 16px;
+            color: #9B4431;
+            font-style: italic;
+        }
+
+        .plan-card .plan-footer {
+            padding: 0 16px 16px 16px;
+        }
+
+        .plan-card .select-btn,
+        .plan-card .continue-btn {
+            width: 90%;
+            border-radius: 24px;
+            border: 2px solid #9B4431;
+            background: #fff;
+            color: #9B4431;
+            font-weight: 500;
+            font-style: italic;
+            padding: 8px 0;
+            margin: 0 auto 8px auto;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .plan-card.selected .select-btn {
+            background: #9B4431;
+            color: #fff;
+            border: 2px solid #9B4431;
+        }
+
+        .plan-card.selected {
+            box-shadow: 0px 4px 28px #9B4431;
+        }
+
+        .plan-card .dots {
+            color: #9B4431;
+            font-size: 22px;
+            letter-spacing: 8px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 1100px) {
+            .plan-cards-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .plan-card {
+                margin-bottom: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .plan-card {
+                width: 100%;
+                min-width: 220px;
+            }
+        }
+
+        .manage-sub-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .manage-sub-header .back-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #3B3F53;
+            margin-right: 8px;
+        }
+
+        .manage-sub-header .title {
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .custom-plan-btn {
+            background: #222;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            padding: 8px 24px;
+            font-weight: 500;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .subscription-cards {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+            background: #000;
+        }
+
+        /* Custom Modal */
+        .custom-modal .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            background: #fff;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .custom-modal .modal-header {
+            border-bottom: none;
+            justify-content: flex-end;
+            padding: 24px 32px 0 32px;
+        }
+
+        .custom-modal .modal-title {
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+            font-style: italic;
+            font-size: 22px;
+            margin-bottom: 16px;
+            padding-top: 0;
+        }
+
+        .custom-modal .close {
+            font-size: 22px;
+            color: #888;
+            border: none;
+            background: none;
+        }
+
+        .custom-modal .modal-body {
+            padding: 0 32px 0 32px;
+        }
+
+        .custom-modal .modal-footer {
+            border-top: none;
+            justify-content: center;
+            padding-bottom: 32px;
+            padding-top: 0;
+        }
+
+        .custom-modal .btn-primary,
+        .custom-modal .btn-success {
+            background: #9B4431 !important;
+            border: none !important;
+            border-radius: 8px;
+            padding: 10px 40px;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 16px;
+        }
+
+        .custom-modal .event-btns {
+            display: flex;
+            justify-content: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .custom-modal .event-btns .btn {
+            border-radius: 8px;
+            border: 2px solid #9B4431;
+            background: #fff;
+            color: #9B4431;
+            font-weight: 600;
+            font-style: italic;
+            min-width: 170px;
+            padding: 10px 0;
+            font-size: 16px;
+            box-shadow: none;
+        }
+
+        .custom-modal .event-btns .btn.active {
+            background: #fff;
+            color: #9B4431;
+            border: 2px solid #9B4431;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .custom-modal label {
+            font-size: 16px;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 8px;
+            margin-top: 16px;
+            display: block;
+        }
+
+        .custom-modal .form-control {
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #C7B6A2;
+            background: #F8F6F2;
+            height: 48px;
+        }
+
+        .custom-modal .price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #9B4431;
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+
+        .custom-modal .price span {
+            color: #9B4431;
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        /* Payment Modal */
+        .custom-modal .payment-radio-row {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .custom-modal .payment-radio-row label {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            font-style: italic;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-modal .payment-radio-row .fa-dot-circle {
+            font-size: 22px;
+            color: #2ecc40;
+        }
+
+        .custom-modal .payment-radio-row .paypal-label {
+            color: #0070ba;
+        }
+
+        .custom-modal .form-control::placeholder,
+        .custom-modal .form-select {
+            color: #888 !important;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .custom-modal .form-select {
+            border-radius: 8px;
+            height: 48px;
+            border: 1px solid #C7B6A2;
+            background: #F8F6F2;
+        }
+
+        .custom-modal .pay-btn {
+            background: #9B4431 !important;
+            color: #fff !important;
+            border-radius: 8px;
+            border: none !important;
+            padding: 10px 40px;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="mx-5 mt-5">
+        <div class="manage-sub-header">
+            <div class="logo">
+                <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+
+            </div>
+        </div>
+        <h3 class="text-center">
+            Subscription Plans
+        </h3>
+        <p class="text-center">Select your plan</p>
+        <div class="plan-cards-row">
+            <div class="plan-card ">
+                <div class="plan-header">Starter (Free)</div>
+                <img class="plan-img"
+                    src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=330&h=90&fit=crop"
+                    alt="Basic Plan">
+                <div class="plan-price-circle">$0<span>per month</span></div>
+                <div class="plan-body">
+                    <div class="plan-desc text-dark font-weight-bold">New or freelance planner</div>
+                    <div class="plan-events text-dark">1 active event, basic timeline, simple reminders, essential templates.</div>
+                </div>
+                <div class="plan-footer">
+                    <button class="select-btn" disabled>Continue</button>
+                    <div class="dots">....</div>
+                </div>
+            </div>
+            <!-- Basic Card -->
+            <div class="plan-card ">
+                <div class="plan-header">Pro</div>
+                <img class="plan-img"
+                    src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=330&h=90&fit=crop"
+                    alt="Basic Plan">
+                <div class="plan-price-circle">$499<span>per month</span></div>
+                <div class="plan-body">
+                    <div class="plan-desc text-dark font-weight-bold">Established planner</div>
+                    <div class="plan-events">Up to 5 active events, automations, payment and vendor management, custom branding, advanced templates.</div>
+                </div>
+                <div class="plan-footer">
+                    <button class="select-btn" disabled>Continue</button>
+                    <div class="dots">....</div>
+                </div>
+            </div>
+            <!-- Pro Card -->
+            <div class="plan-card">
+                <div class="plan-header">Studio</div>
+                <img class="plan-img"
+                    src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=330&h=90&fit=crop"
+                    alt="Pro Plan">
+                <div class="plan-price-circle">$999<span>per month</span></div>
+                <div class="plan-body">
+                    <div class="plan-desc text-dark font-weight-bold">Small agency (2-5 users)</div>
+                    <div class="plan-events">Up to 15 active events, multiple users, team collaboration, reporting, visual dashboard.</div>
+                </div>
+                <div class="plan-footer">
+                    <button class="continue-btn" onclick="showPaymentModal('Pro', 50, 10)">Continue</button>
+                    <div class="dots">....</div>
+                </div>
+            </div>
+            <!-- Elite Card -->
+            <div class="plan-card">
+                <div class="plan-header">Agency</div>
+                <img class="plan-img"
+                    src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=330&h=90&fit=crop"
+                    alt="Elite Plan">
+                <div class="plan-price-circle">$1,499+<span>per month</span></div>
+                <div class="plan-body">
+                    <div class="plan-desc text-dark font-weight-bold">Large agencies (6+ users)</div>
+                    <div class="plan-events">Unlimited events and users, advanced analytics, onboarding, premium support.</div>
+                </div>
+                <div class="plan-footer">
+                    <button class="continue-btn" onclick="showPaymentModal('Elite', 80, 20)">Continue</button>
+                    <div class="dots">....</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center  mt-3">
+            <p><b>Add-ons:</b> additional events available starting at $99 MXN per extra event per month.</p>
+            <p><b>Launch promotion: </b>sign up during the pre-launch phase to lock in lifetime preferred pricing for the Pro plan.</p>
+        </div>
+    </div>
+
+
+    <div class="modal fade custom-modal" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-title my-0 py-0">Payment Method</div>
+                <div class="modal-body py-0 my-0">
+                    <label>Select payment method :</label>
+                    <div class="payment-radio-row">
+                        <label>
+                            <input type="radio" name="paymentMethod" value="card" checked
+                                onchange="togglePaymentFields('card')">
+
+                            <span style="color:#2ecc40;">Card</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="paypal"
+                                onchange="togglePaymentFields('paypal')">
+                            <span class="paypal-label">PayPal</span>
+                        </label>
+                    </div>
+                    <div id="cardFields">
+                        <input type="text" class="form-control mb-2" placeholder="Card Number">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Expiry Month">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Expiry Year">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col">
+                                <select class="form-select">
+                                    <option>Country</option>
+                                    <option>USA</option>
+                                    <option>UK</option>
+                                    <option>India</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Zipcode">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paypalFields" style="display:none;">
+                        <input type="text" class="form-control mb-2" placeholder="Email or mobile number">
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button class="pay-btn " onclick="showSuccessModal()">Pay</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Success Modal -->
+    <div class="modal fade custom-modal" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <i class="fa fa-check-circle text-success" style="font-size: 80px !important;"></i>
+                    <div class="mb-4" style="font-size:22px;font-weight:500;font-style:italic;">
+                        Payment plan has been updated Successfully !
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button class="btn btn-primary" data-bs-dismiss="modal"  onclick="window.location.href = 'index.html'">Continue</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        let customEvents = 5;
+        function showCustomPlanModal() {
+            customEvents = 5;
+            document.getElementById('customEventsInput').value = 20;
+            document.getElementById('customPlanPrice').textContent = 200;
+            Array.from(document.querySelectorAll('.event-btns .btn')).forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.event-btns .btn').classList.add('active');
+            new bootstrap.Modal(document.getElementById('customPlanModal')).show();
+        }
+        function selectCustomEvents(num) {
+            customEvents = num;
+            Array.from(document.querySelectorAll('.event-btns .btn')).forEach(btn => btn.classList.remove('active'));
+            Array.from(document.querySelectorAll('.event-btns .btn')).find(btn => btn.textContent.includes(num)).classList.add('active');
+            document.getElementById('customEventsInput').value = 20 + num;
+            document.getElementById('customPlanPrice').textContent = (20 + num) * 10;
+        }
+        function closeCustomPlanModal() {
+            bootstrap.Modal.getInstance(document.getElementById('customPlanModal')).hide();
+        }
+
+        // Payment Modal logic
+        function showPaymentModal(plan, price, events) {
+            document.getElementById('cardFields').style.display = '';
+            document.getElementById('paypalFields').style.display = 'none';
+            document.querySelector("input[name='paymentMethod'][value='card']").checked = true;
+            new bootstrap.Modal(document.getElementById('paymentModal')).show();
+        }
+        function togglePaymentFields(method) {
+            if (method === 'card') {
+                document.getElementById('cardFields').style.display = '';
+                document.getElementById('paypalFields').style.display = 'none';
+            } else {
+                document.getElementById('cardFields').style.display = 'none';
+                document.getElementById('paypalFields').style.display = '';
+            }
+        }
+        function showSuccessModal() {
+            bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        }
+    </script>
+    <script src="js/subscription.js"></script>
+</body>
+
+</html>

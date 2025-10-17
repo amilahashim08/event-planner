@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .btn-outline-primary {
+            color: #9B4431;
+            border-color: #9B4431;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .language-selector {
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .tabs-bar {
+            background: #F1EDE1;
+            padding: 0 32px;
+            border-bottom: 1px solid #F1EDE1;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 48px;
+            justify-content: flex-start;
+            margin-bottom: 0;
+        }
+
+        .tab-item {
+            color: #888;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0 0 16px 0;
+            background: none;
+            border: none;
+            outline: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #9B4431;
+            border-radius: 2px;
+        }
+
+        .tab-item i {
+            font-size: 18px;
+        }
+
+        .card-section {
+            background: #fff;
+            border-radius: 10px;
+            margin: 32px auto 0 auto;
+            padding: 48px 0 48px 0;
+            max-width: 1600px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .update-card {
+            background: #F3EDDF;
+            border-radius: 14px;
+            margin: 32px auto 0 auto;
+            padding: 48px 0 48px 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            max-width: 1300px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .update-card h6 {
+            font-style: italic;
+            font-size: 22px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            font-style: italic;
+            font-size: 16px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .form-control-lg {
+            border-radius: 8px;
+            font-size: 17px;
+            background: #fff;
+            border: 1px solid #E0D7C7;
+            padding: 14px 16px;
+            font-style: italic;
+        }
+
+        .form-control-lg:focus {
+            border-color: #9B4431;
+            box-shadow: 0 0 0 2px #9B443133;
+        }
+
+        .toggle-password {
+            color: #888;
+            font-size: 20px;
+        }
+
+        .btn-outline-dark {
+            border-radius: 8px;
+            border: 1.5px solid #C7B6A2;
+            background: #fff;
+            color: #444;
+            font-weight: 500;
+            font-style: italic;
+            padding: 8px 32px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-warning {
+            border-radius: 8px;
+            background: #9B4431;
+            color: #fff;
+            font-weight: 500;
+            font-style: italic;
+            border: none;
+            padding: 8px 32px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-warning:hover {
+            background: #7a2f1e;
+            color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .card-section {
+                padding: 24px 0;
+            }
+
+            .update-card {
+                padding: 24px 8px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card-section {
+                padding: 8px 0;
+            }
+
+            .update-card {
+                padding: 16px 4px;
+            }
+        }
+
+        /* Success Modal */
+        .modal-backdrop.show {
+            opacity: 0.5;
+            background: #000;
+        }
+
+        .success-modal .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            background: #fff;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .success-modal .modal-body {
+            padding: 40px 32px 32px 32px;
+            text-align: center;
+        }
+
+        .success-modal .success-icon {
+            font-size: 70px;
+            color: #4CAF50;
+            margin-bottom: 16px;
+        }
+
+        .success-modal .success-text {
+            font-size: 22px;
+            font-weight: 600;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 32px;
+        }
+
+        .success-modal .btn-success {
+            background: #9B4431 !important;
+            color: #fff !important;
+            border-radius: 8px;
+            border: none !important;
+            padding: 10px 40px;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .success-modal .modal-content {
+                max-width: 95vw;
+            }
+
+            .success-modal .modal-body {
+                padding: 24px 8px 24px 8px;
+            }
+        }
+
+        .event-card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-left: 10px;
+        }
+
+        .event-card {
+            width: 291px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 13px 0 8px 0;
+        }
+
+        .event-card img {
+            width: 262px;
+            height: 191px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .event-card.active,
+        .event-card:hover {
+            border-color: #9B4431;
+            box-shadow: 0 4px 24px rgba(155, 68, 49, 0.08);
+        }
+
+        .event-card .event-title {
+            margin-top: 12px;
+            font-weight: 600;
+            color: #9B4431;
+            font-size: 17px;
+        }
+
+        .event-form-container {
+            margin-top: 32px;
+        }
+
+        .event-form {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            padding: 32px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #6B4F3A;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+        }
+
+        .add-more-link {
+            color: #9B4431;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            background: #9B4431;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #9B4431;
+            border: 1px solid #9B4431;
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            color: #3B3F53;
+            margin-bottom: 16px;
+        }
+
+        .upload-btn {
+            background: #F8F6F2;
+            border: 1px dashed #9B4431;
+            color: #9B4431;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link active"><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Event Detail</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+                <button class="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+        <div class="content">
+            <h6 class="mb-4" style="font-weight:600;color:#3B3F53;">Add New Event</h6>
+            <div id="Divone">
+                <div id="eventSelection" class="event-card-grid mb-4" onclick="switchDocument()"></div>
+            </div>
+            <div id="Divtwo" style="display: none">
+                <div id="eventFormContainer" class="event-form-container"></div>
+            </div>
+
+        </div>
+        <script>
+            function switchDocument() {
+                if (document.getElementById('Divone')) {
+
+                    if (document.getElementById('Divone').style.display == 'none') {
+                        document.getElementById('Divone').style.display = 'block';
+                        document.getElementById('Divtwo').style.display = 'none';
+                    }
+                    else {
+                        document.getElementById('Divone').style.display = 'none';
+                        document.getElementById('Divtwo').style.display = 'block';
+                    }
+                }
+            }
+            function switchEditDocument() {
+                if (document.getElementById('divthree')) {
+
+                    if (document.getElementById('divthree').style.display == 'none') {
+                        document.getElementById('divthree').style.display = 'block';
+                        document.getElementById('divfour').style.display = 'none';
+                    }
+                    else {
+                        document.getElementById('divthree').style.display = 'none';
+                        document.getElementById('divfour').style.display = 'block';
+                    }
+                }
+            }
+            const events = [
+                { key: 'wedding', name: 'Wedding', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=300&fit=crop' },
+                { key: 'birthday', name: 'Birthday Party', img: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=300&fit=crop' },
+                { key: 'corporate', name: 'Corporate Event', img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=400&h=300&fit=crop' },
+                { key: 'babyshower', name: 'Baby Shower', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop' },
+                { key: 'anniversary', name: 'Anniversary', img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=300&fit=crop' },
+                { key: 'graduation', name: 'Graduation Party', img: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400&h=300&fit=crop' },
+                { key: 'other', name: 'Other Event', img: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?w=400&h=300&fit=crop' }
+            ];
+
+            // Render event cards
+            const eventSelection = document.getElementById('eventSelection');
+            events.forEach((ev, idx) => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.innerHTML = `<img src="${ev.img}" alt="${ev.name}"><div class="event-title">${ev.name}</div>`;
+                card.onclick = () => selectEvent(ev.key, idx);
+                eventSelection.appendChild(card);
+            });
+
+            // Card hover/active effect
+            function selectEvent(key, idx) {
+                document.querySelectorAll('.event-card').forEach((c, i) => {
+                    c.classList.toggle('active', i === idx);
+                });
+                showEventForm(key);
+            }
+
+            // Render event form
+            function showEventForm(type) {
+                const container = document.getElementById('eventFormContainer');
+                let html = '';
+                if (type === 'wedding') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Corporate Event</option>
+                                <option>Baby Shower</option>
+                                <option>Anniversary</option>
+                                <option>Graduation Party</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Couple Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Groom</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Bride</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-9">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'birthday') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Birthday Party</option>
+                                <option>Wedding</option>
+                                <option>Corporate Event</option>
+                                <option>Baby Shower</option>
+                                <option>Anniversary</option>
+                                <option>Graduation Party</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Celebrant Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-control" placeholder="Age">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="form-section-title">Organized By</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Select Organized By</label>
+                            <select class="form-select">
+                                <option>Mom</option>
+                                <option>Dad</option>
+                                <option>Sibling</option>
+                                <option>Friend</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'corporate') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Corporate Event</option>
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Baby Shower</option>
+                                <option>Anniversary</option>
+                                <option>Graduation Party</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Organization Contact</div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Industry</label>
+                            <select class="form-select">
+                                <option>Industry</option>
+                                <option>IT</option>
+                                <option>Finance</option>
+                                <option>Education</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-control" placeholder="Company Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Contact Person Name</label>
+                            <input type="text" class="form-control" placeholder="Contact Person Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'babyshower') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Baby Shower</option>
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Corporate Event</option>
+                                <option>Anniversary</option>
+                                <option>Graduation Party</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Expecting Parents</div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Dad</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Mom</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'anniversary') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Anniversary</option>
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Corporate Event</option>
+                                <option>Baby Shower</option>
+                                <option>Graduation Party</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Couple Celebrating</div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Husband</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Wife</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'graduation') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Graduation Party</option>
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Corporate Event</option>
+                                <option>Baby Shower</option>
+                                <option>Anniversary</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Graduate Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-control" placeholder="Age">
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="form-section-title">Organized By</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Select Organized By</label>
+                            <select class="form-select">
+                                <option>Mom</option>
+                                <option>Dad</option>
+                                <option>Sibling</option>
+                                <option>Friend</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                else if (type === 'other') {
+                    html = `
+                <form class="event-form">
+                    <div class="form-section-title">Project Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Project Type</label>
+                            <select class="form-select">
+                                <option>Other</option>
+                                <option>Wedding</option>
+                                <option>Birthday Party</option>
+                                <option>Corporate Event</option>
+                                <option>Baby Shower</option>
+                                <option>Anniversary</option>
+                                <option>Graduation Party</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Project name">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Project Cover Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-section-title">Event Contacts</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                    </div>
+                    <div class="form-section-title">Event Details</div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Event Time</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" class="form-control" placeholder="Venue">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" class="form-control" placeholder="Guest Count">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget $</label>
+                            <input type="number" class="form-control" placeholder="Budget">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <input type="text" class="form-control" placeholder="Enter notes">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+                        <button type="submit" class="btn btn-primary px-4">Add</button>
+                    </div>
+                </form>
+                `;
+                }
+                container.innerHTML = html;
+            }
+        </script>
+</body>
+
+</html>

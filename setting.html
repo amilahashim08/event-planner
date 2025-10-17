@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>sa.bbi - Subscriptions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS & Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+ .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: var(--bs-nav-tabs-link-active-color);
+            background-color: transparent !important;
+            border-color: var(--bs-nav-tabs-link-active-border-color);
+        }
+
+        .nav-item {
+            margin: 10px -12px;
+        }
+
+        .tabs-bar {
+            background: #F1EDE1;
+            padding: 0 32px;
+            border-bottom: 1px solid #F1EDE1;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 48px;
+            justify-content: flex-start;
+            margin-bottom: 0;
+        }
+
+        .tab-item {
+            color: #888;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0 0 16px 0;
+            background: none;
+            border: none;
+            outline: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #9B4431;
+            border-radius: 2px;
+        }
+
+        .tab-item i {
+            font-size: 18px;
+        }
+
+        .card-section {
+            background: #fff;
+            border-radius: 10px;
+            margin: 32px auto 0 auto;
+            padding: 48px 0 48px 0;
+            max-width: 1600px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .subscription-section {
+            background: #F3EDDF;
+            border-radius: 14px;
+            margin: 32px auto 0 auto;
+            padding: 48px 0 48px 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            max-width: 1300px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .subscription-title {
+            font-size: 22px;
+            font-style: italic;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .subscription-desc {
+            font-size: 17px;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 32px;
+        }
+
+        .manage-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            background: #222;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            padding: 8px 24px;
+            font-weight: 500;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .plan-cards-row {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0;
+            margin-top: 40px;
+        }
+
+        .plan-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0px 4px 28px #262B4329;
+            width: 330px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card .plan-header {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+            padding: 16px 0 8px 0;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .plan-card .plan-img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+        }
+
+        .plan-card .plan-price-circle {
+            background: #F3EDDF;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px auto 0 auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 34px;
+            font-weight: 600;
+            color: #9B4431;
+            position: relative;
+            z-index: 2;
+        }
+
+        .plan-card .plan-price-circle span {
+            font-size: 16px;
+            color: #888;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .plan-card .plan-body {
+            padding: 32px 16px 24px 16px;
+            flex: 1;
+        }
+
+        .plan-card .plan-desc {
+            font-weight: 600;
+            font-size: 17px;
+            color: #444;
+            margin-bottom: 18px;
+        }
+
+        .plan-card .plan-events {
+            font-size: 16px;
+            color: #9B4431;
+            font-style: italic;
+        }
+
+        .plan-card .plan-footer {
+            padding: 0 16px 16px 16px;
+        }
+
+        .plan-card .select-btn,
+        .plan-card .continue-btn {
+            width: 90%;
+            border-radius: 24px;
+            border: 2px solid #9B4431;
+            background: #fff;
+            color: #9B4431;
+            font-weight: 500;
+            font-style: italic;
+            padding: 8px 0;
+            margin: 0 auto 8px auto;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .plan-card.selected .select-btn {
+            background: #9B4431;
+            color: #fff;
+            border: 2px solid #9B4431;
+        }
+
+        .plan-card.selected {
+            box-shadow: 0px 4px 28px #9B4431;
+        }
+
+        .plan-card .dots {
+            color: #9B4431;
+            font-size: 22px;
+            letter-spacing: 8px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 1100px) {
+            .plan-cards-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .plan-card {
+                margin-bottom: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .plan-card {
+                width: 100%;
+                min-width: 220px;
+            }
+        }
+
+        .manage-sub-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .manage-sub-header .back-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #3B3F53;
+            margin-right: 8px;
+        }
+
+        .manage-sub-header .title {
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .custom-plan-btn {
+            background: #222;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            padding: 8px 24px;
+            font-weight: 500;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .subscription-cards {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+            background: #000;
+        }
+
+        /* Custom Modal */
+        .custom-modal .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            background: #fff;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .custom-modal .modal-header {
+            border-bottom: none;
+            justify-content: flex-end;
+            padding: 24px 32px 0 32px;
+        }
+
+        .custom-modal .modal-title {
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+            font-style: italic;
+            font-size: 22px;
+            margin-bottom: 16px;
+            padding-top: 0;
+        }
+
+        .custom-modal .close {
+            font-size: 22px;
+            color: #888;
+            border: none;
+            background: none;
+        }
+
+        .custom-modal .modal-body {
+            padding: 0 32px 0 32px;
+        }
+
+        .custom-modal .modal-footer {
+            border-top: none;
+            justify-content: center;
+            padding-bottom: 32px;
+            padding-top: 0;
+        }
+
+        .custom-modal .btn-primary,
+        .custom-modal .btn-success {
+            background: #9B4431 !important;
+            border: none !important;
+            border-radius: 8px;
+            padding: 10px 40px;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 16px;
+        }
+
+        .custom-modal .event-btns {
+            display: flex;
+            justify-content: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .custom-modal .event-btns .btn {
+            border-radius: 8px;
+            border: 2px solid #9B4431;
+            background: #fff;
+            color: #9B4431;
+            font-weight: 600;
+            font-style: italic;
+            min-width: 170px;
+            padding: 10px 0;
+            font-size: 16px;
+            box-shadow: none;
+        }
+
+        .custom-modal .event-btns .btn.active {
+            background: #fff;
+            color: #9B4431;
+            border: 2px solid #9B4431;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .custom-modal label {
+            font-size: 16px;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 8px;
+            margin-top: 16px;
+            display: block;
+        }
+
+        .custom-modal .form-control {
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #C7B6A2;
+            background: #F8F6F2;
+            height: 48px;
+        }
+
+        .custom-modal .price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #9B4431;
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+
+        .custom-modal .price span {
+            color: #9B4431;
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        /* Payment Modal */
+        .custom-modal .payment-radio-row {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .custom-modal .payment-radio-row label {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            font-style: italic;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-modal .payment-radio-row .fa-dot-circle {
+            font-size: 22px;
+            color: #2ecc40;
+        }
+
+        .custom-modal .payment-radio-row .paypal-label {
+            color: #0070ba;
+        }
+
+        .custom-modal .form-control::placeholder,
+        .custom-modal .form-select {
+            color: #888 !important;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .custom-modal .form-select {
+            border-radius: 8px;
+            height: 48px;
+            border: 1px solid #C7B6A2;
+            background: #F8F6F2;
+        }
+
+        .custom-modal .pay-btn {
+            background: #9B4431 !important;
+            color: #fff !important;
+            border-radius: 8px;
+            border: none !important;
+            padding: 10px 40px;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 24px;
+        }
+
+        .avatar-initials {
+            width: 100px;
+            height: 100px;
+            border-radius: 20%;
+
+            font-size: 32px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+
+        .avatar-edit {
+            position: relative;
+            right: 0;
+            bottom: 0;
+            /* background-color: #fff; */
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            z-index: 1;
+            align-items: center;
+            justify-content: center;
+            /* border: 2px solid #ddd; */
+            cursor: pointer;
+        }
+
+        .avatar-profile {
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border-radius: 50rem;
+            height: 90px;
+            width: 90px;
+            transition: all .2s ease-in-out;
+        }
+
+        .avatar-edit input {
+            display: none;
+        }
+
+        .avatar-edit label {
+            width: 141%;
+            height: 125%;
+            margin-left: 116px;
+            margin-top: -48px;
+            position: absolute;
+            z-index: 1;
+            cursor: pointer;
+            background: url(../assets/img/camera\ copy.png) center center no-repeat;
+            background-size: 150%;
+        }
+
+        .btn-outline-dark {
+            border-radius: 8px;
+            border: 1.5px solid #C7B6A2;
+            background: #fff;
+            color: #444;
+            font-weight: 500;
+            font-style: italic;
+            padding: 8px 32px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-warning {
+            border-radius: 8px;
+            background: #9B4431;
+            color: #fff;
+            font-weight: 500;
+            font-style: italic;
+            border: none;
+            padding: 8px 32px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-warning:hover {
+            background: #7a2f1e;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link "><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link "><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link "><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link active"><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Subscriptions</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+                <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tabs-bar">
+            <div class="tabs-list">
+                <button class="tab-item active" onclick="window.location.href='setting.html'">
+                    <i class="fa fa-user-circle"></i> Account Configuration
+                </button>
+                <button class="tab-item" onclick="window.location.href='update-password.html'">
+                    <i class="fa fa-lock"></i> Update Password
+                </button>
+                <button class="tab-item" onclick="window.location.href='team-member.html'">
+                    <i class="fa fa-users"></i> Team Members
+                </button>
+                <button class="tab-item " onclick="window.location.href='subscriptions.html'">
+                    <i class="fa fa-credit-card"></i> Subscriptions
+                </button>
+            </div>
+        </div>
+        <div class="card-section p-3">
+            <div class="row ">
+                <div class="col-12">
+                    <div class="d-lg-flex">
+                        <h5 class="" style="font-style: italic;">Account Configuration</h5>
+                        <div class="ms-auto"><i class="fa fa-pencil text-success " aria-hidden="true"
+                                onclick="switchDocument()" style="cursor: pointer;"></i>
+                            <small>Edit</small>
+                        </div>
+                    </div>
+                    <div id="Divone">
+                        <div style="background-color: #F9F0EE; border-radius: 8px" class="p-3 mt-3">
+                            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="avatar-upload my-auto">
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" class="avatar-initials">
+                                                <img src="../assets/images/team-2.jpg" class="avatar-initials"
+                                                    style="border-radius: 10px !important;" />
+                                            </div>
+                                        </div>
+                                        <div class="avatar-edit mt-n3 border-radius-md" id="cameraIcon">
+                                            <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                style="display: none" />
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0" style="font-style: italic;">Tyler Collins</h6>
+                                        <p class="mb-0" style="font-style: italic;">Admin</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 mt-3 pb-7 mb-10 ">
+                            <div class="container-fluid px-0">
+                                <div class="row ">
+                                    <div class="col-12 col-md-2">
+                                        <h6 class="mb-3" style="font-style: italic;">First Name:</h6>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <p class="mb-3" style="font-style: italic;">Tyler</p>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <h6 class="mb-3" style="font-style: italic;">Last Name :</h6>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <p class="mb-3" style="font-style: italic;">Collins</p>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <h6 class="mb-3" style="font-style: italic;">Email :</h6>
+                                    </div>
+                                    <div class="col-12 col-md-2 ">
+                                        <p class="mb-3" style="font-style: italic;">tylercollins@gmail.com</p>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12 col-md-2">
+                                        <h6 class="mb-3" style="font-style: italic;">Contact #:</h6>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <p class="mb-3" style="font-style: italic;">(603)429-3323</p>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <h6 class="mb-0">Company Name :</h6>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <p class="mb-3" style="font-style: italic;">Rose Blooms Co.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Divtwo" style="display: none">
+                        <div style="background-color: #F9F0EE; border-radius: 8px  " class="p-3 mt-3">
+                            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="avatar-upload my-auto">
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" class="avatar-initials">
+                                                <img src="../assets/images/team-2.jpg" class="avatar-initials"
+                                                    style="border-radius: 10px !important;" />
+                                            </div>
+                                        </div>
+                                        <div class="avatar-edit mt-n2 border-radius-md" id="cameraIcon">
+                                            <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                style="display: none" />
+                                            <label for="imageUpload" style="cursor: pointer">
+                                                <img src="../assets/images/camera-icon.png" alt="Upload" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0" style="font-style: italic;">Tyler Collins</h6>
+                                        <p class="mb-0" style="font-style: italic;">Admin</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-3 mt-3 ">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <input type="text" class="form-control" placeholder="Tylor"
+                                        style="background-color: #f0f0f021;" />
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <input type="text" class="form-control" placeholder="Collins"
+                                        style="background-color: #f0f0f021;" />
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <input type="text" class="form-control" placeholder="tylercollins@gmail.com"
+                                        style="background-color: #f0f0f021;" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+
+                                <div class="col-12 col-md-4">
+                                    <input type="text" class="form-control" placeholder="(+34) 12345678"
+                                        style="background-color: #f0f0f021;" />
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <input type="text" class="form-control" placeholder="tylercollins@gmail.com"
+                                        style="background-color: #f0f0f021;" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn btn-outline-dark">Cancel</button>
+                            <button type="submit" class="btn btn-warning">Update</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade success-modal" id="successModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="success-icon"><i class="fa fa-check-circle"></i></div>
+                        <div class="success-text">Password has been updated<br>Successfully !</div>
+                        <button class="btn btn-success" data-bs-dismiss="modal">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS Bundle -->
+
+    <script>
+        // Show success modal on update
+        document.getElementById('updatePasswordForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        });
+        function switchDocument() {
+            if (document.getElementById('Divone')) {
+
+                if (document.getElementById('Divone').style.display == 'none') {
+                    document.getElementById('Divone').style.display = 'block';
+                    document.getElementById('Divtwo').style.display = 'none';
+                }
+                else {
+                    document.getElementById('Divone').style.display = 'none';
+                    document.getElementById('Divtwo').style.display = 'block';
+                }
+            }
+        }
+        function switchEditDocument() {
+            if (document.getElementById('divthree')) {
+
+                if (document.getElementById('divthree').style.display == 'none') {
+                    document.getElementById('divthree').style.display = 'block';
+                    document.getElementById('divfour').style.display = 'none';
+                }
+                else {
+                    document.getElementById('divthree').style.display = 'none';
+                    document.getElementById('divfour').style.display = 'block';
+                }
+            }
+        }
+  
+  </script>
+    <script>
+        // Global variables
+        let sidebarCollapsed = false;
+        let selectedEventType = '';
+        let currentDate = new Date();
+        let selectedDate = null;
+        let currentDeleteEventId = null;
+        let currentDeleteEventName = '';
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            sidebarCollapsed = !sidebarCollapsed;
+
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Navigation functionality
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+
+            // Close calendar if open
+            if (modalId === 'eventFormModal') {
+                document.getElementById('customCalendar').classList.remove('show');
+            }
+        }
+
+        // Event functionality
+        function selectEvent(eventId) {
+            console.log('Selected event:', eventId);
+            // Add your event selection logic here
+        }
+
+
+
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Deleting event:', eventId);
+
+            // Get event name from card
+            const eventCard = event.target.closest('.event-card');
+            const eventTitle = eventCard.querySelector('.event-title').textContent;
+
+            // Set delete modal content
+            currentDeleteEventId = eventId;
+            currentDeleteEventName = eventTitle;
+            document.getElementById('deleteMessage').textContent = `the project "${eventTitle}" ?`;
+
+            showModal('deleteModal');
+        }
+        // Calendar functionality
+        function initCalendar() {
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const calendarDays = document.getElementById('calendarDays');
+            const calendarMonth = document.getElementById('calendarMonth');
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // Set month title
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            calendarMonth.textContent = `${monthNames[month]} ${year}`;
+
+            // Clear previous days
+            calendarDays.innerHTML = '';
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            // Add previous month's trailing days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const dayElement = createDayElement(day, 'other-month');
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = createDayElement(day, 'current-month');
+
+                // Mark today
+                const today = new Date();
+                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                    dayElement.classList.add('today');
+                }
+
+                // Mark selected date
+                if (selectedDate && selectedDate.getFullYear() === year &&
+                    selectedDate.getMonth() === month && selectedDate.getDate() === day) {
+                    dayElement.classList.add('selected');
+                }
+
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add next month's leading days
+            const totalCells = calendarDays.children.length;
+            const remainingCells = 42 - totalCells; // 6 rows × 7 days
+            for (let day = 1; day <= remainingCells && totalCells < 42; day++) {
+                const dayElement = createDayElement(day, 'other-month');
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function createDayElement(day, monthType) {
+            const dayElement = document.createElement('div');
+            dayElement.className = `calendar-day ${monthType}`;
+            dayElement.textContent = day;
+
+            if (monthType === 'current-month') {
+                dayElement.onclick = () => selectDate(day);
+            }
+
+            return dayElement;
+        }
+
+        function selectDate(day) {
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+
+            // Format date for display
+            const formattedDate = selectedDate.toLocaleDateString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric'
+            });
+
+            document.getElementById('eventDate').value = formattedDate;
+            document.getElementById('customCalendar').classList.remove('show');
+
+            renderCalendar(); // Re-render to show selection
+        }
+
+        function toggleCalendar() {
+            const calendar = document.getElementById('customCalendar');
+            calendar.classList.toggle('show');
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Time picker functionality
+        function validateTime() {
+            const hour = document.getElementById('timeHour');
+            const minute = document.getElementById('timeMinute');
+
+            // Validate hour
+            if (hour.value < 1) hour.value = 1;
+            if (hour.value > 12) hour.value = 12;
+
+            // Validate minute
+            if (minute.value < 0) minute.value = 0;
+            if (minute.value > 59) minute.value = 59;
+
+            // Add leading zero to minute if needed
+            if (minute.value.length === 1) {
+                minute.value = '0' + minute.value;
+            }
+        }
+
+        function toggleAmPm(period) {
+            document.querySelectorAll('.am-pm-option').forEach(option => {
+                option.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            updateTimeDisplay();
+        }
+
+        function toggleTimePicker() {
+            const timePicker = document.getElementById('timePicker');
+            timePicker.style.display = timePicker.style.display === 'none' ? 'block' : 'none';
+            timePicker.classList.toggle('show');
+        }
+
+        function updateTimeDisplay() {
+            const hour = document.getElementById('timeHour').value;
+            const minute = document.getElementById('timeMinute').value;
+            const ampm = document.querySelector('.am-pm-option.active').textContent;
+
+            const formattedHour = hour.padStart(2, '0');
+            const formattedMinute = minute.padStart(2, '0');
+
+            document.getElementById('timeDisplay').value = `${formattedHour}:${formattedMinute} ${ampm}`;
+        }
+
+
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('show');
+            }
+        });
+
+        // Close calendar when clicking outside
+        document.addEventListener('click', function (event) {
+            const calendar = document.getElementById('customCalendar');
+            const dateInput = document.getElementById('eventDate');
+
+            if (calendar && dateInput && !calendar.contains(event.target) && event.target !== dateInput) {
+                calendar.classList.remove('show');
+            }
+        });
+
+        // Close time picker when clicking outside
+        document.addEventListener('click', function (event) {
+            const timePicker = document.getElementById('timePicker');
+            const timeInput = document.getElementById('timeDisplay');
+
+            if (timePicker && timeInput && !timePicker.contains(event.target) && event.target !== timeInput) {
+                timePicker.style.display = 'none';
+                timePicker.classList.remove('show');
+            }
+        });
+
+        // Initialize time display
+        function initTimeDisplay() {
+            updateTimeDisplay();
+        }
+
+        // Dashboard Calendar Widget Functions
+        let currentWidgetDate = new Date();
+        let calendarEvents = {
+            '2025-05-08': [{ title: 'Birthday', time: '12:30pm-1:30 pm', type: 'event' }],
+            '2025-05-17': [{ title: 'wedding', time: '12:30pm-1:30 pm', type: 'birthday' }]
+        };
+
+        function initDashboardCalendar() {
+            renderDashboardCalendar();
+        }
+
+        function renderDashboardCalendar() {
+            const calendarDays = document.getElementById('calendarDaysWidget');
+            const currentMonth = document.querySelector('.current-month');
+
+            const year = currentWidgetDate.getFullYear();
+            const month = currentWidgetDate.getMonth();
+
+            // Set month title
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            currentMonth.textContent = `${monthNames[month]} ${year}`;
+
+            // Clear previous days
+            calendarDays.innerHTML = '';
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            // Start from Monday (adjust Sunday=0 to Monday=0)
+            const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+            // Add previous month's trailing days
+            for (let i = adjustedFirstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const dayElement = createCalendarWidgetDay(day, 'other-month', year, month - 1);
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = createCalendarWidgetDay(day, 'current-month', year, month);
+
+                // Mark today
+                const today = new Date();
+                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                    const dayNumber = dayElement.querySelector('.day-number');
+                    dayNumber.classList.add('today');
+                }
+
+                calendarDays.appendChild(dayElement);
+            }
+
+            // Add next month's leading days
+            const totalCells = calendarDays.children.length;
+            const remainingCells = 42 - totalCells; // 6 rows × 7 days
+            for (let day = 1; day <= remainingCells && totalCells < 42; day++) {
+                const dayElement = createCalendarWidgetDay(day, 'other-month', year, month + 1);
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function createCalendarWidgetDay(day, monthType, year, month) {
+            const dayElement = document.createElement('div');
+            dayElement.className = `calendar-day-widget ${monthType}`;
+
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'day-number';
+            dayNumber.textContent = day;
+
+            const dayEvents = document.createElement('div');
+            dayEvents.className = 'day-events';
+
+            // Check for events on this day
+            if (monthType === 'current-month') {
+                const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const events = calendarEvents[dateKey];
+
+                if (events) {
+                    events.forEach(event => {
+                        const eventElement = document.createElement('div');
+                        eventElement.className = `day-event ${event.type}`;
+                        eventElement.textContent = `${event.title} ${event.time}`;
+                        eventElement.onclick = (e) => {
+                            e.stopPropagation();
+                            showEventDetail(event, dateKey);
+                        };
+                        dayEvents.appendChild(eventElement);
+                    });
+                }
+
+                dayElement.onclick = () => selectCalendarDay(day, month, year);
+            }
+
+            dayElement.appendChild(dayNumber);
+            dayElement.appendChild(dayEvents);
+
+            return dayElement;
+        }
+
+        function previousCalendarMonth() {
+            currentWidgetDate.setMonth(currentWidgetDate.getMonth() - 1);
+            renderDashboardCalendar();
+            updateNavigationButtons();
+        }
+
+        function nextCalendarMonth() {
+            currentWidgetDate.setMonth(currentWidgetDate.getMonth() + 1);
+            renderDashboardCalendar();
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+
+            const prevMonth = new Date(currentWidgetDate);
+            prevMonth.setMonth(prevMonth.getMonth() - 1);
+
+            const nextMonth = new Date(currentWidgetDate);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+            document.querySelector('.nav-btn').textContent = `< ${monthNames[prevMonth.getMonth()]}`;
+            document.querySelectorAll('.nav-btn')[1].textContent = `${monthNames[nextMonth.getMonth()]} >`;
+        }
+
+        function selectCalendarDay(day, month, year) {
+            console.log(`Selected day: ${day}/${month + 1}/${year}`);
+            // You can add day selection logic here
+        }
+
+        function showEventDetail(event, dateKey) {
+            // Populate event detail modal
+            document.getElementById('eventDetailTitle').textContent = event.title + ' Event';
+
+            // Convert date for display
+            const date = new Date(dateKey);
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+
+            document.getElementById('eventDetailTime').textContent = `${formattedDate} ${event.time}`;
+
+            showModal('eventDetailModal');
+        }
+
+        function editEventDetail() {
+            closeModal('eventDetailModal');
+            console.log('Edit event detail');
+        }
+
+        function deleteEventDetail() {
+            closeModal('eventDetailModal');
+            console.log('Delete event detail');
+        }
+
+        // RSVP functionality
+        function setRSVP(response) {
+            document.querySelectorAll('.rsvp-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            event.target.classList.add('active', response);
+            console.log(`RSVP set to: ${response}`);
+        }
+
+        function drawPieChart() {
+            const canvas = document.getElementById('pie-chart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 80;
+
+            // Data for pie chart
+            const data = [
+                { label: 'Wedding', value: 50, color: '#9B4431' },
+                { label: 'Corporate', value: 10, color: '#D4B5A0' },
+                { label: 'Birthday', value: 10, color: '#E8C4B0' },
+                { label: 'Baby Shower', value: 10, color: '#A67B5B' },
+                { label: 'Anniversary', value: 10, color: '#F5F2E8' },
+                { label: 'Graduation Party', value: 10, color: '#C19A6B' },
+                { label: 'Other Event', value: 10, color: '#DEB887' }
+            ];
+
+            let currentAngle = 0;
+
+            data.forEach(segment => {
+                const sliceAngle = (segment.value / 100) * 2 * Math.PI;
+
+                // Draw pie slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = segment.color;
+                ctx.fill();
+
+                // Draw border
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                currentAngle += sliceAngle;
+            });
+        }
+
+        // Draw Bar Chart
+        function drawBarChart() {
+            const canvas = document.getElementById('rsvpChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const chartWidth = canvas.width - 120;
+            const chartHeight = canvas.height - 80;
+            const startX = 60;
+            const startY = 40;
+
+            // Data for bar chart matching the image
+            const data = [
+                { label: 'Birthday', value: 45, color: '#E8C4B0' },
+                { label: 'Wedding', value: 95, color: '#9B4431' },
+                { label: 'Corporate', value: 60, color: '#D4B5A0' },
+                { label: 'Baby Shower', value: 40, color: '#E8C4B0' },
+                { label: 'Graduation', value: 75, color: '#9B4431' },
+                { label: 'Anniversary', value: 65, color: '#A67B5B' },
+                { label: 'Other', value: 80, color: '#E8C4B0' }
+            ];
+
+            const barWidth = 50;
+            const spacing = 65;
+            const maxValue = 100;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw bars with rounded corners
+            data.forEach((item, index) => {
+                const barHeight = (item.value / maxValue) * chartHeight;
+                const x = startX + index * spacing;
+                const y = startY + chartHeight - barHeight;
+                const radius = 25; // Rounded top
+
+                // Draw rounded rectangle
+                ctx.beginPath();
+                ctx.moveTo(x + radius, y);
+                ctx.lineTo(x + barWidth - radius, y);
+                ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
+                ctx.lineTo(x + barWidth, y + barHeight);
+                ctx.lineTo(x, y + barHeight);
+                ctx.lineTo(x, y + radius);
+                ctx.quadraticCurveTo(x, y, x + radius, y);
+                ctx.closePath();
+
+                ctx.fillStyle = item.color;
+                ctx.fill();
+
+                // Draw label
+                ctx.fillStyle = '#999';
+                ctx.font = '11px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(item.label, x + barWidth / 2, startY + chartHeight + 25);
+            });
+        }
+        function initializeCharts() {
+            setTimeout(() => {
+                drawPieChart();
+                drawBarChart();
+            }, 100);
+        }
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationsDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function (event) {
+            const notificationsDropdown = document.getElementById('notificationsDropdown');
+            const notificationIcon = document.querySelector('.notification-icon');
+
+            if (notificationsDropdown && !notificationsDropdown.contains(event.target) &&
+                !notificationIcon.contains(event.target)) {
+                notificationsDropdown.classList.remove('show');
+            }
+        });
+        // Mobile responsive sidebar
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+                sidebarCollapsed = true;
+            } else if (!sidebarCollapsed) {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Initialize responsive behavior
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on page load
+
+        // Add fade out animation for delete
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

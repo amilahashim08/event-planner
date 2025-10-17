@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .language-selector {
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link active"><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Event Detail</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+                <button class="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+        <!-- Content Area -->
+        <div class="content">
+
+            <div class="controls-section" id="Divone">
+
+                <div class="controls-row d-flex justify-content-between mb-3">
+                    <h5>Events</h5>
+                    <div>
+                        <div class="filter-controls">
+                            <p class="text-primary cursor-pointer text-underline" onclick="switchDocument()">Archived Events</p>
+                            <div class="date-filter">
+                                <input type="date" id="dateFilter" placeholder="Filter by Date">
+                            </div>
+                            <div class="search-bar">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchEvents()">
+                            </div>
+                            <button class="add-event-btn" onclick="window.location.href = 'add-event.html'">
+                                <i class="fas fa-plus"></i> Add Event
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Events Grid -->
+                <div class="events-grid" id="eventsGrid">
+                    <!-- Event Card 1 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(1)">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Wedding Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Wedding</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Klaus & Caroline Wedding</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 2 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(2)">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Birthday Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Birthday</b></span>
+                                </div>
+                                <div class="event-actions">
+                                    <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Emma's 10th Birthday</div>
+                            <div class="event-details">3 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 3 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(3)">
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Corporate Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Corporate</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Annual Conference</div>
+                            <div class="event-details">4 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 4 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(4)">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Baby Shower" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Baby Shower</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Samantha's Baby Shower</div>
+                            <div class="event-details">2 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 5 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(5)">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Graduation" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Graduation</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Caroline Graduation</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 6 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(6)">
+                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Wedding" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Wedding</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Mark & Alice Wedding</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 7 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(7)">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Corporate Dinner" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Corporate</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Annual Dinner</div>
+                            <div class="event-details">3 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 8 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(8)">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Family Dinner" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Dinner</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Family Dinner</div>
+                            <div class="event-details">1 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-section" id="Divtwo" style="display: none;">
+
+                <div class="controls-row d-flex justify-content-between mb-3">
+                    <h5>Archived Events</h5>
+                    <div>
+                        <div class="filter-controls">
+                            <p class="text-primary cursor-pointer text-underline" onclick="switchDocument()">Archived Events</p>
+                            <div class="date-filter">
+                                <input type="date" id="dateFilter" placeholder="Filter by Date">
+                            </div>
+                            <div class="search-bar">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchEvents()">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Events Grid -->
+                <div class="events-grid" id="eventsGrid">
+                    <!-- Event Card 1 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(1)">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Wedding Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Wedding</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Klaus & Caroline Wedding</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 2 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(2)">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Birthday Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Birthday</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Emma's 10th Birthday</div>
+                            <div class="event-details">3 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 3 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(3)">
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Corporate Event" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Corporate</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Annual Conference</div>
+                            <div class="event-details">4 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 4 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(4)">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Baby Shower" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Baby Shower</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Samantha's Baby Shower</div>
+                            <div class="event-details">2 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 5 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(5)">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Graduation" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Graduation</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Caroline Graduation</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 6 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(6)">
+                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Wedding" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Wedding</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Mark & Alice Wedding</div>
+                            <div class="event-details">5 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 7 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(7)">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Corporate Dinner" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Corporate</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Annual Dinner</div>
+                            <div class="event-details">3 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 8 -->
+                    <div class="event-card" onclick="window.location.href = 'event-detail.html'"
+                        onclick="selectEvent(8)">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                            alt="Family Dinner" class="event-image">
+                        <div class="event-content">
+                            <div class="event-header">
+                                <div class="event-type">
+
+                                    <span>Event Type: <b>Dinner</b></span>
+                                </div>
+                                <div class="event-actions">
+                                      <a href="#" class="action-btn text-primary" onclick="archiveEvent(1, event)"
+                                        data-bs-toggle="tooltip" title="Archive">
+                                        <i class="fa fa-archive"></i>
+                                    </a>
+                                    <button class="action-btn text-danger" onclick="deleteEvent(1, event)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button class="action-btn text-success" onclick="editEvent(1, event)">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="event-title">Family Dinner</div>
+                            <div class="event-details">1 Days Remaining</div>
+                            <div class="event-date">26/06/2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-overlay" id="deleteModal">
+            <div class="modal-content">
+                <div class="modal-icon ">
+                    <img src="./assets/images/alert.svg" />
+                </div>
+                <div class="modal-title mt-4 font-weight-bolder text-lg ">Are you sure you want to delete </div>
+                <div class="modal-title font-weight-bolder text-lg" id="deleteMessage">the project "Annual Conference" ?
+                </div>
+                <div class="modal-actions mt-4">
+                    <button class="modal-btn btn-primary" onclick="confirmDelete()">Yes, Delete It</button>
+                    <button class="modal-btn btn-secondary" onclick="closeModal('deleteModal')">Back</button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="successModal">
+            <div class="modal-content my-3">
+                <div class="modal-icon ">
+                    <img src="./assets/images/check.svg" />
+                </div>
+                <div class="modal-title  my-4 font-weight-bolder text-xl" id="successMessage">Annual Conference has been
+                    deleted<br /> Successfully !</div>
+                <div class="modal-actions">
+                    <button class="modal-btn btn-primary" onclick="closeModal('successModal')">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Limit Modal -->
+        <div class="modal-overlay" id="eventLimitModal">
+            <div class="modal-content">
+                <div class="modal-icon warning-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <div class="modal-title">You've Reached Your Event Limit</div>
+                <div class="modal-message">You've reached the event limit for your current plan.<br>Upgrade to add more
+                    events.</div>
+                <div class="modal-actions">
+                    <button class="modal-btn btn-secondary" onclick="closeModal('eventLimitModal')">Cancel</button>
+                    <button class="modal-btn btn-primary" onclick="changePlan()">Change Plan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function switchDocument() {
+            if (document.getElementById('Divone')) {
+
+                if (document.getElementById('Divone').style.display == 'none') {
+                    document.getElementById('Divone').style.display = 'block';
+                    document.getElementById('Divtwo').style.display = 'none';
+                }
+                else {
+                    document.getElementById('Divone').style.display = 'none';
+                    document.getElementById('Divtwo').style.display = 'block';
+                }
+            }
+        }
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('sidebar-collapsed');
+        }
+
+        // Navigation functionality
+        function navigateTo(module) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to clicked nav link
+            event.target.closest('.nav-link').classList.add('active');
+
+            // Update header title
+            const headerTitle = document.querySelector('.header-left h4');
+            headerTitle.textContent = module.charAt(0).toUpperCase() + module.slice(1);
+
+            // Here you would typically load different content based on the module
+            console.log(`Navigating to ${module}`);
+        }
+
+        // Search functionality
+        function searchEvents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const eventCards = document.querySelectorAll('.event-card');
+
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent.toLowerCase();
+                const type = card.querySelector('.event-type span').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || type.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Event card selection
+        function selectEvent(eventId) {
+            console.log(`Selected event: ${eventId}`);
+            // Here you would typically show event details or navigate to event page
+        }
+
+        // Edit event functionality
+        function editEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card selection
+            console.log(`Editing event: ${eventId}`);
+            alert(`Edit event ${eventId} - This would open an edit modal`);
+        }
+
+        // Delete event functionality
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card selection
+            console.log(`Deleting event: ${eventId}`);
+
+            if (confirm(`Are you sure you want to delete this event?`)) {
+                // Here you would typically make an API call to delete the event
+                const eventCard = event.target.closest('.event-card');
+                eventCard.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    eventCard.remove();
+                }, 300);
+            }
+        }
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+
+            // Close calendar if open
+            if (modalId === 'eventFormModal') {
+                document.getElementById('customCalendar').classList.remove('show');
+            }
+        }
+
+        // Event functionality
+        function selectEvent(eventId) {
+            console.log('Selected event:', eventId);
+            // Add your event selection logic here
+        }
+
+        function editEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Editing event:', eventId);
+
+            // Show success modal for update
+            document.getElementById('successMessage').textContent = 'Event details has been updated Successfully !';
+            showModal('successModal');
+        }
+
+        function deleteEvent(eventId, event) {
+            event.stopPropagation(); // Prevent card click
+            console.log('Deleting event:', eventId);
+
+            // Get event name from card
+            const eventCard = event.target.closest('.event-card');
+            const eventTitle = eventCard.querySelector('.event-title').textContent;
+
+            // Set delete modal content
+            currentDeleteEventId = eventId;
+            currentDeleteEventName = eventTitle;
+            document.getElementById('deleteMessage').textContent = `the project "${eventTitle}" ?`;
+
+            showModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            closeModal('deleteModal');
+
+            // Remove the event card from DOM
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent;
+                if (title === currentDeleteEventName) {
+                    card.remove();
+                }
+            });
+
+            // Show success modal
+            document.getElementById('successMessage').textContent = `${currentDeleteEventName} has been deleted Successfully !`;
+            showModal('successModal');
+        }
+
+        function addEvent() {
+            console.log('Adding new event');
+
+            // Random chance to show event limit modal (simulate limit reached)
+            if (Math.random() < 0.3) {
+                showModal('eventLimitModal');
+            } else {
+                showModal('eventTypeModal');
+            }
+        }
+
+        function changePlan() {
+            closeModal('eventLimitModal');
+            console.log('Redirecting to change plan...');
+        }
+
+
+        // Date filter functionality
+        document.getElementById('dateFilter').addEventListener('change', function () {
+            const selectedDate = this.value;
+            console.log(`Filtering by date: ${selectedDate}`);
+            // Here you would typically filter events by the selected date
+        });
+
+        // Auto-collapse sidebar on small screens
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+            }
+        }
+
+        // Initialize responsive behavior
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on page load
+
+        // Add fade out animation for delete
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

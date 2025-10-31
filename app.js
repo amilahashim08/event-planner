@@ -3426,25 +3426,72 @@ function createCanvasTable(tableData) {
   const canvas = document.getElementById("layoutCanvasArea");
   const tableElement = document.createElement("div");
 
+  // Base class
   tableElement.className = `canvas-table ${tableData.type}`;
+  tableElement.style.position = "absolute";
   tableElement.style.left = `${tableData.position.x}px`;
   tableElement.style.top = `${tableData.position.y}px`;
   tableElement.dataset.tableId = tableData.id;
 
+  // Count assigned guests
   const assignedGuests = tableData.guests
     ? tableData.guests.filter((g) => g !== null).length
     : 0;
 
+  // Inner HTML
   tableElement.innerHTML = `
-        <div class="table-name">${tableData.name}</div>
-        <div class="table-seats-count">${assignedGuests}/${tableData.seats}</div>
-    `;
+    <div class="table-name">${tableData.name}</div>
+    <div class="table-seats-count">${assignedGuests}/${tableData.seats}</div>
+  `;
 
+  // Style table shape dynamically
+  switch (tableData.type) {
+    case "circle":
+      tableElement.style.width = "100px";
+      tableElement.style.height = "100px";
+      tableElement.style.borderRadius = "50%";
+      tableElement.style.background = "#f8f9fa";
+      tableElement.style.border = "2px solid #444";
+      break;
+
+    case "square":
+      tableElement.style.width = "100px";
+      tableElement.style.height = "100px";
+      tableElement.style.borderRadius = "6px";
+      tableElement.style.background = "#f8f9fa";
+      tableElement.style.border = "2px solid #444";
+      break;
+
+    case "rectangle":
+      tableElement.style.width = "140px";
+      tableElement.style.height = "80px";
+      tableElement.style.borderRadius = "6px";
+      tableElement.style.background = "#f8f9fa";
+      tableElement.style.border = "2px solid #444";
+      break;
+
+    case "oval":
+      tableElement.style.width = "140px";
+      tableElement.style.height = "90px";
+      tableElement.style.borderRadius = "50%";
+      tableElement.style.background = "#f8f9fa";
+      tableElement.style.border = "2px solid #444";
+      break;
+
+    default:
+      tableElement.style.width = "120px";
+      tableElement.style.height = "80px";
+      tableElement.style.border = "2px solid #444";
+      tableElement.style.background = "#f8f9fa";
+  }
+
+  // Add to canvas
   canvas.appendChild(tableElement);
 
   // Make draggable
   makeTableDraggable(tableElement);
 }
+
 
 function makeTableDraggable(element) {
   let isDragging = false;

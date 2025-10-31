@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle with Popper (needed for modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons (for calendar/person/clock) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Flatpickr Date/Time Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <style>
+        /* inline panel (hidden until eye is clicked) */
+        #guestViewPanel.hidden {
+            display: none;
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .host-stack {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap
+        }
+
+        .host {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .host .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            object-fit: cover
+        }
+
+        .host .name {
+            font-weight: 800;
+            color: #243142;
+            line-height: 1.15
+        }
+
+        .host .email {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 2px
+        }
+
+        .pill {
+            background: var(--pill);
+            color: #fff;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-weight: 700
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px
+        }
+
+        @media (max-width: 992px) {
+            .cards {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .mini-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px
+        }
+
+        .mini-title {
+            font-weight: 800;
+            color: var(--title);
+            margin-bottom: 16px
+        }
+
+        .kv {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin: 8px 0
+        }
+
+        .kv .k {
+            min-width: 130px;
+            color: #3d4a5a;
+            font-weight: 700
+        }
+
+        .kv .v {
+            color: #2c3642
+        }
+
+        .desc-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            margin-top: 18px
+        }
+
+        .desc-title {
+            font-weight: 800;
+            color: var(--title);
+            margin-bottom: 10px
+        }
+
+        .desc-text {
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0
+        }
+
+        :root {
+            --bg-cream: #f4ecda;
+            --border: #e7e8ee;
+            /* outer lines */
+            --row: #ececf1;
+            /* inner lines */
+            --header-gray: #e9e9ec;
+            /* grey header bar */
+            --band-yellow: #f4fbce;
+            /* pale yellow band */
+            --label: #6e7b8a;
+            /* small left label color */
+            --band-yellow: #F1FFC1;
+            --band-purple: #EBC1FF;
+            /* Limpieza/Aseo */
+            --band-blue: #cfe0ff;
+            --band-purple: #EBC1FF;
+            --bg-cream: #f4ecda;
+            --grid-bd: #e7e8ee;
+            /* outer border */
+            --grid-row: #ececf1;
+            /* inner row lines */
+            --title: #b64b3c;
+            /* centered section title */
+            --band: #f4fbce;
+            /* pale yellow band */
+            --req: #f8d6ea;
+            /* pink requisites row */
+            --label: #3f5162;
+            /* label text (italic) */
+            --text: #1f2a36;
+            --cream: #f4ecda;
+            --card: #f3f5f7;
+            /* light card background */
+            --border: #e5e8ee;
+            --title: #3b4756;
+            --muted: #6b7686;
+            --pill: #a54e3e;
+        }
+
+        .band-title {
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .band.yellow {
+            background: var(--band-yellow);
+        }
+
+
+        .band.blue {
+            background: var(--band-blue);
+        }
+
+        .band.purple {
+            background: var(--band-purple);
+        }
+
+        .section-bar {
+            background: var(--header-bg);
+            color: var(--header-fg);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 14px 6px 10px;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+
+        .paper {
+            max-width: 980px;
+            margin: 24px auto;
+            background: #fff;
+            padding: 0 18px 22px;
+            border-radius: 10px;
+            box-shadow: 0 8px 22px rgba(16, 24, 40, .08);
+            border: 1px solid #e6edf2;
+        }
+
+        .grid {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0 0 18px;
+            background: #fff;
+        }
+
+        .grid th,
+        .grid td {
+            padding: 12px 12px;
+            font-size: 14px;
+            vertical-align: middle;
+            font-weight: 500;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--row);
+        }
+
+        .grid tr:last-child td {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .grid td:last-child {
+            border-right: none;
+        }
+
+        /* Left tiny label */
+        .left-label {
+            color: var(--label);
+            width: 32%;
+            line-height: 1.25;
+        }
+
+        /* Middle yellow band */
+        .band {
+            width: 18%;
+            background: var(--band-yellow);
+            text-align: center;
+            font-weight: 800;
+            color: #3b4756;
+        }
+
+        /* Right column (blank cells) */
+        .right {
+            width: 50%;
+        }
+
+        /* “Comentarios” header + box */
+        .comments-header {
+            background: var(--header-gray);
+            color: #3f5567;
+            font-style: italic;
+            font-weight: 700;
+            border-radius: 6px 6px 0 0;
+            padding: 10px 12px;
+            margin-top: 16px;
+        }
+
+        .comments-box {
+            height: 140px;
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            background: #fff;
+        }
+
+
+        .gv-card {
+            border: 1px solid var(--card-bd);
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* top banner */
+        .gv-hero-wrap {
+            padding: 8px;
+        }
+
+        .gv-hero {
+            height: 180px;
+            background: center/cover no-repeat;
+            border: 3px solid var(--accent-blue);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .gv-id {
+            position: absolute;
+            left: 16px;
+            top: 10px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+        }
+
+
+        /* Flex container for profile + details */
+        .gv-content {
+            display: flex;
+            justify-content: flex-start;
+            gap: 30px;
+        }
+
+        /* Profile Image */
+        #gv-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        table th {
+            text-align: center;
+            color: brown;
+            font-weight: 600;
+            padding: 8px;
+        }
+
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .category {
+            font-weight: 600;
+        }
+
+        /* Details Title */
+        .gv-details-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        /* Two-column layout inside details */
+        .gv-details {
+            display: grid;
+            grid-template-columns: 220px 220px;
+            gap: 15px 40px;
+        }
+
+        /* Key-value pairs */
+        .kv {
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #333;
+            min-width: 120px;
+        }
+
+        .value {
+            color: #444;
+        }
+
+        .left-col {
+            width: 25%;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .venue-col {
+            width: 20%;
+            text-align: center;
+            background: #f2f8cc;
+            /* light green background */
+            font-weight: bold;
+        }
+
+        .right-col {
+            width: 55%;
+        }
+
+        .category {
+            font-weight: 600;
+        }
+
+        /* Chips for status and response */
+        .chip {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .budget-actions .budget-dropdown {
+            min-width: 120px;
+        }
+
+        .budget-search input {
+            min-width: 160px;
+        }
+
+        .btn-brown {
+            background-color: #8b3c1a;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-brown:hover {
+            background-color: #6d2f14;
+        }
+
+        #gv-status {
+            background-color: #e8f9ef;
+            color: #3d9c67;
+        }
+
+        #gv-response {
+            background-color: #e8f9ef;
+            color: #3d9c67;
+        }
+
+        /* Rows section below details */
+
+
+        .row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .row-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .venue-col {
+            width: 20%;
+            text-align: center;
+            background: #f3f9d2;
+            /* light green background */
+            font-weight: bold;
+        }
+
+        .category {
+            font-weight: 600;
+        }
+
+        .plus {
+            width: 22px;
+            height: 22px;
+            background-color: #002aff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 28px;
+            padding: 0 10px;
+            border-radius: 14px;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 13px;
+            background: var(--g-bg);
+            color: var(--g-fg);
+            border: 1px solid var(--g-bd);
+            white-space: nowrap;
+        }
+
+        .rows {
+            margin-top: 8px;
+        }
+
+        .row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+        }
+
+        .row-item .name {
+            font-weight: 800;
+            color: #2b3540;
+        }
+
+        .plus {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--plus);
+            color: #fff;
+            font-size: 14px;
+            box-shadow: 0 0 0 3px rgba(47, 111, 255, .12);
+        }
+
+        @media (max-width: 768px) {
+            .gv-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body {
+            background: #F1EDE1;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #F1EDE1;
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .sidebar .logo {
+            padding: 24px 16px 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo img {
+            height: 40px;
+        }
+
+        .sidebar .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9B4431;
+            cursor: pointer;
+        }
+
+        .btn-outline-primary {
+            color: #9B4431;
+            border-color: #9B4431;
+        }
+
+        .sidebar .nav {
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .icon-btn {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 8px;
+            width: 36px;
+            height: 32px;
+            display: inline-grid;
+            place-items: center;
+        }
+
+        .budget-table th,
+        .budget-table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .budget-table input,
+        .budget-table select {
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .amount-negative input {
+            color: red;
+            font-weight: bold;
+        }
+
+        .amount-positive input {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-unpaid {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-paid {
+            color: green;
+            font-weight: bold;
+        }
+
+        .table-footer {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        /* a little more rounded */
+        .status-pill,
+        .btn-send-invite {
+            border-radius: 5px;
+            /* try 16px if you want slightly rounder */
+        }
+
+        .gv-card {
+            width: 850px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Hero Image Section */
+        .gv-hero-wrap {
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gv-hero {
+            width: 100%;
+            height: 100%;
+            background-image: url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* ID Label */
+        .gv-id {
+            position: absolute;
+
+            left: 15px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        /* Main Content Layout */
+        .gv-content {
+            display: grid;
+            grid-template-columns: 250px auto;
+            gap: 30px;
+            padding: 20px 25px;
+        }
+
+        /* Avatar */
+        #gv-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        /* Section Title */
+        .gv-details-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Key-Value Styling */
+        .kv {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .label {
+            width: 130px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .value {
+            color: #555;
+        }
+
+        /* Chips (Status / Response) */
+        .chip {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #gv-status {
+            background-color: #e7f8ed;
+            color: #2e8b57;
+        }
+
+        #gv-response {
+            background-color: #e7f8ed;
+            color: #2e8b57;
+        }
+
+        /* Rows Container */
+
+
+        .row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .row-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .plus {
+            font-size: 22px;
+            color: #fff !important;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .item-lock input {
+            transform: scale(1.2);
+        }
+
+        :root {
+            /* Attending (green) */
+            --g-fg: #56A866;
+            --g-bg: #EAF7EE;
+            --g-bd: #CFEAD7;
+
+            /* Not Attending (red) */
+            --r-fg: #D95C6B;
+            --r-bg: #FFE9EC;
+            --r-bd: #F6C9D1;
+
+            /* No Response (blue) */
+            --b-fg: #4E88D8;
+            --b-bg: #E8F2FF;
+            --b-bd: #C7DBF7;
+
+            --menu-bd: #E6EEF4;
+            --menu-shadow: 0 10px 24px rgba(16, 24, 40, .08);
+        }
+
+
+        th,
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #EAEFF4;
+        }
+
+        /* --- PILL SELECT --- */
+        .pill-select {
+            position: relative;
+            display: inline-block;
+        }
+
+        .pill-select .trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 30px;
+            padding: 0 12px;
+            border-radius: 5px;
+            border: 1px solid var(--bd);
+            background: var(--bg);
+            color: var(--fg);
+            font-weight: 700;
+            font-style: italic;
+            letter-spacing: .1px;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        /* color themes */
+        .pill-select.attending {
+            --fg: var(--g-fg);
+            --bg: var(--g-bg);
+            --bd: var(--g-bd);
+        }
+
+        .pill-select.not-attending {
+            --fg: var(--r-fg);
+            --bg: var(--r-bg);
+            --bd: var(--r-bd);
+        }
+
+        .pill-select.no-response {
+            --fg: var(--b-fg);
+            --bg: var(--b-bg);
+            --bd: var(--b-bd);
+        }
+
+        /* caret */
+        .pill-select .caret {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            opacity: .9;
+            transition: transform .18s ease;
+        }
+
+        .pill-select.open .caret {
+            transform: rotate(180deg);
+        }
+
+        /* dropdown menu */
+        .pill-select .menu {
+            position: absolute;
+            top: 36px;
+            left: 0;
+            z-index: 10;
+            min-width: 190px;
+            background: #fff;
+            border: 1px solid var(--menu-bd);
+            border-radius: 12px;
+            box-shadow: var(--menu-shadow);
+            padding: 8px;
+            display: none;
+        }
+
+        .pill-select.open .menu {
+            display: block;
+        }
+
+        .pill-select .menu li {
+            list-style: none;
+            margin: 0;
+            padding: 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pill-select .menu li:hover {
+            background: #F6F9FC;
+        }
+
+
+        .chip.green {
+            color: var(--g-fg);
+        }
+
+        .chip.red {
+            color: var(--r-fg);
+        }
+
+        .chip.blue {
+            color: var(--b-fg);
+        }
+
+        /* subtle focus */
+        .pill-select .trigger:focus-visible {
+            outline: 2px solid var(--bd);
+            outline-offset: 2px;
+        }
+
+        .faux-select,
+        .faux-select-btn {
+            max-width: 130px;
+            font-size: 14px;
+            height: 32px;
+            border: 1px solid #e7e7e7;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .faux-select-btn {
+            padding: 4px 28px 4px 10px;
+            position: relative;
+        }
+
+        .faux-select {
+            min-width: 120px;
+        }
+
+        .faux-select-btn {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            padding: 4px;
+        }
+
+        .dropdown-menu .active {
+            background-color: #f8d7da;
+            color: #000;
+        }
+
+        .faux-select-btn::after {
+            /* caret */
+            content: "\f282";
+            /* bi-caret-down-fill */
+            font-family: "bootstrap-icons";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .dropdown-menu {
+            border-radius: 12px;
+            border: 1px solid #eee;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+        }
+
+        .assignee-menu .dropdown-item {
+            font-size: 14px;
+            padding: .5rem .75rem;
+        }
+
+        .assignee-menu .dropdown-item.active,
+        .assignee-menu .dropdown-item:active {
+            background: #F8E3DB;
+            /* peach highlight like screenshot */
+            color: #7a4b3a;
+            font-weight: 600;
+        }
+
+        /* Flatpickr look */
+        .flatpickr-calendar {
+            border-radius: 12px !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08) !important;
+        }
+
+        .sidebar .nav-link {
+            color: #3B3F53;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #9B4431;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.collapsed~.main-content {
+            margin-left: 80px;
+        }
+
+        .budget-subtitle {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .budget-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .budget-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .budget-btn-download {
+            background: #ef4444;
+            color: white;
+        }
+
+        .budget-btn-download:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .budget-btn-excel {
+            background: #10b981;
+            color: white;
+        }
+
+        .budget-btn-excel:hover {
+            background: #059669;
+            color: white;
+        }
+
+        .budget-btn-add {
+            background: #B85C4F;
+            color: white;
+        }
+
+        .budget-btn-add:hover {
+            background: #a04c3f;
+            color: white;
+        }
+
+        .budget-section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .header {
+            background: #F1EDE1;
+            /* padding: 44px 32px 8px 32px; */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .module-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9B4431;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .language-selector {
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .profile-image img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #9B4431;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .template-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding-inline: 1.3rem;
+            border: none;
+            border-radius: 0;
+            /* background: transparent; */
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+
+        .template-tabs .nav-link.active {
+            color: #B85C4F;
+            border-bottom: 3px solid #B85C4F;
+            position: relative;
+        }
+
+        .tabs-bar {
+            background: #F1EDE1;
+            padding: 0 32px;
+            border-bottom: 1px solid #F1EDE1;
+        }
+
+        .tabs-list {
+            display: flex;
+            gap: 48px;
+            justify-content: flex-start;
+            margin-bottom: 0;
+        }
+
+        .tab-item {
+            color: #888;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0 0 16px 0;
+            background: none;
+            border: none;
+            outline: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-item.active {
+            color: #9B4431;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #9B4431;
+            border-radius: 2px;
+        }
+
+        .tab-item i {
+            font-size: 18px;
+        }
+
+        .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-footer {
+            border-top: none;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="./assets/images/sa.bbi (2).svg" alt="Logo">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            <a href="event.html" class="nav-link active"><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+            <a href="contact.html" class="nav-link"><i class="fas fa-users"></i> <span>Contacts</span></a>
+            <a href="template.html" class="nav-link"><i class="fas fa-file-alt"></i> <span>Templates</span></a>
+            <a href="setting.html" class="nav-link "><i class="fas fa-cog"></i> <span>Settings</span></a>
+        </nav>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <h6 class="">Event Detail</h6>
+            <div class="header-right">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-image">
+                    <img src="assets/images/image-4 (7).png" alt="User">
+                </div>
+                <button class="logout-btn" title="Logout" onclick="window.location.href = 'signin.html'"><i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+        <!-- Content Area -->
+        <div class="content">
+
+            <div class="card p-3">
+                <h2>Archivo General - Civil Template</h2>
+                <table>
+                    <thead>
+                    
+                        <tr class="section-title text-lg">
+                            <h6>Basic Information</h6>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="category">Novia y Novio</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="category">Fecha:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="category">Iglesia y Hora:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="category">Civil /Salón y Hora:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="category">Recepción /Salón y Hora:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="category">Cantidad de Invitados:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">Locación Civil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-note" rowspan="7">Puede ser antes <br />o despues de la misa.<br /> El
+                                montaje puede <br />ser tipo auditorio,<br /> media luna ó coctel.</td>
+                            <td class="col-band band yellow" rowspan="7">
+                                <div class="band-title">Venue</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Horas de contrato:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Cantidad de Invitados:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--  -->
+
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="3">Ailmentos y Bebidas </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-note" rowspan="3">
+                            </td>
+                            <td class="col-band band yellow" rowspan="3">
+                                <div class="band-title">Canapés</div>
+                            </td>
+
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-note" rowspan="3">
+
+                            </td>
+                            <td class="col-band band yellow" rowspan="3">
+                                <div class="band-title">Botana seca</div>
+                            </td>
+
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-note" rowspan="3">
+                                revisar si ocupan vino espumoso - el rango normal son $350 pesos
+                            </td>
+                            <td class="col-band band yellow" rowspan="3">
+                                <div class="band-title">Bebidas</div>
+                            </td>
+
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-val">Notas Importantes:</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="3">Autoridades y Participantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-note" rowspan="4">
+                            </td>
+                            <td class="col-band band yellow" rowspan="4">
+                                <div class="band-title">Juez</div>
+                            </td>
+
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Van a tener testigos de honor?</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-note" rowspan="3">
+
+                            </td>
+                            <td class="col-band band yellow" rowspan="3">
+                                <div class="band-title">Tramite de bienes separados</div>
+                            </td>
+
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Bienes separados?</td>
+                            <td class="col-val"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!--  -->
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="5">Decoración Civil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Carpas y cortinas -->
+                        <tr>
+                            <td class="col-note" rowspan="7">
+                                Todo se te puede<br>
+                                echar a perder en 5<br>
+                                minutos, le da más<br>
+                                formalidad al<br>
+                                evento.<br>
+                                Contemplar carpa<br>
+                                de invitados y<br>
+                                cocina también.
+                            </td>
+                            <td class="col-band band purple" rowspan="7">
+                                <div class="band-title ">Florista</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Concepto:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Plano/Layout::</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <!-- Entelados -->
+                        <tr>
+                            <td class="col-note" rowspan="3">
+                                brindis<br />botana
+                            </td>
+                            <td class="col-band band purple" rowspan="3">
+                                <div class="band-title">Checklist<br />Cristalería y Loza
+                                </div>
+                            </td>
+                            <td class="col-label">Copas Flauta</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Cucuruchos</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Otros</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+
+                        <!-- Checklist Tarimas -->
+                        <tr>
+                            <td class="col-note" rowspan="6"></td>
+                            <td class="col-band band purple" rowspan="6">
+                                <div class="band-title">Checklist<br>Mobiliario</div>
+                            </td>
+                            <td class="col-label">Sillas Novios </td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesa Novios</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Sillas Papás</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Atril Juez</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Sillas Auditorio (Invitados)</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">
+                                Otros
+                                - Atril Invitados de Honor
+                                - Sombrillas (de Mano ó Grandes)
+                                - Abanicos de Mano
+                                - Portacools
+                                - Calentadores
+                            </td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="6">
+
+                            </td>
+                            <td class="col-band band purple" rowspan="6">
+                                <div class="band-title"> Mobiliario 01</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="6">
+
+                            </td>
+                            <td class="col-band band purple" rowspan="6">
+                                <div class="band-title"> Mobiliario 02</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="5">
+                                <div class="band-title">Por lo regular en civiles no ocupamos mucho, a menos que sea se
+                                    noche, en exterior, en algún espacio externo a la recepción.</div>
+                            </td>
+                            <td class="col-band band purple" rowspan="5">
+                                <div class="band-title">Iluminación</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+
+
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="5">
+
+                            </td>
+                            <td class="col-band band yellow" rowspan="5">
+                                <div class="band-title">Mantelería y
+                                    Servilleteria
+                                    (Ojo: No olvidar
+                                    moyetones)</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="5"> </td>
+                            <td class="col-band band yellow" rowspan="5">
+                                <div class="band-title">Cristalería y Loza (Plato Base y
+                                    Copa/Vaso Agua)</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="5"> </td>
+                            <td class="col-band band yellow" rowspan="5">
+                                <div class="band-title">Cuchillería</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de montaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horario de desmontaje:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas importantes:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="7"> </td>
+                            <td class="col-band band yellow" rowspan="7">
+                                <div class="band-title"></div>
+                            </td>
+                            <td class="col-label">Atriles- Civil- Hostess</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesa para pastel:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesa para postres:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesa para quesos:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Barras - Pista - Individuales - Interior/Exterior</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mobiliario para coctel - Sombrillas - Sillas y Mesas Altas
+                                -
+                                Salitas Lounge"</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesa de novios:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="1">Siempre sugerimos que se sienten con los papás
+                                pues
+                                de esta manera no se complican para saber con quien sentarse y ademas le
+                                dedican
+                                la unica hora a las personas más importantes. </td>
+                            <td class="col-band band yellow" rowspan="1">
+                                <div class="band-title">Checklist Mobiliario</div>
+                            </td>
+                            <td class="col-label">Sillas de novios</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <!--  -->
+                        <tr>
+                            <td class="col-note" rowspan="7"> </td>
+                            <td class="col-band " rowspan="7">
+                                <div class="band-title"></div>
+                            </td>
+                            <td class="col-label">Sillas imperiales:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesas imperiales:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Sillas generales:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Mesas generales:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Sillas Músicos:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Cuchillo:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Otros:</td>
+                            <td class="col-val"></td>
+                            <td class="col-val2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!--  -->
+
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Gráficos Civil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Checklist Gráficos -->
+                        <tr>
+                            <td class="col-spacer" rowspan="4">
+                                Sugerencias de proveedores.
+                            </td>
+                            <td class="col-band band yellow" rowspan="4">
+                                <div class="band-title">Gráficos <br />Hojas de testigos de honor</div>
+                            </td>
+                            <td class="col-label">Entrega de lista por parte de novios:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Proveedor: </td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye: </td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-value"></td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+                <!--  -->
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Detalles Civil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Checklist Gráficos -->
+                        <tr>
+                            <td class="col-spacer" rowspan="4"></td>
+                            <td class="col-band band yellow" rowspan="4">
+                                <div class="band-title"></div>
+                            </td>
+                            <td class="col-label">Checklist Detalles</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Pluma </td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Copas especiales para novios </td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-value"></td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+                <!--  -->
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Musica y Audio Civil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Termos Novios -->
+                        <tr>
+                            <td class="col-left" rowspan="7">
+                                Sugerimos siempre que sea música en vivo para que pueda tener más percepción de los
+                                tiempos y momentos en los que estan firmando los testigos y no suene muy rudo el "on" y
+                                "off".
+                            </td>
+                            <td class="col-band band yellow" rowspan="7">
+                                <div class="band-title">Música</div>
+                            </td>
+                            <td class="col-label">Cantidad y tipo de elementos:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Horas de contrato:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Incluye Audio?</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Repertorio:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Quieren entrada de novios? </td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Requisitos (sillas, conexiones cerca?):</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-value"></td>
+                        </tr>
+
+                        <!-- Termos Invitados -->
+                        <tr>
+                            <td class="col-left" rowspan="5">
+                                Micrófono y bocina. Puede ser que lo incluya el salón o los músicos.
+                            </td>
+                            <td class="col-band band yellow" rowspan="5">
+                                <div class="band-title">Audio para el Juez</div>
+                            </td>
+                            <td class="col-label">Proveedor:</td>
+                            <td class="col-value"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-label">Incluye:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Hora de entrega:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Hora de recolección:</td>
+                            <td class="col-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Notas Importantes:</td>
+                            <td class="col-value"></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="9">Comentarios</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- Limpieza / Aseo -->
+                        <tr>
+                            <td class="left-note" rowspan="9"></td>
+                            <td class="band yellow" rowspan="9">Logística General</td>
+                            <td class="labels">Supervisión y recepción de cada proveedor, revisar acuerdos</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar boutonnieres a invitados</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Recibir florista y asegurarse que decoración está en su lugar</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Recibir a los músicos y avisar que tenemos música de entrada y de salida
+                            </td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Poner música de fondo (bajita) y asegurarnos de que funciona el microfono
+                            </td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Probar micrófono y audio</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Acomodar mobiliario:
+                                - Set de civil
+                                - Sillas invitados
+                                - Sillas músicos
+                                - Atril</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Pegar letreritos para separar lugares</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Asegurar que la iluminación está ubicada</td>
+                            <td class="value"></td>
+                        </tr>
+
+
+                        <!-- Valet Parking -->
+                        <tr>
+                            <td class="left-note" rowspan="3"></td>
+                            <td class="band blue" rowspan="3">Capitán</td>
+                            <td class="labels">Entregar copas especiales de novios a los capitanes</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar botana seca a capitanes ó asegurarse que tienen listos los
+                                canapes</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Asegurar que se este enfriando el vino espumoso</td>
+                            <td class="value"></td>
+                        </tr>
+
+
+                        <!-- Fumigación -->
+                        <tr>
+                            <td class="left-note" rowspan="5">
+
+                            </td>
+                            <td class="band blue" rowspan="5">Juez</td>
+                            <td class="labels">Entregar listas de testigos de honor y explicar cómo nombrar a todos</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar pluma</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar toallitas húmedas</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar votos</td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="labels">Entregar material de rituales: ________ </td>
+                            <td class="value"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="./app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        const GUESTS = {
+            'justin-wood': {
+                id: 1234,
+                first: 'Justin',
+                last: 'Wood',
+                prefix: 'Family',
+                whatsapp: '1234567890',
+                invites: 10,
+                status: 'Invited',
+                response: 'Attending',
+                hero: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop',
+                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&q=80'
+            }
+        };
+
+        // Attach to any eye buttons: <button class="js-view-guest" data-key="justin-wood"><i class="fa-regular fa-eye"></i></button>
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.js-view-guest');
+            if (!btn) return;
+            const key = btn.dataset.key || 'justin-wood';
+            openGuestView(GUESTS[key]);
+        });
+
+        function openGuestView(g) {
+            if (!g) return;
+            // Fill content
+            document.getElementById('gv-id').textContent = g.id;
+            document.getElementById('gv-first').textContent = g.first;
+            document.getElementById('gv-last').textContent = g.last;
+            document.getElementById('gv-prefix').textContent = g.prefix;
+            document.getElementById('gv-whatsapp').textContent = g.whatsapp;
+            document.getElementById('gv-invites').textContent = g.invites;
+            document.getElementById('gv-status').textContent = g.status;
+            document.getElementById('gv-response').textContent = g.response;
+            document.getElementById('gv-avatar').src = g.avatar;
+            document.getElementById('gv-hero').style.backgroundImage = `url('${g.hero}')`;
+
+            // Show panel & scroll into view
+            const panel = document.getElementById('guestViewPanel');
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Show panel, hide toolbar
+
+        flatpickr("#dueDateInput", {
+            dateFormat: "d/m/Y",
+            defaultDate: "24/05/2025",
+            allowInput: false,
+            altInput: true,
+            altFormat: "d/m/Y",
+            wrap: false,
+        });
+
+        flatpickr("#dueTimeInput", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: false, // use true for 24hr format
+            defaultHour: 7,
+            defaultMinute: 0
+        });
+
+        document.querySelectorAll(".assignee-dropdown .dropdown-item").forEach(item => {
+            item.addEventListener("click", function (e) {
+                e.preventDefault();
+                const selected = this.getAttribute("data-value");
+                document.getElementById("assigneeDropdown").innerText = selected;
+
+                // Mark selected as active
+                document.querySelectorAll(".assignee-dropdown .dropdown-item").forEach(el => el.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
+
+
+        // open / close
+        document.addEventListener('click', (e) => {
+            const select = e.target.closest('.pill-select');
+
+            // close all when clicking outside
+            if (!select) document.querySelectorAll('.pill-select.open')
+                .forEach(ps => close(ps));
+
+            // toggle this one
+            if (select && e.target.closest('.trigger')) {
+                select.classList.toggle('open');
+                select.querySelector('.trigger').setAttribute(
+                    'aria-expanded', String(select.classList.contains('open'))
+                );
+            }
+
+            // choose an option
+            if (select && e.target.closest('.menu li')) {
+                const item = e.target.closest('.menu li');
+                const val = item.getAttribute('data-status');
+
+                select.querySelector('.text').textContent = val;
+                const hidden = select.querySelector('input[type="hidden"]');
+                if (hidden) hidden.value = val;
+
+                select.classList.remove('attending', 'not-attending', 'no-response');
+                if (val === 'Attending') select.classList.add('attending');
+                else if (val === 'Not Attending') select.classList.add('not-attending');
+                else select.classList.add('no-response');
+
+                close(select);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape')
+                document.querySelectorAll('.pill-select.open').forEach(ps => close(ps));
+        });
+
+        function close(el) {
+            el.classList.remove('open');
+            const btn = el.querySelector('.trigger');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+
+
+
+        const fp = flatpickr("#dueDateInput", {
+            dateFormat: "d/m/Y",
+            defaultDate: "24/05/2025",
+            allowInput: false
+        });
+        document.getElementById("dateBtn").addEventListener("click", () => fp.open());
+
+        // Assignee selection
+        const assignBtn = document.getElementById("assigneeTrigger");
+        document.querySelectorAll(".assignee-menu .dropdown-item").forEach(item => {
+            item.addEventListener("click", (e) => {
+                e.preventDefault();
+                // update active style
+                document.querySelectorAll(".assignee-menu .dropdown-item").forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                // set label
+                assignBtn.textContent = item.dataset.value;
+            });
+        });
+
+        function switchDocument() {
+            if (document.getElementById('Divone')) {
+
+                if (document.getElementById('Divone').style.display == 'none') {
+                    document.getElementById('Divone').style.display = 'block';
+                    document.getElementById('Divtwo').style.display = 'none';
+                }
+                else {
+                    document.getElementById('Divone').style.display = 'none';
+                    document.getElementById('Divtwo').style.display = 'block';
+                }
+            }
+        }
+        function addContact() {
+            if (document.getElementById('Showcontact')) {
+
+                if (document.getElementById('Showcontact').style.display == 'none') {
+                    document.getElementById('Showcontact').style.display = 'block';
+                    document.getElementById('HideContact').style.display = 'none';
+                }
+                else {
+                    document.getElementById('Showcontact').style.display = 'none';
+                    document.getElementById('HideContact').style.display = 'block';
+                }
+            }
+        }
+        function switchTimeline() {
+            if (document.getElementById('Divnine')) {
+
+                if (document.getElementById('Divnine').style.display == 'none') {
+                    document.getElementById('Divnine').style.display = 'block';
+                    document.getElementById('Divtend').style.display = 'none';
+                }
+                else {
+                    document.getElementById('Divenine').style.display = 'none';
+                    document.getElementById('Divtend').style.display = 'block';
+                }
+            }
+        }
+
+        function switchGuestDetailDocument() {
+            if (document.getElementById('guestViewPanel')) {
+
+                if (document.getElementById('guestViewPanel').style.display == 'none') {
+                    document.getElementById('guestViewPanel').style.display = 'block';
+                    document.getElementById('guestViewContainer').style.display = 'none';
+                }
+                else {
+                    document.getElementById('guestViewPanel').style.display = 'none';
+                    document.getElementById('guestViewContainer').style.display = 'block';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

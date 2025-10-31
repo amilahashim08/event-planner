@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./assets/images/6.svg" />
+    <link rel="icon" type="image/png" href="./assets/images/sa.bbi.svg" />
+    <title>Event Management</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link id="pagestyle" href="./assets/css/soft-ui-dashboard.css?v=1.2.0" rel="stylesheet" />
+    <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <style>
+        .nav-link {
+            display: block;
+            padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+            font-size: var(--bs-nav-link-font-size);
+            font-weight: var(--bs-nav-link-font-weight);
+            color: var(--bs-nav-link-color);
+            background: none;
+            border: 0;
+            /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out; */
+        }
+
+        .form-select option:hover,
+        .form-select option:focus {
+            background-color: green !important;
+            color: white;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 20px;
+        }
+
+        .card-header {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .form-group {
+            flex-shrink: 0;
+        }
+
+        .popover {
+            background-color: #D9EDFF !important;
+            /* Blue background */
+            color: #343434 !important;
+            /* White text */
+            border-radius: 8px;
+            /* Rounded corners */
+            border: none !important;
+        }
+
+        .popover-header {
+            background-color: #D9EDFF !important;
+            /* Darker blue for header */
+            color: #343434 !important;
+            border-bottom: none !important;
+        }
+
+        .popover-body {
+            background-color: #D9EDFF !important;
+            /* Same blue as popover */
+            color: #343434 !important;
+        }
+
+        /* Arrow color */
+        .popover.bs-popover-right>.popover-arrow::before {
+            border-right-color: #D9EDFF !important;
+        }
+
+        .popover.bs-popover-right>.popover-arrow::after {
+            border-right-color: #D9EDFF !important;
+        }
+
+        .settings-tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-tooltip .tooltip-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            /* position below the icon */
+            right: 0;
+            background-color: #fff;
+            border-radius: 50px;
+            box-shadow: -20px 20px 40px #00000029;
+            z-index: 999;
+            padding: 10px 20px;
+            white-space: nowrap;
+        }
+
+        .settings-tooltip:hover .tooltip-menu {
+            display: block;
+        }
+
+        .tooltip-menu a {
+            text-decoration: none;
+            color: #14141436;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tooltip-menu a span {
+            color: #000;
+        }
+
+        .card .card-header {
+            padding: 1.1rem;
+            margin-inline: 44px;
+        }
+    </style>
+</head>
+
+<body class="g-sidenav-show" style="background-color: #F1EDE1 !important;">
+    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl  fixed-start  "
+        id="sidenav-main">
+
+        <div class="sidenav-header">
+            <img src="./assets/images/close-icon.png" alt="" class="position-absolute d-xl-none end-0 top-0 m-3"
+                id="closeSidebar" />
+            <i class="fas fa-times cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0 d-flex justify-content-center" href="index.html">
+                <img src="./assets/images/sa.bbi.svg" class="navbar-brand-img h-80 custom-logo" alt="main_logo" />
+            </a>
+        </div>
+        <div class="collapse navbar-collapse w-auto h-auto " id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link " aria-controls="dashboardsExamples" role="button">
+                        <div class="custom-icon-container">
+                            <img src="./assets/images/dashboard-unselect.svg" alt="" />
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+               <li class="nav-item">
+                    <a href="event-planner.html" class="nav-link " aria-controls="dashboardsExamples"
+                        role="button">
+                        <div class="custom-icon-container">
+                            <img src="./assets/images/CRM.svg" alt="" />
+                        </div>
+                        <span class="nav-link-text ms-1">Event Planners</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="subscription.html" class="nav-link active" aria-controls="dashboardsExamples" role="button">
+                        <div class="custom-icon-container">
+                            <img src="./assets/images/CRM (2).svg" alt="" />
+                        </div>
+                        <span class="nav-link-text ms-1">Subscriptions</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="setting.html" class="nav-link" aria-controls="dashboardsExamples" role="button">
+                        <div class="custom-icon-container">
+                            <img src="./assets/images/Settings.svg" alt="" />
+                        </div>
+                        <span class="nav-link-text ms-1">Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <nav class="navbar navbar-main navbar-expand-lg position-sticky pb-2  position-fixed  shadow-none  z-index-sticky"
+            id="navbarBlur" data-scroll="true"
+            style="top: 0; left: 0; right: 0; z-index: 1030; margin-inline: 26px; position: fixed;">
+            <div class="container-fluid py-1  px-3">
+
+                <nav aria-label="breadcrumb">
+
+                    <b class="text-sm italic">Event Planner</b>
+                </nav>
+                <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none mx-5 ">
+                    <a href="javascript:;" class="nav-link text-body p-0">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+
+                    </div>
+                    <ul class="navbar-nav  justify-content-end">
+
+                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-body " id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="fa fa-bell  text-lg cursor-pointer" aria-hidden="true"></i>
+                                <span
+                                    class="position-absolute   translate-middle badge rounded-pill bg-danger border border-white ">
+                                    <span class="large">2</span>
+                                    <span class="visually-hidden">unread notifications</span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4"
+                                aria-labelledby="dropdownMenuButton"
+                                style="max-height: 700px; overflow-y: auto; overflow-x: hidden;">
+                                <div class="px-2 pt-2 mb-0 pb-0">
+                                    <div class="d-flex justify-content-between mb-0 pb-0">
+                                        <h6 class="d-flex text-lg mb-0 pb-0" style="color: #39406E;">Notifications</h6>
+                                        <i class="fa-solid fa-check-double" style="color: #39406E;"></i>
+                                    </div>
+
+                                    <p class="mt-0 pt-0 text-sm">You have 5 unread notifications</p>
+                                </div>
+                                <hr class="horizontal dark my-0 py-0" />
+                                <span class="my-1">NEW</span>
+                                <li class="mb-1  " style="background-color: #eff5f5;">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-2">
+                                            <div
+                                                class="avatar avatar-md bg-light  me-3 align-items-center text-cneter rounded-circle my-auto">
+                                                <img src="./assets/images/background-1.png" />
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Lorem ipsum is a dummy text
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    <i class="fa fa-clock-o" aria-hidden="true"></i> 07 Sep 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mb-1  ">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-2">
+                                            <div
+                                                class="avatar avatar-md bg-light  me-3 align-items-center text-cneter rounded-circle my-auto">
+                                                <img src="./assets/images/background-2.png" />
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Lorem ipsum is a dummy text
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    07 Sep 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mb-1  ">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-2">
+                                            <div
+                                                class="avatar avatar-md bg-light  me-3 align-items-center text-cneter rounded-circle my-auto">
+                                                <img src="./assets/images/background-3.png" />
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Lorem ipsum is a dummy text
+
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    07 Sep 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mb-1  ">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-2">
+
+                                            <div
+                                                class="avatar avatar-md bg-light  me-3 align-items-center text-cneter rounded-circle my-auto">
+                                                <img src="./assets/images/background-4.png" />
+                                            </div>
+
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Lorem ipsum is a dummy text
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    07 Sep 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mb-1  ">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-2">
+                                            <div
+                                                class="avatar avatar-md bg-light  me-3 align-items-center text-cneter rounded-circle my-auto">
+                                                <img src="./assets/images/background-3.png" />
+                                            </div>
+
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    John Doe selected Bracelet. Proceed<br /> to purchase the gift.
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    07 Sep 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <hr class="horizontal dark my-1 " />
+                                <a href="#">
+                                    <p class="font-weight-bold  text-sm text-center text-decoration-underline"
+                                        style="color: #0000EE;">
+                                        View All </p>
+                                </a>
+                            </ul>
+                        </li>
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown d-flex align-items-center">
+                            <a href="#" class="nav-link w-100" id="profileDropdown" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <div class="avatar avatar-md bg-light align-items-center text-center rounded-circle">
+                                    <img src="./assets/images/background.png" />
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end px-2  me-sm-3 mt-1 custom-dropdown-position"
+                                style="border-radius: 5px;" aria-labelledby="profileDropdown">
+                                <li class="mb-2">
+                                    <a class="dropdown-item border-radius-md" href="index.html">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/images/logout-icon.png" alt="Logout" class="me-2">
+                                            <span>Logout</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-1">
+            <div class="card p-4">
+                <div class="d-lg-flex">
+                    <div>
+                        <h5 class="mb-0">Subscriptions</h5>
+                    </div>
+
+                </div>
+                <h6>Charge per event :</h6>
+                <div class="d-lg-flex">
+                    <div class="col-10 col-md-11">
+                        <input type="text" class="form-control" placeholder="Collins"
+                            style="background-color: #f0f0f021;" />
+                    </div>
+                    <div class="ms-auto">
+                        <button class="btn  btn-md btn-dark">Save </button>
+                    </div>
+                </div>
+                <div class="p-3" style="background-color: #F1EDE1;">
+                    <div class="d-flex justify-content-center flex-wrap">
+                        <div class="col-md-3">
+                            <div class="card pricing-card shadow-sm">
+                                <!-- Header -->
+                               <div class="card-header text-white position-relative card-header-custom">
+  <h5 class="mb-0 text-center w-100 cursor-pointer"
+      title="Edit Title"
+      onclick="window.location.href = 'subscription-detail.html'">
+    Basic ✏️
+  </h5>
+</div>
+
+
+                                <!-- Image -->
+                                <div class="position-relative">
+                                    <img src="./assets/images/subscription-card.png" class="card-img-top"
+                                        alt="basic-bg" style="    margin-top: -100px;" />
+                                    <!-- Circle Price -->
+                                    <div class="price-circle text-center">
+                                        <span class="price-amount text-xl">$10</span>
+                                        <span class="d-block price-subtext">per month</span>
+                                    </div>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="card-body text-center mt-8 mb-5 pt-3">
+                                    <h5 class="fw-bold text-dark font-weight-bolder mb-1">Can Manages Upto :</h5>
+                                    <p class="text-muted m-0 fw-semibold"><em>05 Events</em></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card pricing-card shadow-sm">
+                                <!-- Header -->
+                              <div class="card-header text-white position-relative card-header-custom">
+  <h5 class="mb-0 text-center w-100 cursor-pointer"
+      title="Edit Title"
+      onclick="window.location.href = 'subscription-detail.html'">
+    Pro ✏️
+  </h5>
+</div>
+
+
+                                <!-- Image -->
+                                <div class="position-relative">
+                                    <img src="./assets/images/subscription-card.png" class="card-img-top"
+                                        alt="basic-bg" style="    margin-top: -100px;" />
+                                    <!-- Circle Price -->
+                                    <div class="price-circle text-center">
+                                        <span class="price-amount text-xl">$50</span>
+                                        <span class="d-block price-subtext">per month</span>
+                                    </div>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="card-body text-center mt-8 mb-5 pt-3">
+                                    <h5 class="fw-bold text-dark font-weight-bolder mb-1">Can Manages Upto :</h5>
+                                    <p class="text-muted m-0 fw-semibold"><em>10 Events</em></p>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="col-md-3">
+                            <div class="card pricing-card shadow-sm">
+                                <!-- Header -->
+                         <div class="card-header text-white position-relative card-header-custom">
+  <h5 class="mb-0 text-center w-100 cursor-pointer"
+      title="Edit Title"
+      onclick="window.location.href = 'subscription-detail.html'">
+    Elite ✏️
+  </h5>
+</div>
+
+                                <!-- Image -->
+                                <div class="position-relative">
+                                    <img src="./assets/images/subscription-card.png" class="card-img-top"
+                                        alt="basic-bg" style="    margin-top: -100px;" />
+                                    <!-- Circle Price -->
+                                    <div class="price-circle text-center">
+                                        <span class="price-amount text-xl">$80</span>
+                                        <span class="d-block price-subtext">per month</span>
+                                    </div>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="card-body text-center mt-8 mb-5 pt-3">
+                                    <h5 class="fw-bold text-dark font-weight-bolder mb-1">Can Manages Upto :</h5>
+                                    <p class="text-muted m-0 fw-semibold"><em>20 Events</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal fade w-1000" id="AcceptModal" tabindex="-1" aria-labelledby="addContentModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="overflow: hidden; border: none">
+                        <div class="d-flex flex-column align-items-center pt-5 pb-3 px-3">
+                            <img src="./assets/images/checked.png" alt="" class="w-20" />
+                            <b class="mb-0 mt-3 text-dark"
+                                style=" font-size: 22px; text-align: center;    font-weight: 600;">
+                                "Connection request has been<br /> accepted Successfully"
+                            </b>
+                        </div>
+                        <div style="background-color: white; width: 100%"
+                            class="d-flex justify-content-center py-3 align-items-center gap-10">
+                            <button type="button" class="btn w-30  btn-info" data-bs-dismiss="modal" aria-label="Close">
+                                Continue
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="addContentModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="overflow: hidden; border: none">
+                        <div class="modal-header d-flex justify-content-between align-items-center">
+                            <h5 class="modal-title" id="addContentModalLabel">Reject Request</h5>
+                            <img src="./assets/images/close-icon.png" data-bs-dismiss="modal" aria-label="Close"
+                                style="cursor: pointer" alt="" />
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <label for="">Note</label>
+                                <textarea name="" id="" placeholder="Note" rows="5" class="form-control"></textarea>
+                            </form>
+                        </div>
+                        <div class="modal-footer" style="border-top: 0">
+                            <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script src="./assets/js/core/popper.min.js"></script>
+    <script src="./assets/js/core/bootstrap.min.js"></script>
+    <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="./assets/js/plugins/dragula/dragula.min.js"></script>
+    <script src="./assets/js/plugins/jkanban/jkanban.js"></script>
+    <script src="./assets/js/plugins/chartjs.min.js"></script>
+    <script src="./assets/js/plugins/threejs.js"></script>
+    <script src="./assets/js/plugins/orbit-controls.js"></script>
+    <script src="./assets/js/plugins/flatpickr.min.js"></script>
+    <script src="./assets/js/plugins/datatables.js"></script>
+
+    <script>
+        if (document.getElementById('products-list')) {
+            const dataTableSearch = new simpleDatatables.DataTable("#products-list", {
+                searchable: false,
+                fixedHeight: false,
+                perPage: 10
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+        });
+        if (document.getElementById('datatable-basic')) {
+            const dataTableSearch = new simpleDatatables.DataTable("#datatable-basic", {
+                searchable: true,
+                fixedHeight: true,
+                // perPage: ture
+            });
+        }
+    </script>
+
+    <script>
+        if (document.querySelector('.datetimepicker')) {
+            flatpickr('.datetimepicker', {
+                allowInput: true
+            }); // flatpickr
+        }
+
+
+    </script>
+
+    <script>
+        var win = navigator.platform.indexOf("Win") > -1;
+        if (win && document.querySelector("#sidenav-scrollbar")) {
+            var options = {
+                damping: "0.5",
+            };
+            Scrollbar.init(document.querySelector("#sidenav-scrollbar"), options);
+        }
+    </script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="./assets/js/soft-ui-dashboard.min.js?v=1.2.0"></script>
+</body>
+
+</html>

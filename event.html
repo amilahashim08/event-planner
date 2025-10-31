@@ -206,9 +206,27 @@
                     <div>
                         <div class="filter-controls">
                             <p class="text-primary cursor-pointer text-underline" onclick="switchDocument()">Archived Events</p>
-                            <div class="date-filter">
-                                <input type="date" id="dateFilter" placeholder="Filter by Date">
-                            </div>
+               <style>
+.date-filter input {
+  width: 200px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #555;
+}
+.date-filter input::placeholder {
+  color: #aaa;
+}
+</style>
+
+<div class="date-filter">
+  <input type="text" id="dateFilter" placeholder="Filter by Date"
+         onfocus="(this.type='date')" 
+         onblur="if(!this.value)this.type='text'">
+</div>
+
+
                             <div class="search-bar">
                                 <i class="fas fa-search search-icon"></i>
                                 <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchEvents()">
@@ -473,9 +491,25 @@
                     <div>
                         <div class="filter-controls">
                             <p class="text-primary cursor-pointer text-underline" onclick="switchDocument()">Archived Events</p>
-                            <div class="date-filter">
-                                <input type="date" id="dateFilter" placeholder="Filter by Date">
-                            </div>
+                                  <style>
+.date-filter input {
+  width: 200px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #555;
+}
+.date-filter input::placeholder {
+  color: #aaa;
+}
+</style>
+
+<div class="date-filter">
+  <input type="text" id="dateFilter" placeholder="Filter by Date"
+         onfocus="(this.type='date')" 
+         onblur="if(!this.value)this.type='text'">
+</div>
                             <div class="search-bar">
                                 <i class="fas fa-search search-icon"></i>
                                 <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchEvents()">

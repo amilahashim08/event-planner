@@ -1272,6 +1272,358 @@
             border-top: none;
             justify-content: center;
         }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .notes-header h5 {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .notes-header .btn-add {
+            background-color: #a4442e;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .notes-header .btn-add:hover {
+            background-color: #7e3323;
+        }
+
+        .notes-header a {
+            color: #5f5ac7;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .notes-header a:hover {
+            text-decoration: underline;
+        }
+
+        .note-card {
+            background: #fff;
+            border: 1.5px solid #d6a8a0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .note-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .note-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-initial {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .profile-initial.pink {
+            background-color: #f5b2b1;
+        }
+
+        .profile-initial.blue {
+            background-color: #c2c6f7;
+        }
+
+        .note-meta {
+            line-height: 1.2;
+        }
+
+        .note-meta h6 {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .note-meta small {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .note-content {
+            margin-top: 0.75rem;
+            color: #444;
+            font-size: 15px;
+        }
+
+        .note-actions {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .note-actions button {
+            border: none;
+            background: transparent;
+            color: #555;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .note-actions button:hover {
+            color: #000;
+        }
+
+        .tooltip-inner {
+            background-color: #333 !important;
+            color: #fff !important;
+        }
+
+        .tooltip.bs-tooltip-top .tooltip-arrow::before {
+            border-top-color: #333 !important;
+        }
+
+        .signature-section {
+            max-width: 400px;
+        }
+
+        .signature-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .signature-box {
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            width: 220px;
+            height: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signature-box img {
+            max-width: 100%;
+            max-height: 80px;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: #0029ff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .signature-info {
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .signature-info h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .signature-info span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signature-section {
+            max-width: 400px;
+        }
+
+        .signature-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .signature-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signature-box {
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            position: relative;
+            width: 220px;
+            height: 100px;
+            background: #fafafa;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .add-btn {
+            background: #0029ff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .signature-info {
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .signature-info h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .signature-info span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .quoted-items {
+            max-width: 900px;
+            margin: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quoted-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 2px solid #f5f5f5;
+            background: #fafafa;
+            font-weight: 600;
+        }
+
+        .quoted-header span {
+            background-color: #f7d9ff;
+            color: #b100ff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        thead th {
+            background: #fafafa;
+            text-align: left;
+            padding: 12px 20px;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #eee;
+        }
+
+        tbody td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f1f1f1;
+            color: #333;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .currency,
+        .price {
+            text-align: right;
+        }
+
+        .vat-row td {
+            color: #e67e22;
+            font-size: 13px;
+            border-bottom: none;
+        }
+
+        .total-row td {
+            font-weight: 600;
+            color: #b10000;
+            border-top: 2px solid #eee;
+            font-size: 15px;
+        }
+
+        .total-row td:last-child {
+            color: #000;
+            text-align: right;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .comments {
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .comments-box {
+            margin-top: 6px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 60px;
+            background: #fafafa;
+        }
     </style>
 </head>
 
@@ -1324,12 +1676,12 @@
                             Overview
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <!-- <li class="nav-item" role="presentation">
                         <button class="nav-link " id="file-tab" data-bs-toggle="tab" data-bs-target="#file"
                             type="button" role="tab">
                             Main File
                         </button>
-                    </li>
+                    </li> -->
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="checklist-tab" data-bs-toggle="tab" data-bs-target="#checklist"
                             type="button" role="tab">
@@ -1367,7 +1719,7 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes"
+                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#event-notes"
                             type="button" role="tab">
                             Notes
                         </button>
@@ -1518,9 +1870,31 @@
                                         Ex Ea Commodo Consequat.
                                     </p>
                                 </div>
-                            </div>
+                                <div class="desc-card" style="background-color: #F1EDE1;">
+                                    <div class="desc-title">Template Files</div>
+                                    <div class="d-flex gap-3">
+                                        <button class="btn  btn-md btn-outline-info bg-white text-decoration-underline"
+                                            onclick="window.location.href = 'Reception-Template.html'">Reception
+                                            Template </button>
+                                        <button class="btn  btn-md btn-outline-info bg-white text-decoration-underline"
+                                            onclick="window.location.href = 'Civil-Template.html'">Civil
+                                            Template </button>
+                                        <button class="btn  btn-md btn-outline-info bg-white text-decoration-underline"
+                                            onclick="window.location.href = 'Misa-Template.html'">MISA
+                                            Template </button>
+                                        <button class="btn  btn-md btn-outline-info bg-white text-decoration-underline"
+                                            onclick="window.location.href = 'Previos.html'">
+                                            Previos </button>
+                                        <button class="btn  btn-md btn-outline-info bg-white text-decoration-underline"
+                                            onclick="window.location.href = 'GeneralInfo-Template.html'">
+                                            Info General </button>
 
-                            <!-- Calendar -->
+                                    </div>
+
+
+
+                                </div>
+                            </div>
                             <div>
                                 <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="section-title text-dark mb-0">May 2025</h5>
@@ -1968,14 +2342,11 @@
                     <div class="card p-3">
                         <h2>Reception Template</h2>
                         <div class="section-title text-lg">Basic Information</div>
-
                         <table>
                             <thead>
                                 <tr>
-
                                     <td class="text-center section-title text-lg text-center">Archivo General -
                                         Recepción</td>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -2005,8 +2376,6 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
                         <table>
                             <thead>
                                 <tr>
@@ -4899,7 +5268,6 @@
 
                     </div>
                 </div>
-
                 <!-- Seating Arrangement Tab -->
                 <div class="tab-pane fade" id="seating" role="tabpanel">
                     <!-- Step 1: Seating Configuration Setup -->
@@ -4910,39 +5278,7 @@
                         <div class="seating-setup-section text-center py-5">
                             <!-- Seating Illustration -->
                             <div class="seating-illustration mb-4">
-                                <svg width="200" height="150" viewBox="0 0 200 150" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Table -->
-                                    <ellipse cx="100" cy="75" rx="50" ry="30" fill="#F5E6D3" stroke="#D4A574"
-                                        stroke-width="2" />
-                                    <!-- Table decoration -->
-                                    <circle cx="100" cy="75" r="8" fill="#E74C3C" />
-                                    <path d="M90 75 L95 70 L105 70 L110 75 L105 80 L95 80 Z" fill="#27AE60" />
-                                    <!-- Chairs -->
-                                    <rect x="45" y="60" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="45" y="55" width="15" height="8" rx="2" fill="#A0522D" />
-
-                                    <rect x="140" y="60" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="140" y="55" width="15" height="8" rx="2" fill="#A0522D" />
-
-                                    <rect x="85" y="35" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="85" y="30" width="15" height="8" rx="2" fill="#A0522D" />
-
-                                    <rect x="100" y="35" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="100" y="30" width="15" height="8" rx="2" fill="#A0522D" />
-
-                                    <rect x="85" y="105" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="85" y="125" width="15" height="8" rx="2" fill="#A0522D" />
-
-                                    <rect x="100" y="105" width="15" height="20" rx="3" fill="#8B4513" stroke="#654321"
-                                        stroke-width="1" />
-                                    <rect x="100" y="125" width="15" height="8" rx="2" fill="#A0522D" />
-                                </svg>
+                                <img src="./assets/images/chair.png" />
                             </div>
 
                             <div class="seating-form-section">
@@ -4951,11 +5287,11 @@
                                         <div class="row g-3 mb-4">
                                             <div class="col-6">
                                                 <input type="number" class="form-control" id="numberOfTables"
-                                                    placeholder="Number of tables" min="1" value="6">
+                                                    placeholder="Number of tables" min="1" value="">
                                             </div>
                                             <div class="col-6">
                                                 <input type="number" class="form-control" id="seatsPerTable"
-                                                    placeholder="Seats per table" min="1" value="10">
+                                                    placeholder="Seats per table" min="1" value="">
                                             </div>
                                         </div>
                                         <button class="btn btn-primary-custom"
@@ -4988,57 +5324,57 @@
                                         <h6 class="mb-1">Reception Guests</h6>
                                         <small class="text-muted"><span id="confirmedCount">2</span>
                                             Confirmed</small>
-                                        <div class="text-muted small mt-1">
-                                            <span class="fw-medium">Bride & Groom</span>
-                                            <span class="ms-2">Drag & Drop</span>
-                                        </div>
-                                    </div>
 
+                                    </div>
+                                    <div class="text-muted small mt-1">
+                                        <span class="fw-medium">Bride & Groom</span>
+                                        <span class="ms-2">Drag & Drop</span>
+                                    </div>
                                     <div class="guests-list" id="guestsList">
                                         <div class="guest-item draggable" draggable="true" data-guest="Klaus Mikaelson"
                                             data-role="Groom">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" checked>
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox" checked>
+                                            </div>
                                             <span class="guest-name">Klaus Mikaelson</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Caroline Forbes"
                                             data-role="Bride">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" checked>
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox" checked>
+                                            </div>
                                             <span class="guest-name">Caroline Forbes</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Tyler Collins"
                                             data-role="">
-                                         <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Tyler Collins</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Alan Powell"
                                             data-role="">
-                                          <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Alan Powell</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Justin Wood"
                                             data-role="">
                                             <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Justin Wood</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Jacob Evans"
                                             data-role="">
                                             <div class="item-lock">
-                                                <input type="checkbox" class="lock-checkbox" >
+                                                <input type="checkbox" class="lock-checkbox">
                                             </div>
                                             <span class="guest-name">Jacob Evans</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
@@ -5046,112 +5382,112 @@
                                         <div class="guest-item draggable" draggable="true" data-guest="Tom Meyer"
                                             data-role="">
                                             <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Tom Meyer</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Nicolas Palmer"
                                             data-role="">
-                                         <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Nicolas Palmer</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Jonathan Jones"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Jonathan Jones</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Joe Meyer"
                                             data-role="">
                                             <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Joe Meyer</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Dan Wallace"
                                             data-role="">
-                                          <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Dan Wallace</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Carmen Lee"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Carmen Lee</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Samantha Wheeler"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Samantha Wheeler</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Harvey Specter"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Harvey Specter</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Donna Paulsen"
                                             data-role="">
-                                          <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Donna Paulsen</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Mike Ross"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Mike Ross</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Rachel Zane"
                                             data-role="">
-                                          <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Rachel Zane</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Jessica Pearson"
                                             data-role="">
-                                           <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Jessica Pearson</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Alex Williams"
                                             data-role="">
-                                         <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Alex Williams</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
                                         <div class="guest-item draggable" draggable="true" data-guest="Katrina Bennett"
                                             data-role="">
-                                          <div class="item-lock">
-                                            <input type="checkbox" class="lock-checkbox" >
-                                        </div>
+                                            <div class="item-lock">
+                                                <input type="checkbox" class="lock-checkbox">
+                                            </div>
                                             <span class="guest-name">Katrina Bennett</span>
                                             <i class="fas fa-grip-vertical text-muted ms-auto"></i>
                                         </div>
@@ -5184,8 +5520,7 @@
                                 <!-- Layout Sidebar -->
                                 <div class="layout-sidebar">
                                     <div class="layout-tabs mb-3">
-                                        <button class="btn btn-primary-custom btn-sm active"
-                                            id="libraryTab">Library</button>
+                                        <button class="btn btn-primary-custom btn-sm " id="libraryTab">Library</button>
                                         <button class="btn btn-outline-secondary btn-sm" id="guestsTab">Guests</button>
                                     </div>
 
@@ -5202,7 +5537,37 @@
                                                 <option>Rectangle Table</option>
                                             </select>
                                         </div>
+                                        <div class="mb-3">
+                                            <select class="form-select form-select-sm">
+                                                <option>30' Round</option>
+                                                <option>36' Round</option>
+                                                <option>48' Round</option>
+                                                <option>60' Round</option>
+                                                <option>72' Round</option>
+                                                <option>60' half Round</option>
+                                                <option>4' x 30' Long</option>
+                                                <option>6' x 30' Long</option>
+                                                <option>8' x 30' Long</option>
+                                                <option>8' x 40' Queen</option>
+                                                <option>8' x 42' long</option>
+                                                <option>30' Square</option>
+                                                <option>36' Square</option>
+                                                <option>60' Square</option>
+                                                <option>72' Square</option>
+                                                <option>24' Highboy</option>
+                                                <option>30' Highboy</option>
+                                                <option>36' Highboy</option>
+                                                <option>60' Sweetheart Table</option>
+                                                <option>48' Sweetheart Table</option>
+                                                <option>6' x 24'Classroom</option>
+                                                <option>6' x 18' Classroom</option>
+                                                <option>8' x 18' Classroom</option>
+                                                <option>4' Serpentine</option>
+                                                <option>5' Serpentine</option>
+                                                <option>7' Serpentine</option>
 
+                                            </select>
+                                        </div>
                                         <div class="section-subtitle mb-2">Your Tables</div>
                                         <div class="tables-list" id="canvasTablesList">
                                             <!-- Tables list will be populated here -->
@@ -5233,7 +5598,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Design Studio Tab -->
                 <div class="tab-pane fade" id="design" role="tabpanel">
                     <!-- Initial Design Studio View -->
@@ -5243,32 +5607,7 @@
                         <!-- Design Studio Illustration -->
                         <div class="design-studio-container text-center py-5">
                             <div class="design-illustration mb-4">
-                                <svg width="200" height="150" viewBox="0 0 200 150" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Desk -->
-                                    <rect x="20" y="100" width="160" height="40" fill="#F5E6D3" stroke="#D4A574"
-                                        stroke-width="2" />
-                                    <!-- Monitor -->
-                                    <rect x="60" y="60" width="80" height="50" fill="#2C3E50" stroke="#34495E"
-                                        stroke-width="2" />
-                                    <rect x="65" y="65" width="70" height="35" fill="#E74C3C" />
-                                    <!-- Monitor Stand -->
-                                    <rect x="95" y="110" width="10" height="15" fill="#7F8C8D" />
-                                    <!-- Person -->
-                                    <circle cx="140" cy="45" r="12" fill="#F4A261" />
-                                    <rect x="135" y="55" width="10" height="25" fill="#E76F51" />
-                                    <rect x="130" y="60" width="5" height="15" fill="#E76F51" />
-                                    <rect x="145" y="60" width="5" height="15" fill="#E76F51" />
-                                    <!-- Chair -->
-                                    <rect x="125" y="80" width="30" height="30" fill="#8B4513" />
-                                    <!-- Clock -->
-                                    <circle cx="45" cy="40" r="15" fill="#FFF" stroke="#DDD" stroke-width="2" />
-                                    <line x1="45" y1="40" x2="45" y2="32" stroke="#333" stroke-width="2" />
-                                    <line x1="45" y1="40" x2="50" y2="40" stroke="#333" stroke-width="1" />
-                                    <!-- Plant -->
-                                    <rect x="170" y="90" width="8" height="20" fill="#8B4513" />
-                                    <path d="M174 90 Q168 85 170 80 Q174 85 178 80 Q180 85 174 90" fill="#27AE60" />
-                                </svg>
+                                <img src="./assets/images/Group 60049.png" />
                             </div>
 
                             <div class="design-studio-actions">
@@ -5300,8 +5639,8 @@
                                     New
                                     Style
                                     Guide</button>
-                                <button class="btn btn-primary-custom btn-sm" id="addImagesGalleryBtn">Add
-                                    Images</button>
+                                <!-- <button class="btn btn-primary-custom btn-sm add-images-btn" id="addImagesGalleryBtn">Add
+                                    Images</button> -->
                                 <button class="btn btn-outline-warning btn-sm ms-2" id="favoriteBtn">
                                     <i class="fas fa-star"></i>
                                 </button>
@@ -5483,7 +5822,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Budget Tab -->
                 <div class="tab-pane fade" id="budget" role="tabpanel">
                     <div class="section-card" id="Divone">
@@ -5492,32 +5830,7 @@
                         <!-- Design Studio Illustration -->
                         <div class="design-studio-container text-center py-5">
                             <div class="design-illustration mb-4">
-                                <svg width="200" height="150" viewBox="0 0 200 150" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Desk -->
-                                    <rect x="20" y="100" width="160" height="40" fill="#F5E6D3" stroke="#D4A574"
-                                        stroke-width="2" />
-                                    <!-- Monitor -->
-                                    <rect x="60" y="60" width="80" height="50" fill="#2C3E50" stroke="#34495E"
-                                        stroke-width="2" />
-                                    <rect x="65" y="65" width="70" height="35" fill="#E74C3C" />
-                                    <!-- Monitor Stand -->
-                                    <rect x="95" y="110" width="10" height="15" fill="#7F8C8D" />
-                                    <!-- Person -->
-                                    <circle cx="140" cy="45" r="12" fill="#F4A261" />
-                                    <rect x="135" y="55" width="10" height="25" fill="#E76F51" />
-                                    <rect x="130" y="60" width="5" height="15" fill="#E76F51" />
-                                    <rect x="145" y="60" width="5" height="15" fill="#E76F51" />
-                                    <!-- Chair -->
-                                    <rect x="125" y="80" width="30" height="30" fill="#8B4513" />
-                                    <!-- Clock -->
-                                    <circle cx="45" cy="40" r="15" fill="#FFF" stroke="#DDD" stroke-width="2" />
-                                    <line x1="45" y1="40" x2="45" y2="32" stroke="#333" stroke-width="2" />
-                                    <line x1="45" y1="40" x2="50" y2="40" stroke="#333" stroke-width="1" />
-                                    <!-- Plant -->
-                                    <rect x="170" y="90" width="8" height="20" fill="#8B4513" />
-                                    <path d="M174 90 Q168 85 170 80 Q174 85 178 80 Q180 85 174 90" fill="#27AE60" />
-                                </svg>
+                                <img src="./assets/images/Group 60049.png" />
                             </div>
 
                             <div class="design-studio-actions">
@@ -6137,8 +6450,6 @@
                         </button>
                     </div> -->
                 </div>
-
-
                 <!-- Contacts Tab -->
                 <div class="tab-pane fade" id="contacts" role="tabpanel">
                     <div class="section-card " id="Showcontact">
@@ -6282,8 +6593,7 @@
                     <div id="HideContact" class="section-card" style="display:none;">
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <!-- <button class="back-btn" id="backBtn" aria-label="Back"></button> -->
-                            <i
-                                    class="fa-solid fa-arrow-left" id="backBtn"></i>
+                            <i class="fa-solid fa-arrow-left" id="backBtn"></i>
                             <div class="page-title">Add New Contact</div>
                         </div>
 
@@ -6409,37 +6719,6 @@
                     </div>
                 </div>
 
-                <!-- Notes Tab -->
-                <div class="tab-pane fade" id="notes" role="tabpanel">
-                    <div class="template-header">
-                        <h2>Notes</h2>
-                        <div class="template-controls">
-                            <div class="filter-dropdown">
-                                <select id="notesEventFilter">
-                                    <option value="">Filter by Event</option>
-                                    <option value="wedding">Wedding</option>
-                                    <option value="birthday">Birthday Party</option>
-                                    <option value="corporate">Corporate Event</option>
-                                    <option value="baby-shower">Baby Shower</option>
-                                    <option value="anniversary">Anniversary</option>
-                                </select>
-                            </div>
-                            <div class="search-box">
-                                <i class="fas fa-search search-icon"></i>
-                                <input type="text" placeholder="Search..." id="notesSearch">
-                            </div>
-                            <button class="create-template-btn" data-bs-toggle="modal"
-                                data-bs-target="#createNotesTemplateModal">
-                                Create New Template
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="notes-grid" id="notesGrid">
-                        <!-- Notes cards populated by JavaScript -->
-                    </div>
-                </div>
-
                 <!-- Documents Tab -->
                 <div class="tab-pane fade" id="documents" role="tabpanel">
                     <div class="section-card">
@@ -6463,10 +6742,10 @@
                                 <table class="table table-borderless align-middle" style="background:#fff;">
                                     <thead style="background:#F8F6F2;">
                                         <tr style="color:#444; font-weight:600;">
-                                            <th style="width:10%;">ID</th>
-                                            <th style="width:30%;">Title</th>
-                                            <th style="width:30%;">Attachment</th>
-                                            <th style="width:30%;">Action</th>
+                                            <th class="text-start">ID</th>
+                                            <th class="text-start">Title</th>
+                                            <th class="text-start">Attachment</th>
+                                            <th class="text-start">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -6555,57 +6834,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>1234</td>
-                                            <td>Proposal</td>
-                                            <td><a href="#" style="color:#4169E1; text-decoration:underline;"
-                                                    onclick="showDocumentScreen('proposal')">Document 6</a>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <button class="btn btn-sm btn-outline-primary" title="Edit"><i
-                                                            class="fa fa-edit"></i></button>
-                                                    <button class="btn btn-sm btn-outline-success" title="Download"><i
-                                                            class="fa fa-download"></i></button>
-                                                    <button class="btn btn-sm btn-outline-danger" title="Delete"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1234</td>
-                                            <td>Quote</td>
-                                            <td><a href="#" style="color:#4169E1; text-decoration:underline;"
-                                                    onclick="showDocumentScreen('quote')">Document 7</a>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <button class="btn btn-sm btn-outline-primary" title="Edit"><i
-                                                            class="fa fa-edit"></i></button>
-                                                    <button class="btn btn-sm btn-outline-success" title="Download"><i
-                                                            class="fa fa-download"></i></button>
-                                                    <button class="btn btn-sm btn-outline-danger" title="Delete"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1234</td>
-                                            <td>Contract</td>
-                                            <td><a href="#" style="color:#4169E1; text-decoration:underline;"
-                                                    onclick="showDocumentScreen('contract')">Document 8</a>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <button class="btn btn-sm btn-outline-primary" title="Edit"><i
-                                                            class="fa fa-edit"></i></button>
-                                                    <button class="btn btn-sm btn-outline-success" title="Download"><i
-                                                            class="fa fa-download"></i></button>
-                                                    <button class="btn btn-sm btn-outline-danger" title="Delete"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -6613,15 +6842,73 @@
                     </div>
                 </div>
 
+                <div class="tab-pane fade" id="event-notes" role="tabpanel">
+                    <div class="section-card">
+                        <div class="notes-header">
+                            <h5>Notes</h5>
+                            <div class="d-flex align-items-center gap-3">
+                                <a href="#">📁 Archived</a>
+                                <button class="btn-add">Add Notes</button>
+                            </div>
+                        </div>
 
-                <!-- Document Detail Screens -->
-                <!-- Proposal Detail Screen -->
+                        <div class="note-card ">
+                            <div class="note-actions">
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" title="Attachment"><i
+                                        class="bi bi-paperclip"></i></button>
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
+                                        class="bi bi-pencil"></i></button>
+                            </div>
+                            <div class="note-header">
+                                <div class="profile-initial pink">CF</div>
+                                <div class="note-meta">
+                                    <h6>Caroline Forbes</h6>
+                                    <small>25/05/2025</small>
+                                </div>
+                            </div>
+                            <div class="note-content mt-2">
+                                This vendor was selected for the Johnson wedding on June 14th. Please coordinate
+                                setup at the venue by 10:00 AM.
+                                Client prefers a pastel-themed arrangement with white roses and eucalyptus. All
+                                communication should go through the planner.
+                                Payment scheduled 50% upfront, balance on event day.
+                            </div>
+                        </div>
+
+                        <div class="note-card p-2">
+                            <div class="note-actions">
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                        class="bi bi-trash"></i></button>
+                                <button data-bs-toggle="tooltip" data-bs-placement="top" title="Archive"><i
+                                        class="bi bi-archive"></i></button>
+                            </div>
+                            <div class="note-header">
+                                <div class="profile-initial blue">KM</div>
+                                <div class="note-meta">
+                                    <h6>Klaus Mikaelson</h6>
+                                    <small>25/05/2025</small>
+                                </div>
+                            </div>
+                            <div class="note-content mt-2">
+                                This vendor was selected for the Johnson wedding on June 14th. Please coordinate
+                                setup at the venue by 10:00 AM.
+                                Client prefers a pastel-themed arrangement with white roses and eucalyptus. All
+                                communication should go through the planner.
+                                Payment scheduled 50% upfront, balance on event day.
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
                 <div class="tab-pane fade" id="proposalDetail" role="tabpanel" style="display: none;">
                     <div class="document-detail-header">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Proposal</h3>
+                            <h3 class="document-type-title text-white">Proposal</h3>
                         </div>
                         <button class="btn-back" onclick="backToDocuments()" aria-label="Back">
                             <i class="fas fa-arrow-left"></i>
@@ -6688,6 +6975,33 @@
                                 Eiusmod
                                 Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
                         </div>
+
+
+
+
+
+                        <div class="signature-section">
+                            <label class="signature-label">Signature</label>
+
+                            <div class="signature-container">
+                                <div class="signature-box">
+                                    <span class="remove-btn" onclick="clearSignature()">x</span>
+                                    <canvas id="signaturePad " class="text-dark"></canvas>
+                                </div>
+
+                                <button class="add-btn" onclick="addSignature()">+</button>
+                            </div>
+
+                            <div class="signature-info">
+                                <h6>John Doe</h6>
+                                <span>Event Manager</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-start mb-4">
+
+                            <button type="submit" class="btn btn-primary px-4">Save Proposal</button>
+                        </div>
                     </div>
                 </div>
 
@@ -6697,7 +7011,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Contract</h3>
+                            <h3 class="document-type-title text-white">Contract</h3>
                         </div>
                         <button class="btn-back" onclick="backToDocuments()" aria-label="Back">
                             <i class="fas fa-arrow-left"></i>
@@ -6715,13 +7029,27 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Client Name :</label>
+                                    <label class="detail-label">Party A Name :</label>
                                     <span class="detail-value">John Doe</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="detail-label">Party B Name :</label>
+                                    <span class="detail-value">Roger Mendez</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <label class="detail-label">Effective Date :</label>
+                                    <span class="detail-value">05 June 2025</span>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <label class="detail-label">Timeline :</label>
@@ -6730,17 +7058,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="detail-item">
-                                    <label class="detail-label">Pricing :</label>
-                                    <span class="detail-value">$ 10,000</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="section-content mb-4">
-                            <h6 class="section-subtitle mb-3">Contract Terms</h6>
+                            <h6 class="section-subtitle mb-3">Executive Summary</h6>
                             <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
                                 Eiusmod
                                 Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis
@@ -6749,10 +7068,45 @@
                         </div>
 
                         <div class="section-content">
-                            <h6 class="section-subtitle mb-3">Payment Terms</h6>
+                            <h6 class="section-subtitle mb-3">Terms and Conditions</h6>
                             <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
                                 Eiusmod
                                 Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
+                        </div>
+                        <div class="attachment-section">
+                            <h6 class="section-subtitle mb-3">Attachment</h6>
+                            <div class="attachment-files">
+                                <div class="attachment-item">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                    <span class="attachment-name">Doc01.pdf</span>
+                                </div>
+                                <div class="attachment-item">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                    <span class="attachment-name">Doc02.pdf</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="signature-section">
+                            <label class="signature-label">Signature</label>
+
+                            <div class="signature-container">
+                                <div class="signature-box">
+                                    <span class="remove-btn" onclick="clearSignature()">x</span>
+                                    <canvas id="signaturePad " class="text-dark"></canvas>
+                                </div>
+
+                                <button class="add-btn" onclick="addSignature()">+</button>
+                            </div>
+
+                            <div class="signature-info">
+                                <h6>John Doe</h6>
+                                <span>Event Manager</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-start mb-4">
+
+                            <button type="submit" class="btn btn-primary px-4">Save Proposal</button>
                         </div>
                     </div>
                 </div>
@@ -6763,7 +7117,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Quote</h3>
+                            <h3 class="document-type-title text-white">Quote</h3>
                         </div>
                         <button class="btn-back" onclick="backToDocuments()" aria-label="Back">
                             <i class="fas fa-arrow-left"></i>
@@ -6790,46 +7144,66 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Timeline :</label>
-                                    <span class="detail-value">10 June 2025 - 20 June 2025</span>
+                                    <label class="detail-label">Quote Date :</label>
+                                    <span class="detail-value">05 June 2025</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="detail-item">
-                                    <label class="detail-label">Pricing :</label>
-                                    <span class="detail-value">$ 10,000</span>
-                                </div>
-                            </div>
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Description</th>
+                                    <th class="currency">Currency</th>
+                                    <th class="price">Price</th>
+                                </tr>
+                            </thead>
 
-                        <div class="section-content mb-4">
-                            <h6 class="section-subtitle mb-3">Quote Summary</h6>
-                            <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis
-                                Nostrud
-                                Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat.</p>
-                        </div>
+                            <tbody>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
 
+                                <tr class="vat-row">
+                                    <td colspan="4">A 16% VAT Or Some Type Of Tax Needs To Be Added.</td>
+                                </tr>
+
+                                <tr class="total-row">
+                                    <td colspan="3" style="text-align: right;">Total :</td>
+                                    <td>₱ 11,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="section-content">
-                            <h6 class="section-subtitle mb-3">Services Included</h6>
+                            <h6 class="section-subtitle mb-3">Additional Comments</h6>
                             <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
+                                Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
                         </div>
                     </div>
                 </div>
-
                 <!-- Invoice Detail Screen -->
                 <div class="tab-pane fade" id="invoiceDetail" role="tabpanel" style="display: none;">
                     <div class="document-detail-header">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Invoice</h3>
+                            <h3 class="document-type-title text-white">Invoice</h3>
                         </div>
                         <button class="btn-back" onclick="backToDocuments()" aria-label="Back">
                             <i class="fas fa-arrow-left"></i>
@@ -6856,35 +7230,56 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Timeline :</label>
-                                    <span class="detail-value">10 June 2025 - 20 June 2025</span>
+                                    <label class="detail-label">Billing Date :</label>
+                                    <span class="detail-value">20 June 2025</span>
                                 </div>
                             </div>
                         </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Description</th>
+                                    <th class="currency">Currency</th>
+                                    <th class="price">Price</th>
+                                </tr>
+                            </thead>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="detail-item">
-                                    <label class="detail-label">Pricing :</label>
-                                    <span class="detail-value">$ 10,000</span>
-                                </div>
-                            </div>
-                        </div>
+                            <tbody>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Lorem Ipsum</td>
+                                    <td>Lorem Ipsum</td>
+                                    <td class="currency">Mexican Pesos</td>
+                                    <td class="price">₱ 5,000</td>
+                                </tr>
 
-                        <div class="section-content mb-4">
-                            <h6 class="section-subtitle mb-3">Invoice Details</h6>
-                            <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis
-                                Nostrud
-                                Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat.</p>
-                        </div>
+                                <tr class="vat-row">
+                                    <td colspan="4">A 16% VAT Or Some Type Of Tax Needs To Be Added.</td>
+                                </tr>
+
+                                <tr class="total-row">
+                                    <td colspan="3" style="text-align: right;">Total :</td>
+                                    <td>₱ 11,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                         <div class="section-content">
-                            <h6 class="section-subtitle mb-3">Payment Information</h6>
+                            <h6 class="section-subtitle mb-3">Additional Comments</h6>
                             <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
+                                Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
                         </div>
                     </div>
                 </div>
@@ -6895,7 +7290,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Payment</h3>
+                            <h3 class="document-type-title text-white">Payment</h3>
                         </div>
                         <button class="btn-back" onclick="backToDocuments()" aria-label="Back">
                             <i class="fas fa-arrow-left"></i>
@@ -6922,8 +7317,8 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Timeline :</label>
-                                    <span class="detail-value">10 June 2025 - 20 June 2025</span>
+                                    <label class="detail-label">Payment Date :</label>
+                                    <span class="detail-value">05 June 2025</span>
                                 </div>
                             </div>
                         </div>
@@ -6931,27 +7326,23 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Pricing :</label>
-                                    <span class="detail-value">$ 10,000</span>
+                                    <label class="detail-label">Amount Paid :</label>
+                                    <span class="detail-value">200</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="section-content mb-4">
-                            <h6 class="section-subtitle mb-3">Payment Summary</h6>
+                            <h6 class="section-subtitle mb-3">Notes</h6>
                             <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis
-                                Nostrud
-                                Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat.</p>
+                                Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam,
+                                Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat. Duis
+                                Aute Irure Dolor In Reprehenderit In Voluptate Velit Esse Cillum Dolore Eu Fugiat Nulla
+                                Pariatur. Excepteur Sint Occaecat Cupidatat Non Proident, Sunt In Culpa Qui Officia
+                                Deserunt Mollit Anim Id Est Laborum.</p>
                         </div>
 
-                        <div class="section-content">
-                            <h6 class="section-subtitle mb-3">Payment History</h6>
-                            <p class="section-text">Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do
-                                Eiusmod
-                                Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.</p>
-                        </div>
+                       
                     </div>
                 </div>
 
@@ -6963,50 +7354,7 @@
                         <!-- Website Creation Section -->
                         <div class="website-creation-section text-center py-5">
                             <div class="website-illustration mb-4">
-                                <svg width="200" height="150" viewBox="0 0 200 150" fill="none">
-                                    <!-- Computer/Website illustration -->
-                                    <rect x="20" y="30" width="160" height="100" rx="8" fill="#F1EDE1" stroke="#9B4431"
-                                        stroke-width="2" />
-                                    <rect x="30" y="40" width="140" height="80" rx="4" fill="white" />
-                                    <rect x="40" y="50" width="120" height="8" rx="2" fill="#9B4431" />
-                                    <rect x="40" y="65" width="80" height="4" rx="2" fill="#DDD" />
-                                    <rect x="40" y="75" width="60" height="4" rx="2" fill="#DDD" />
-                                    <rect x="40" y="85" width="100" height="4" rx="2" fill="#DDD" />
-
-                                    <!-- People working on website -->
-                                    <g transform="translate(10, 80)">
-                                        <circle cx="15" cy="15" r="8" fill="#9B4431" />
-                                        <rect x="10" y="23" width="10" height="15" rx="2" fill="#4A4A4A" />
-                                        <rect x="8" y="35" width="6" height="10" rx="1" fill="#4A4A4A" />
-                                        <rect x="16" y="35" width="6" height="10" rx="1" fill="#4A4A4A" />
-                                    </g>
-
-                                    <g transform="translate(160, 75)">
-                                        <circle cx="15" cy="15" r="8" fill="#9B4431" />
-                                        <rect x="10" y="23" width="10" height="15" rx="2" fill="#4A4A4A" />
-                                        <rect x="8" y="35" width="6" height="10" rx="1" fill="#4A4A4A" />
-                                        <rect x="16" y="35" width="6" height="10" rx="1" fill="#4A4A4A" />
-                                    </g>
-
-                                    <!-- Gears/settings icons -->
-                                    <g transform="translate(170, 20)">
-                                        <circle cx="10" cy="10" r="8" fill="none" stroke="#9B4431" stroke-width="2" />
-                                        <circle cx="10" cy="10" r="3" fill="#9B4431" />
-                                        <line x1="10" y1="2" x2="10" y2="6" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="10" y1="14" x2="10" y2="18" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="18" y1="10" x2="14" y2="10" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="6" y1="10" x2="2" y2="10" stroke="#9B4431" stroke-width="2" />
-                                    </g>
-
-                                    <g transform="translate(185, 35)">
-                                        <circle cx="8" cy="8" r="6" fill="none" stroke="#9B4431" stroke-width="2" />
-                                        <circle cx="8" cy="8" r="2" fill="#9B4431" />
-                                        <line x1="8" y1="2" x2="8" y2="4" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="8" y1="12" x2="8" y2="14" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="14" y1="8" x2="12" y2="8" stroke="#9B4431" stroke-width="2" />
-                                        <line x1="4" y1="8" x2="2" y2="8" stroke="#9B4431" stroke-width="2" />
-                                    </g>
-                                </svg>
+                                <img src="./assets/images/Group 60113.png" />
                             </div>
 
                             <button class="btn btn-primary-custom" id="createWebsiteBtn"
@@ -7681,22 +8029,22 @@
     <div class="modal fade" id="layoutDimensionsModal" tabindex="-1" aria-labelledby="layoutDimensionsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-0">
+            <div class="modal-content p-0 m-0">
+                <div class="modal-header border-bottom-0 m-1 p-1">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <h5 class="modal-title text-center mb-4" id="layoutDimensionsModalLabel">Layout Dimensions</h5>
+                <div class="modal-body m-2 p-2">
+                    <h5 class="modal-title text-center " id="layoutDimensionsModalLabel">Layout Dimensions</h5>
 
                     <form id="layoutDimensionsForm">
                         <div class="mb-3">
-                            <label for="layoutWidth" class="form-label">Width</label>
+                            <label for="layoutWidth" class="form-label text-start">Width</label>
                             <input type="number" class="form-control" id="layoutWidth" placeholder="Enter Width"
                                 min="100" value="800">
                         </div>
 
                         <div class="mb-4">
-                            <label for="layoutHeight" class="form-label">Height</label>
+                            <label for="layoutHeight" class="form-label text-start">Height</label>
                             <input type="number" class="form-control" id="layoutHeight" placeholder="Enter Height"
                                 min="100" value="600">
                         </div>
@@ -7716,42 +8064,53 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title text-center w-100" id="importContactModalLabel">Import Contacts</h5>
+                    <h5 class="modal-title text-center w-100" id="importContactModalLabel">Select The Following You Want
+                        To Import</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="import-options mb-4">
-                        <div class="row g-3">
+                        <div class="row g-3 text-start">
                             <div class="col-md-6">
-                                <div class="import-option-card p-3 border rounded">
-                                    <div class="text-center">
-                                        <i class="fas fa-file-csv fa-2x text-primary mb-2"></i>
-                                        <h6>Upload CSV File</h6>
-                                        <p class="text-muted small">Import contacts from a CSV file</p>
-                                        <input type="file" class="form-control" accept=".csv" id="csvFileInput">
-                                    </div>
-                                </div>
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Rose Bloom Co. (Florist)</span>
+                                </label>
                             </div>
                             <div class="col-md-6">
-                                <div class="import-option-card p-3 border rounded">
-                                    <div class="text-center">
-                                        <i class="fas fa-address-book fa-2x text-success mb-2"></i>
-                                        <h6>Google Contacts</h6>
-                                        <p class="text-muted small">Import from Google Contacts</p>
-                                        <button class="btn btn-outline-success">Connect Google</button>
-                                    </div>
-                                </div>
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Frame Perfect (Photographer)</span>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Seline (Hairstylis)</span>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Joe Mark (Cake Baker)</span>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Jade's (Security)</span>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tax-check">
+                                    <input type="checkbox" id="withTax" checked>
+                                    <span>Claire de Lune (DJ / Musician)</span>
+                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="import-template">
-                        <h6>CSV Template</h6>
-                        <p class="text-muted small">Download our CSV template to ensure proper formatting:</p>
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-download"></i> Download Template
-                        </button>
-                    </div>
+
                 </div>
                 <div class="modal-footer border-top-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -8234,9 +8593,10 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                 <div class="modal-footer">
                     <button type="button" class="modal-add-btn" id="addNoteBtn">Add</button>
                 </div>
+              
             </div>
         </div>
     </div>
@@ -8378,7 +8738,8 @@
 
                     <div class="mb-3">
                         <label for="guestAccommodation" class="form-label text-start">Accommodation</label>
-                        <input type="text" class="form-control" id="guestAccommodation" placeholder="Enter Accommodation">
+                        <input type="text" class="form-control" id="guestAccommodation"
+                            placeholder="Enter Accommodation">
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center">
@@ -8419,7 +8780,8 @@
 
                     <div class="mb-3">
                         <label for="guestTransportation" class="form-label text-start">Transportation</label>
-                        <input type="text" class="form-control" id="guestTransportation" placeholder="Enter Transportation">
+                        <input type="text" class="form-control" id="guestTransportation"
+                            placeholder="Enter Transportation">
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center">
@@ -8428,7 +8790,7 @@
             </div>
         </div>
     </div>
-      <div class="modal " id="addCelebrationsModal" tabindex="-1" aria-labelledby="addCelebrationsModalLabel"
+    <div class="modal " id="addCelebrationsModal" tabindex="-1" aria-labelledby="addCelebrationsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-0 p-0">
@@ -8449,7 +8811,7 @@
             </div>
         </div>
     </div>
-     <div class="modal " id="addCustomNotesModal" tabindex="-1" aria-labelledby="addCustomNotesModalLabel"
+    <div class="modal " id="addCustomNotesModal" tabindex="-1" aria-labelledby="addCustomNotesModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-0 p-0">
@@ -8463,10 +8825,10 @@
                         <label for="guestAllergies" class="form-label text-start">Title</label>
                         <input type="text" class="form-control" id="guestAllergies" placeholder="Enter Title">
                     </div>
-                     <div class="mb-3">
+                    <div class="mb-3">
                         <label for="guestAllergies" class="form-label text-start">Notes</label>
-                          <textarea class="form-control" id="notes" placeholder="Enter Note"></textarea>
-                                   
+                        <textarea class="form-control" id="notes" placeholder="Enter Note"></textarea>
+
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center">
@@ -8742,7 +9104,13 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Bootstrap tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipEl) {
+            new bootstrap.Tooltip(tooltipEl);
+        });
+    </script>
     <div class="modal fade" id="proposalDetailModal" tabindex="-1" aria-labelledby="proposalDetailModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -8760,7 +9128,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Proposal</h3>
+                            <h3 class="document-type-title text-white">Proposal</h3>
                         </div>
                     </div>
 
@@ -8846,7 +9214,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Contract</h3>
+                            <h3 class="document-type-title text-white">Contract</h3>
                         </div>
                     </div>
 
@@ -8949,7 +9317,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Quote</h3>
+                            <h3 class="document-type-title text-white">Quote</h3>
                         </div>
                     </div>
 
@@ -9045,7 +9413,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Invoice</h3>
+                            <h3 class="document-type-title text-white">Invoice</h3>
                         </div>
                     </div>
 
@@ -9150,7 +9518,7 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=200&fit=crop"
                             alt="Document Header" class="header-image">
                         <div class="document-type-overlay">
-                            <h3 class="document-type-title">Payment</h3>
+                            <h3 class="document-type-title text-white">Payment</h3>
                         </div>
                     </div>
 
@@ -9211,9 +9579,19 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function removeSignature() {
+            document.getElementById("signatureImage").src = "";
+        }
 
+        function addSignature() {
+            alert("Add signature functionality can open file upload or signature pad here.");
+        }
+    </script>
+         <script src="./mood-board.js"></script>
     <script src="./app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
         const GUESTS = {
             'justin-wood': {

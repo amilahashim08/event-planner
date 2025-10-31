@@ -603,7 +603,14 @@
                     <div class="form-section-title">Couple Details</div>
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label class="form-label">Groom</label>
+                            <label class="form-label">Couple</label>
+                            <select class="form-select">
+                                <option>Groom</option>
+                                <option>Bride</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
                         <div class="col-md-3">
@@ -620,8 +627,16 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label">Bride</label>
+                       <div class="col-md-3">
+                            <label class="form-label">Couple</label>
+                            <select class="form-select">
+                                 <option>Bride</option>
+                                <option>Groom</option>
+                               
+                            </select>
+                        </div>
+                          <div class="col-md-3">
+                            <label class="form-label">First Name</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
                         <div class="col-md-3">
@@ -639,41 +654,52 @@
                     </div>
                     <div class="form-section-title">Event Details</div>
                     <div class="row mb-3">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">Event Date</label>
                             <input type="date" class="form-control">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">Event Time</label>
                             <input type="time" class="form-control">
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                        <div class="col-md-4">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">Guest Count</label>
                             <input type="number" class="form-control" placeholder="Guest Count">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-3">
+                         <div class="col-md-4">
+                            <label class="form-label">Address</label>
+                            <input type="number" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
-                        <div class="col-md-9">
-                            <label class="form-label">Notes</label>
-                            <input type="text" class="form-control" placeholder="Enter notes">
-                        </div>
+                        
+                    </div>
+                    <div class="row mb-3">
+                     <div id="notesContainer" class="row g-3">
+    <div class="col-md-9">
+      <label class="form-label">Notes</label>
+      <input type="text" class="form-control" placeholder="Enter notes">
+    </div>
+  </div>
                     </div>
                     <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
-                    </div>
+                     <span class="add-more-link text-primary" style="cursor: pointer;" onclick="addNoteField()">Add More</span>
+   </div>
                     <div class="d-flex justify-content-end gap-2">
-   <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
+   <button type="button" class="btn btn-secondary px-4" onclick="showCards(this)">Back</button>
                         <button type="submit" class="btn btn-primary px-4">Add</button>
                     </div>
+                    
                 </form>
+                
                 `;
                 }
                 else if (type === 'birthday') {
@@ -708,7 +734,7 @@
                     </div>
                     <div class="form-section-title">Celebrant Details</div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Gender</label>
                             <select class="form-select">
                                 <option>Male</option>
@@ -723,11 +749,11 @@
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" placeholder="Last Name">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Age</label>
                             <input type="number" class="form-control" placeholder="Age">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Upload Image</label>
                             <input type="file" class="form-control upload-btn">
                         </div>
@@ -755,10 +781,39 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
+                         <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
                     </div>
-                    <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                     <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Select Organized By</label>
+                            <select class="form-select">
+                                <option>Mom</option>
+                                <option>Dad</option>
+                                <option>Sibling</option>
+                                <option>Friend</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                         <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
                     </div>
+                   
                     <div class="form-section-title">Event Details</div>
                     <div class="row mb-3">
                         <div class="col-md-3">
@@ -770,12 +825,12 @@
                             <input type="time" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="Location">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -787,6 +842,14 @@
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
+                       
+                    </div>
+                     <div class="mb-3 text-end">
+                        <span class="add-more-link" >Add More</span>
+                    </div>
+                      </div>
+                    <div class="row mb-3">
+                      
                         <div class="col-md-6">
                             <label class="form-label">Notes</label>
                             <input type="text" class="form-control" placeholder="Enter notes">
@@ -796,6 +859,7 @@
    <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
                         <button type="submit" class="btn btn-primary px-4">Add</button>
                     </div>
+                    
                 </form>
                 `;
                 }
@@ -831,7 +895,7 @@
                     </div>
                     <div class="form-section-title">Organization Contact</div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Industry</label>
                             <select class="form-select">
                                 <option>Industry</option>
@@ -849,17 +913,17 @@
                             <label class="form-label">Contact Person Name</label>
                             <input type="text" class="form-control" placeholder="Contact Person Name">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Upload Image</label>
                             <input type="file" class="form-control upload-btn">
                         </div>
                     </div>
                     <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                        <span class="add-more-link" >Add More</span>
                     </div>
                     <div class="form-section-title">Event Details</div>
                     <div class="row mb-3">
@@ -872,12 +936,12 @@
                             <input type="time" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="Location">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -889,6 +953,13 @@
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
+                      
+                    </div>
+                     <div class="mb-3 text-end">
+                        <span class="add-more-link" >Add More</span>
+                    </div>
+                      <div class="row mb-3">
+                       
                         <div class="col-md-6">
                             <label class="form-label">Notes</label>
                             <input type="text" class="form-control" placeholder="Enter notes">
@@ -933,11 +1004,15 @@
                     </div>
                     <div class="form-section-title">Expecting Parents</div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Dad</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
-                        <div class="col-md-2">
+                         <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" placeholder="Last Name">
                         </div>
@@ -945,18 +1020,22 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Upload Image</label>
                             <input type="file" class="form-control upload-btn">
                         </div>
                         <div class="col-md-3"></div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Mom</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
-                        <div class="col-md-2">
+                         <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" placeholder="Last Name">
                         </div>
@@ -964,7 +1043,7 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Upload Image</label>
                             <input type="file" class="form-control upload-btn">
                         </div>
@@ -981,12 +1060,12 @@
                             <input type="time" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="Location">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -998,13 +1077,17 @@
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
-                        <div class="col-md-6">
+                      
+                    </div>
+                     <div class="row mb-3">
+                       
+                        <div class="col-md-12">
                             <label class="form-label">Notes</label>
                             <input type="text" class="form-control" placeholder="Enter notes">
                         </div>
                     </div>
                     <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                        <span class="add-more-link" >Add More</span>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
    <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
@@ -1045,11 +1128,15 @@
                     </div>
                     <div class="form-section-title">Couple Celebrating</div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Husband</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
-                        <div class="col-md-2">
+                         <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" placeholder="Last Name">
                         </div>
@@ -1057,18 +1144,19 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Upload Image</label>
-                            <input type="file" class="form-control upload-btn">
-                        </div>
+                        
                         <div class="col-md-3"></div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Wife</label>
                             <input type="text" class="form-control" placeholder="First Name">
                         </div>
-                        <div class="col-md-2">
+                          <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" placeholder="Last Name">
                         </div>
@@ -1076,10 +1164,7 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Upload Image</label>
-                            <input type="file" class="form-control upload-btn">
-                        </div>
+                       
                         <div class="col-md-3"></div>
                     </div>
                     <div class="form-section-title">Event Details</div>
@@ -1116,7 +1201,7 @@
                         </div>
                     </div>
                     <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                        <span class="add-more-link" >Add More</span>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
    <button type="button" class="btn btn-secondary px-4" onclick="showCards()">Back</button>
@@ -1157,7 +1242,7 @@
                     </div>
                     <div class="form-section-title">Graduate Details</div>
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">Gender</label>
                             <select class="form-select">
                                 <option>Male</option>
@@ -1175,6 +1260,10 @@
                         <div class="col-md-2">
                             <label class="form-label">Age</label>
                             <input type="number" class="form-control" placeholder="Age">
+                        </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
                         </div>
                         <div class="col-md-2"></div>
                     </div>
@@ -1201,10 +1290,12 @@
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Email">
                         </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" class="form-control upload-btn">
+                        </div>
                     </div>
-                    <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
-                    </div>
+                   
                     <div class="form-section-title">Event Details</div>
                     <div class="row mb-3">
                         <div class="col-md-3">
@@ -1216,12 +1307,12 @@
                             <input type="time" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="Location">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -1233,6 +1324,13 @@
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
+                       
+                    </div>
+                     <div class="mb-3 text-end">
+                        <span class="add-more-link" >Add More</span>
+                    </div>
+                       <div class="row mb-3">
+                      
                         <div class="col-md-6">
                             <label class="form-label">Notes</label>
                             <input type="text" class="form-control" placeholder="Enter notes">
@@ -1291,9 +1389,22 @@
                         </div>
                         <div class="col-md-3"></div>
                     </div>
-                    <div class="mb-3 text-end">
-                        <span class="add-more-link" onclick="alert('Add More clicked')">Add More</span>
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-3"></div>
                     </div>
+                   
                     <div class="form-section-title">Event Details</div>
                     <div class="row mb-3">
                         <div class="col-md-3">
@@ -1305,12 +1416,12 @@
                             <input type="time" class="form-control">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Venue</label>
-                            <input type="text" class="form-control" placeholder="Venue">
+                            <label class="form-label">Venue Name</label>
+                            <input type="text" class="form-control" placeholder="Venue Name">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="Location">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -1322,6 +1433,13 @@
                             <label class="form-label">Budget $</label>
                             <input type="number" class="form-control" placeholder="Budget">
                         </div>
+                     
+                    </div>
+                     <div class="mb-3 text-end">
+                        <span class="add-more-link" >Add More</span>
+                    </div>
+                      <div class="row mb-3">
+                       
                         <div class="col-md-6">
                             <label class="form-label">Notes</label>
                             <input type="text" class="form-control" placeholder="Enter notes">
@@ -1337,6 +1455,7 @@
                 container.innerHTML = html;
             }
         </script>
+
 </body>
 
 </html>
